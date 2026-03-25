@@ -9,7 +9,7 @@
     
     <style>
         :root { --apple-blue: #0071e3; --bg-gray: #f5f5f7; }
-        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #111; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #111; overflow-x: hidden; scroll-behavior: smooth; }
         
         /* 🌊 Apple Premium Liquid Background */
         .liquid-bg { position: fixed; inset: 0; z-index: -1; background: #fbfbfd; overflow: hidden; pointer-events: none; }
@@ -22,12 +22,11 @@
         .top-promo { background: rgba(249, 249, 249, 0.8); backdrop-filter: blur(10px); font-size: 11px; text-align: center; padding: 8px; color: #e11d48; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid rgba(0,0,0,0.05); }
         .hero-banner { background: linear-gradient(to bottom, rgba(226,226,226,0.5) 0%, rgba(255,255,255,0) 100%); height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         
-        .product-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 20px; padding-bottom: 10px; }
-        .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.08); }
-        .img-bg { background-color: rgba(245,245,245,0.7); backdrop-filter: blur(10px); transition: background 0.3s; border-radius: 20px; }
-        .product-card:hover .img-bg { background-color: rgba(237,237,237,0.9); }
+        /* 📦 Premium Card Design */
+        .product-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 24px; background: white; border: 1px solid rgba(0,0,0,0.03); overflow: hidden; cursor: pointer; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px -12px rgba(0,0,0,0.12); border-color: rgba(0,0,0,0.08); }
+        .img-bg { background-color: #fbfbfd; height: 280px; display: flex; align-items: center; justify-content: center; padding: 30px; position: relative; }
         
-        /* 🧊 Glass Modals & Dropdowns */
         .glass-overlay { background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: saturate(180%) blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
         
@@ -40,20 +39,23 @@
         .loader { border: 3px solid rgba(0,0,0,0.1); border-top: 3px solid var(--apple-blue); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
-        .badge-sale { position: absolute; top: 12px; left: 12px; background: #111; color: white; font-size: 10px; padding: 4px 10px; font-weight: bold; text-transform: uppercase; border-radius: 8px; letter-spacing: 0.5px; z-index: 10; }
+        .badge-sale { position: absolute; top: 15px; left: 15px; background: #111; color: white; font-size: 10px; padding: 4px 10px; font-weight: bold; text-transform: uppercase; border-radius: 8px; letter-spacing: 0.5px; z-index: 10; }
         
         .siri-float { box-shadow: 0 10px 30px rgba(0,113,227,0.4); animation: breathe 3s infinite alternate ease-in-out; }
-        @keyframes breathe { 0% { transform: scale(1); box-shadow: 0 10px 30px rgba(0,113,227,0.4); } 100% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(0,113,227,0.6); } }
+        @keyframes breathe { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
 
         .premium-input { width: 100%; background: rgba(245,245,247,0.8); border: 1px solid rgba(0,0,0,0.05); border-radius: 14px; padding: 14px 16px; outline: none; transition: 0.3s; font-size: 14px; }
         .premium-input:focus { border-color: var(--apple-blue); background: #fff; box-shadow: 0 0 0 4px rgba(0,113,227,0.15); }
+        
+        /* Stop Propagation utility class */
+        .z-action { position: relative; z-index: 20; }
     </style>
 </head>
 <body>
 
     <div class="liquid-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
-    <!-- ✨ CUSTOM PREMIUM TOAST NOTIFICATION -->
+    <!-- ✨ CUSTOM PREMIUM TOAST -->
     <div id="custom-toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] transition-all duration-400 opacity-0 -translate-y-10 pointer-events-none">
         <div class="bg-white/95 backdrop-blur-xl border border-gray-200 shadow-[0_15px_40px_rgba(0,0,0,0.1)] rounded-[20px] p-4 flex items-start gap-4 min-w-[320px] max-w-[450px]">
             <div id="toast-icon" class="mt-1 flex-shrink-0"></div>
@@ -71,35 +73,28 @@
     <header class="border-b border-gray-200/50 bg-white/70 backdrop-blur-xl sticky top-0 z-50 transition-all">
         <div class="max-w-[1400px] mx-auto px-6 py-4 flex justify-between items-center">
             
-            <!-- Left: Menu -->
             <div class="flex gap-8 text-sm font-semibold text-gray-500 hidden md:flex">
                 <button onclick="showView('view-store')" class="text-black border-b-2 border-black pb-1">Home</button>
                 <button onclick="showView('view-store')" class="hover:text-black transition">Collection</button>
                 <button onclick="showView('view-about')" class="hover:text-black transition">About</button>
             </div>
 
-            <!-- Center: Logo -->
             <div class="flex items-center gap-3 cursor-pointer" onclick="showView('view-store')">
-                <img src="https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png" class="w-10 h-10 rounded-[10px] shadow-sm border border-gray-100" alt="Patel Traders Logo">
+                <img src="https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png" class="w-10 h-10 rounded-[10px] shadow-sm border border-gray-100">
                 <div class="text-xl font-bold tracking-tight text-gray-900 hidden sm:block" style="font-family: 'Arial Black', sans-serif;">
                     PATEL TRADERS
                 </div>
             </div>
 
-            <!-- Right: Icons & Google Style Profile -->
             <div class="flex items-center gap-5 relative">
-                <!-- ❤️ Wishlist Button -->
                 <button onclick="requireLogin(() => showView('view-wishlist'))" class="text-gray-500 hover:text-red-500 transition">
                     <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                 </button>
-                
-                <!-- 🛒 Cart Button -->
                 <button onclick="requireLogin(() => showView('view-cart'))" class="relative text-gray-500 hover:text-black transition">
                     <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-[#e11d48] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                 </button>
                 
-                <!-- Google Style Profile Icon -->
                 <div class="relative">
                     <button onclick="toggleProfileDropdown()" class="w-9 h-9 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center overflow-hidden hover:shadow-md transition transform hover:scale-105">
                         <img id="header-avatar" src="https://ui-avatars.com/api/?name=Guest&background=f4f5f7&color=000" class="w-full h-full object-cover">
@@ -175,7 +170,7 @@
                 <div class="loader mb-4"></div>
                 <p class="text-gray-400 font-medium text-sm tracking-wide">Loading Masterpieces...</p>
             </div>
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-8 gap-y-12">
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
                 <!-- Products via JS -->
             </div>
         </main>
@@ -183,6 +178,53 @@
         <button onclick="openVedika()" class="fixed bottom-8 right-8 w-16 h-16 rounded-full bg-[#0071e3] text-white flex items-center justify-center siri-float z-40 border-2 border-white/20">
             <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v3M8 22h8"/></svg>
         </button>
+    </div>
+
+    <!-- 🌟 PRODUCT DETAIL VIEW (New Premium Page) -->
+    <div id="view-product" class="hidden-view min-h-screen pb-32 relative z-10">
+        <div class="max-w-6xl mx-auto px-6 py-12">
+            <button onclick="showView('view-store')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition">← Back to Collection</button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Left: Huge Image -->
+                <div class="bg-gray-50/80 border border-gray-100 rounded-[32px] p-10 flex items-center justify-center relative min-h-[400px]">
+                    <button id="pd-wishlist-btn" class="absolute top-6 right-6 z-10 p-3 bg-white/80 backdrop-blur-md rounded-full shadow-sm hover:scale-110 transition border border-gray-100">
+                        <!-- Heart SVg injected by JS -->
+                    </button>
+                    <img id="pd-image" src="" class="max-h-[500px] w-full object-contain mix-blend-multiply transition-transform duration-700 hover:scale-105">
+                </div>
+
+                <!-- Right: Product Details -->
+                <div class="flex flex-col justify-center">
+                    <span id="pd-stock" class="mb-4 w-fit"></span>
+                    <h1 id="pd-name" class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight leading-tight mb-2">Product Name</h1>
+                    <div class="flex gap-1 mb-6 text-[#e11d48] text-sm">★★★★★ <span class="text-gray-400 text-xs ml-2 mt-0.5">(Premium Certified)</span></div>
+                    
+                    <div class="flex items-end gap-4 mb-6 pb-6 border-b border-gray-100">
+                        <span id="pd-price" class="text-4xl font-bold tracking-tighter text-black">₹0</span>
+                        <span id="pd-mrp" class="text-lg text-gray-400 line-through font-medium mb-1"></span>
+                    </div>
+
+                    <h3 class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-3">Description</h3>
+                    <p id="pd-desc" class="text-gray-600 leading-relaxed font-medium mb-8">Description goes here...</p>
+
+                    <!-- Quantity & Add to Cart -->
+                    <div class="flex flex-col sm:flex-row gap-4 mt-auto">
+                        <div id="pd-qty-container" class="flex items-center border border-gray-200 rounded-xl bg-gray-50 h-14 w-full sm:w-32 justify-between px-2">
+                            <button onclick="changeQty(-1)" class="w-10 h-10 flex items-center justify-center text-xl font-medium text-gray-500 hover:text-black transition">−</button>
+                            <input type="number" id="pd-qty" value="1" min="1" max="10" class="w-10 text-center bg-transparent font-bold text-lg outline-none" readonly>
+                            <button onclick="changeQty(1)" class="w-10 h-10 flex items-center justify-center text-xl font-medium text-gray-500 hover:text-black transition">+</button>
+                        </div>
+                        <button id="pd-action-btn" class="flex-1 h-14 rounded-xl text-lg font-bold transition shadow-lg flex items-center justify-center gap-2">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <div class="mt-6 flex items-center gap-2 text-xs font-bold text-gray-400 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Secure Checkout & Free Premium Delivery
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ❤️ WISHLIST VIEW -->
@@ -348,11 +390,7 @@
 
         // --- NAVIGATION & MODALS ---
         function showView(id) {
-            document.getElementById('view-store').classList.add('hidden-view');
-            document.getElementById('view-cart').classList.add('hidden-view');
-            document.getElementById('view-orders').classList.add('hidden-view');
-            document.getElementById('view-about').classList.add('hidden-view');
-            document.getElementById('view-wishlist').classList.add('hidden-view');
+            ['view-store', 'view-cart', 'view-orders', 'view-about', 'view-wishlist', 'view-product'].forEach(v => document.getElementById(v).classList.add('hidden-view'));
             document.getElementById(id).classList.remove('hidden-view');
             window.scrollTo(0,0);
             if(id === 'view-orders') fetchOrders();
@@ -397,34 +435,103 @@
                 const heartColor = isWishlisted ? 'fill-red-500 text-red-500' : 'fill-none text-gray-400';
                 
                 const btnAction = isOutOfStock 
-                    ? `onclick="requireLogin(() => joinWaitlist('${p.ID}'))"` 
-                    : `onclick="requireLogin(() => addToCart('${p.ID}', '${p.Name}', ${p.Price}))"`;
+                    ? `onclick="requireLogin(() => joinWaitlist('${p.ID}')); event.stopPropagation();"` 
+                    : `onclick="requireLogin(() => addToCart('${p.ID}', '${p.Name}', ${p.Price})); event.stopPropagation();"`;
                 
                 const btnText = isOutOfStock ? "Waitlist" : "+ Add to Cart";
                 const badge = isOutOfStock ? `<div class="badge-sale bg-black">Sold Out</div>` : (p.MRP ? `<div class="badge-sale">Sale</div>` : '');
 
+                // Product Card - NOW CLICKABLE!
                 grid.innerHTML += `
-                    <div class="product-card group relative">
+                    <div class="product-card group relative flex flex-col cursor-pointer" onclick="showProductDetail('${p.ID}')">
                         <!-- ❤️ Floating Wishlist Heart -->
-                        <button onclick="requireLogin(() => toggleWishlist('${p.ID}', '${p.Name}', event))" class="absolute top-4 right-4 z-10 p-2.5 bg-white/80 backdrop-blur-md rounded-full shadow-sm hover:scale-110 transition border border-gray-100">
+                        <button onclick="requireLogin(() => toggleWishlist('${p.ID}', '${p.Name}', event)); event.stopPropagation();" class="absolute top-4 right-4 z-20 p-2.5 bg-white/80 backdrop-blur-md rounded-full shadow-sm hover:scale-110 transition border border-gray-100">
                             <svg width="18" height="18" class="${heartColor} transition-colors" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                         </button>
 
-                        <div class="img-bg relative h-72 flex items-center justify-center p-6 mb-5">
+                        <div class="img-bg">
                             ${badge}
-                            <img src="${p.Image_URL}" class="max-h-full object-contain mix-blend-multiply group-hover:scale-105 transition duration-500">
+                            <img src="${p.Image_URL}" class="max-h-full object-contain mix-blend-multiply group-hover:scale-110 transition duration-700">
                         </div>
-                        <div class="px-2">
-                            <h3 class="text-[14px] font-bold text-gray-900 leading-tight mb-1 truncate">${p.Name}</h3>
-                            <div class="flex gap-1 mb-3 text-[#e11d48] text-[11px]">★★★★★</div>
-                            <div class="flex items-center justify-between">
-                                <span class="font-bold text-lg text-black tracking-tight">₹${p.Price}</span>
-                                <button ${btnAction} class="text-[11px] font-bold bg-white border border-gray-200 text-black hover:bg-black hover:text-white px-4 py-2 rounded-full transition shadow-sm">${btnText}</button>
+                        <div class="p-6 flex flex-col flex-1">
+                            <h3 class="text-[15px] font-bold text-gray-900 leading-tight mb-2 truncate">${p.Name}</h3>
+                            <p class="text-[12px] text-gray-500 leading-relaxed line-clamp-2 mb-4 h-[36px]">${p.Description || 'Premium unpolished wooden masterpiece.'}</p>
+                            
+                            <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-4">
+                                <span class="font-bold text-lg text-black tracking-tighter">₹${p.Price}</span>
+                                <button ${btnAction} class="z-action text-[11px] font-bold bg-white border border-gray-200 text-black hover:bg-black hover:text-white px-4 py-2 rounded-full transition shadow-sm">${btnText}</button>
                             </div>
                         </div>
                     </div>
                 `;
             });
+        }
+
+        // --- 🌟 PRODUCT DETAIL PAGE LOGIC ---
+        function showProductDetail(id) {
+            const p = productsData.find(x => x.ID === id);
+            if(!p) return;
+
+            const isOutOfStock = Number(p.Stock) === 0;
+            const isWishlisted = wishlist.some(w => w.id == p.ID);
+            const heartColor = isWishlisted ? 'fill-red-500 text-red-500' : 'fill-none text-gray-400';
+
+            const btnAction = isOutOfStock
+                ? `requireLogin(() => joinWaitlist('${p.ID}'))`
+                : `requireLogin(() => addMultipleToCart('${p.ID}', '${p.Name}', ${p.Price}))`;
+            const btnText = isOutOfStock ? "Join Waitlist" : "Add to Cart";
+
+            // Fill Detail Page Elements
+            document.getElementById('pd-image').src = p.Image_URL;
+            document.getElementById('pd-name').innerText = p.Name;
+            document.getElementById('pd-price').innerText = `₹${p.Price}`;
+            document.getElementById('pd-mrp').innerText = p.MRP ? `₹${p.MRP}` : '';
+            document.getElementById('pd-desc').innerText = p.Description || 'Premium unpolished wooden masterpiece from Patel Traders.';
+            
+            // Dynamic Stock Badge
+            const stockBadge = document.getElementById('pd-stock');
+            stockBadge.innerText = isOutOfStock ? 'Out of Stock' : `In Stock: ${p.Stock} units available`;
+            stockBadge.className = isOutOfStock ? 'mb-4 w-fit text-red-500 font-bold text-xs bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 uppercase tracking-widest' : 'mb-4 w-fit text-green-600 font-bold text-xs bg-green-50 px-3 py-1.5 rounded-lg border border-green-100 uppercase tracking-widest';
+
+            // Reset Quantity Selector
+            document.getElementById('pd-qty').value = 1;
+            document.getElementById('pd-qty-container').style.display = isOutOfStock ? 'none' : 'flex';
+
+            // Setup Action Button
+            const actionBtn = document.getElementById('pd-action-btn');
+            actionBtn.setAttribute('onclick', btnAction);
+            actionBtn.innerText = btnText;
+            actionBtn.className = isOutOfStock 
+                ? "flex-1 h-14 rounded-xl text-lg font-bold transition shadow-lg flex items-center justify-center gap-2 w-full bg-[#1d1d1f] text-white hover:bg-black" 
+                : "flex-1 h-14 rounded-xl text-lg font-bold transition shadow-lg flex items-center justify-center gap-2 w-full bg-[#0071e3] text-white hover:bg-blue-600 shadow-blue-500/30";
+
+            // Setup Wishlist Button
+            document.getElementById('pd-wishlist-btn').innerHTML = `<svg width="24" height="24" class="${heartColor} transition-colors" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`;
+            document.getElementById('pd-wishlist-btn').setAttribute('onclick', `requireLogin(() => toggleWishlist('${p.ID}', '${p.Name}', event))`);
+
+            showView('view-product');
+        }
+
+        function changeQty(amt) {
+            let q = parseInt(document.getElementById('pd-qty').value);
+            q += amt;
+            if(q < 1) q = 1;
+            if(q > 10) {
+                showToast('info', 'Maximum Limit', 'You can only add up to 10 items at a time.');
+                q = 10;
+            }
+            document.getElementById('pd-qty').value = q;
+        }
+
+        function addMultipleToCart(id, name, price) {
+            const qty = parseInt(document.getElementById('pd-qty').value) || 1;
+            for(let i=0; i<qty; i++) {
+                cart.push({ id, name, price });
+            }
+            localStorage.setItem('pt_cart', JSON.stringify(cart));
+            updateCartUI();
+            fetchSecure({action: 'syncCart', email: currentUser, cartItems: JSON.stringify(cart)});
+            showToast('success', 'Added to Cart', `<strong>${qty}x ${name}</strong> added to your cart.`);
         }
 
         // --- ❤️ WISHLIST LOGIC ---
@@ -441,6 +548,13 @@
             }
             localStorage.setItem('pt_wishlist', JSON.stringify(wishlist));
             renderProducts(); 
+            
+            // Re-render product detail page button if it is currently open
+            if(!document.getElementById('view-product').classList.contains('hidden-view')) {
+                const heartColor = index > -1 ? 'fill-none text-gray-400' : 'fill-red-500 text-red-500';
+                document.getElementById('pd-wishlist-btn').innerHTML = `<svg width="24" height="24" class="${heartColor} transition-colors" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`;
+            }
+
             if(!document.getElementById('view-wishlist').classList.contains('hidden-view')) renderWishlist();
         }
 
@@ -451,12 +565,12 @@
                 const product = productsData.find(p => p.ID == item.id);
                 if(product) {
                     container.innerHTML += `
-                        <div class="glass-card p-5 flex items-center justify-between">
+                        <div class="glass-card p-5 flex items-center justify-between cursor-pointer hover:shadow-md transition" onclick="showProductDetail('${product.ID}')">
                             <div class="flex items-center gap-5">
                                 <img src="${product.Image_URL}" class="w-20 h-20 object-cover rounded-2xl bg-white shadow-sm border border-gray-100 p-2 mix-blend-multiply">
                                 <div><h4 class="font-bold text-lg text-black">${product.Name}</h4><p class="text-[15px] text-gray-500 font-bold mt-1">₹${product.Price}</p></div>
                             </div>
-                            <button onclick="toggleWishlist('${product.ID}', '${product.Name}')" class="text-red-500 p-3 bg-red-50 rounded-full hover:bg-red-100 hover:scale-110 transition-all"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                            <button onclick="toggleWishlist('${product.ID}', '${product.Name}', event)" class="z-action text-red-500 p-3 bg-red-50 rounded-full hover:bg-red-100 hover:scale-110 transition-all"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                         </div>
                     `;
                 }
@@ -623,10 +737,6 @@
             fetchSecure({action: 'syncCart', email: currentUser, cartItems: JSON.stringify(cart)});
             
             showToast('success', 'Added to Cart', `<strong>${name}</strong> is now in your cart.`);
-            
-            const btn = event.target; const oText = btn.innerText;
-            btn.innerText = "✓ Added"; btn.classList.add("bg-black", "text-white");
-            setTimeout(() => { btn.innerText = oText; btn.classList.remove("bg-black", "text-white"); }, 1000);
         }
 
         function updateCartUI() {
@@ -676,8 +786,6 @@
             } catch (e) { showToast('error', 'Payment Failed', 'An error occurred during transaction.'); }
         }
 
-        function showOrders() { document.getElementById('profile-dropdown').classList.add('hidden-view'); showView('view-orders'); }
-        
         async function joinWaitlist(productId) { 
             showToast('success', 'Waitlist Joined', 'We will notify you when this item is back in stock.');
             fetchSecure({action: 'addWaitlist', email: currentUser, productId: productId}); 
