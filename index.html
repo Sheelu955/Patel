@@ -8,6 +8,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- 🔥 MARKDOWN PARSER FOR VEDIKA AI -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 🔥 RAZORPAY SDK (PAYMENT GATEWAY) -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background: #ffffff; color: #1d1d1f; overflow-x: hidden; scroll-behavior: smooth; }
@@ -89,7 +91,6 @@
         .markdown-body ul { list-style-type: disc; margin-left: 20px; margin-bottom: 8px; }
         .markdown-body ol { list-style-type: decimal; margin-left: 20px; margin-bottom: 8px; }
         .markdown-body li { margin-bottom: 4px; }
-        /* Premium Table Design inside Chat */
         .markdown-body table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #eee; }
         .markdown-body th, .markdown-body td { border: 1px solid #e5e7eb; padding: 6px 10px; text-align: left; }
         .markdown-body th { background: #f5f5f7; font-weight: 800; color: #1d1d1f; }
@@ -315,8 +316,8 @@
                     <div class="flex justify-between font-black text-4xl mb-10 pt-8 border-t border-gray-200/80 text-black"><span>Total</span><span id="total" class="text-[#0071e3]">₹0</span></div>
                     
                     <div class="space-y-4">
-                        <button onclick="processFinalCheckout('ONLINE')" class="w-full bg-[#1d1d1f] text-white font-bold py-5 rounded-2xl hover:bg-black transition transform hover:-translate-y-1 shadow-xl text-lg flex items-center justify-center"><i class="fas fa-credit-card mr-3"></i>Pay Online</button>
-                        <button onclick="processFinalCheckout('COD')" class="w-full bg-white border-2 border-green-600 text-green-700 font-bold py-5 rounded-2xl hover:bg-green-50 transition transform hover:-translate-y-1 shadow-md text-lg flex items-center justify-center"><i class="fas fa-truck mr-3"></i>Cash on Delivery</button>
+                        <button id="btn-pay-online" onclick="processFinalCheckout('ONLINE')" class="w-full bg-[#1d1d1f] text-white font-bold py-5 rounded-2xl hover:bg-black transition transform hover:-translate-y-1 shadow-xl text-lg flex items-center justify-center"><i class="fas fa-credit-card mr-3"></i>Pay Online</button>
+                        <button id="btn-pay-cod" onclick="processFinalCheckout('COD')" class="w-full bg-white border-2 border-green-600 text-green-700 font-bold py-5 rounded-2xl hover:bg-green-50 transition transform hover:-translate-y-1 shadow-md text-lg flex items-center justify-center"><i class="fas fa-truck mr-3"></i>Cash on Delivery</button>
                     </div>
                 </div>
             </div>
@@ -447,6 +448,11 @@
         }
 
         window.onload = async () => {
+            // Track Customer Last Seen if logged in
+            if(userEmail) {
+                api({action: 'logActivity', email: userEmail, activityType: 'LastSeen', details: 'Browsing Store'});
+            }
+
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getProducts&token=${TOKEN}`); const data = await res.json();
                 if(data && data.status === 'error') { products = []; } else if(Array.isArray(data)) { products = data; } else { products = []; }
@@ -454,6 +460,7 @@
                 document.getElementById('loadingProducts').classList.add('hidden-view'); document.getElementById('loadingCollections').classList.add('hidden-view');
                 generateCategories(); renderProducts(); updateUI();
             } catch(e) { document.getElementById('loadingProducts').innerHTML = "<p class='text-red-500 font-bold'>System Error fetching DB.</p>"; }
+            
             if(userEmail) { fetchUserData(); fetchOrders(); document.getElementById('cart-addr-box').classList.remove('hidden-view'); }
         };
 
@@ -550,6 +557,7 @@
             let size = fromPD && !document.getElementById('pd-size-box').classList.contains('hidden-view') ? document.querySelector('.size-btn.active')?.innerText || "" : "";
             let ex = cart.find(x => x.ID === id && x.size === size);
             if(ex) ex.qty += qty; else { let firstImg = p.Image_URL ? extractDirectImageUrl(p.Image_URL) : 'https://via.placeholder.com/100'; cart.push({...p, qty: qty, Image_URL: firstImg, size: size}); }
+            
             localStorage.setItem('pt_cart', JSON.stringify(cart)); updateUI();
             if(userEmail) api({action: 'syncCart', email: userEmail, cartItems: JSON.stringify(cart)});
             showToast(`${qty}x ${p.Name} added to cart.`); if(!fromPD && document.getElementById(`qty-${id}`)) document.getElementById(`qty-${id}`).innerText = "1";
@@ -586,6 +594,7 @@
             document.getElementById('subtotal').innerText = `₹${sub}`; document.getElementById('shipping').innerText = fee > 0 ? `+₹${fee}` : 'FREE'; document.getElementById('shipping').className = fee > 0 ? 'text-red-500 font-bold bg-red-50 px-3 py-1 rounded-lg' : 'text-green-600 font-bold bg-green-50 px-3 py-1 rounded-lg'; document.getElementById('total').innerText = `₹${sub + fee}`;
         }
 
+        // 🟢 FINAL CHECKOUT LOGIC (RAZORPAY INTEGRATED)
         function processFinalCheckout(method) {
             if(cart.length === 0) return showToast("Cart Empty", true);
             if(!userEmail) { showToast("Please login securely to place order.", true); openAuthModal(); return; }
@@ -593,12 +602,48 @@
             if(!addr || addr.includes("update profile address")) { showToast("Address missing. Update profile.", true); openEditProfile(); return; }
             
             const sub = cart.reduce((a,b) => a + (Number(b.Price)*b.qty), 0); const fee = (sub > 0 && sub < 2000) ? 250 : 0;
-            const itemsList = cart.map(i => `${i.Name} ${i.size ? '('+i.size+')' : ''} x ${i.qty}`).join(", "); showToast('Processing Secure Order...');
-            let pid = method === 'ONLINE' ? "PAY_" + Date.now() : "COD";
-            api({ action: 'placeOrder', email: userEmail, items: itemsList, amount: sub+fee, razorpayId: pid }).then(res => {
+            const totalAmount = sub + fee;
+            const itemsList = cart.map(i => `${i.Name} ${i.size ? '('+i.size+')' : ''} x ${i.qty}`).join(", "); 
+            
+            if (method === 'ONLINE') {
+                showToast('Initiating Secure Payment gateway...');
+                var options = {
+                    "key": "rzp_live_SVstISgPrcivjP", // Aapki Live API Key
+                    "amount": totalAmount * 100, // Paise mein amount
+                    "currency": "INR",
+                    "name": "Patel Traders",
+                    "description": "Premium Furniture Order",
+                    "image": "https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png",
+                    "handler": function (response) {
+                        // Payment Success -> Order place karo backend mein
+                        submitOrderToBackend(itemsList, totalAmount, response.razorpay_payment_id);
+                    },
+                    "prefill": {
+                        "email": userEmail,
+                        "contact": document.getElementById('prof-phone') ? document.getElementById('prof-phone').value : ""
+                    },
+                    "theme": { "color": "#0071e3" }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response){
+                    // Payment Fail -> Sirf Error dikhao, order place mat karo
+                    showToast(`Payment Failed: ${response.error.description}`, true);
+                });
+                rzp1.open();
+            } else {
+                // COD Flow
+                submitOrderToBackend(itemsList, totalAmount, "COD");
+            }
+        }
+
+        // Backend Order Submission Function
+        function submitOrderToBackend(itemsList, amount, payId) {
+            showToast('Processing Secure Order...');
+            api({ action: 'placeOrder', email: userEmail, items: itemsList, amount: amount, razorpayId: payId }).then(res => {
                 if(res.status === 'success') {
                     closeModals();
-                    document.getElementById('view-shop').innerHTML = `<div class="max-w-xl mx-auto py-20 text-center fade-in-up"><div class="w-28 h-28 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-green-100 shadow-xl"><i class="fas fa-check text-6xl text-green-500"></i></div><h2 class="text-5xl font-black mb-4 tracking-tight text-gray-900">Order Confirmed!</h2><p class="text-gray-500 mb-2 font-medium text-lg">Thank you. Your order has been securely placed.</p><p class="font-black text-2xl mb-10 tracking-wider bg-gray-50 py-4 rounded-2xl border border-gray-200 shadow-inner">${res.orderId}</p><br><button onclick="location.reload()" class="bg-[#1d1d1f] text-white px-12 py-5 rounded-2xl font-bold shadow-2xl hover:bg-black hover:scale-105 transition-all text-lg">Continue Shopping</button></div>`;
+                    let txText = payId === "COD" ? "Cash on Delivery" : `Transaction ID: ${payId}`;
+                    document.getElementById('view-shop').innerHTML = `<div class="max-w-xl mx-auto py-20 text-center fade-in-up"><div class="w-28 h-28 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-green-100 shadow-xl"><i class="fas fa-check text-6xl text-green-500"></i></div><h2 class="text-5xl font-black mb-4 tracking-tight text-gray-900">Order Confirmed!</h2><p class="text-gray-500 mb-2 font-medium text-lg">Thank you. Your order has been securely placed.</p><p class="font-black text-2xl mb-2 tracking-wider bg-gray-50 py-4 rounded-2xl border border-gray-200 shadow-inner">${res.orderId}</p><p class="text-sm font-bold text-gray-500 mb-10 uppercase tracking-widest">${txText}</p><br><button onclick="location.reload()" class="bg-[#1d1d1f] text-white px-12 py-5 rounded-2xl font-bold shadow-2xl hover:bg-black hover:scale-105 transition-all text-lg">Continue Shopping</button></div>`;
                     showView('view-shop'); cart = []; localStorage.removeItem('pt_cart'); updateUI();
                 } else { showToast("Order Failed. Try again.", true); }
             });
@@ -685,7 +730,7 @@
             else { showToast(data.message, true); btn.innerHTML = 'Save Profile Settings'; }
         }
 
-        // 🤖 VEDIKA AI WIDGET (WITH MARKDOWN PARSER FIX)
+        // 🤖 VEDIKA AI WIDGET
         function toggleVedika() {
             const ui = document.getElementById('vedikaBox');
             if(!ui.classList.contains('hidden-view')) { ui.classList.remove('fade-in-up'); ui.classList.add('hidden-view'); } 
@@ -704,9 +749,7 @@
             document.getElementById(id).remove();
             
             if(data && data.status === 'success') { 
-                // 🔥 THE FIX: Markdown parsing using marked.js
                 let formattedAnswer = typeof marked !== 'undefined' ? marked.parse(data.answer) : data.answer;
-                
                 chat.innerHTML += `<div class="bg-white border border-gray-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] p-4 rounded-2xl rounded-tl-sm w-[90%] text-[13.5px] text-gray-900 font-medium leading-relaxed fade-in-up markdown-body">${formattedAnswer}</div>`; 
             } else { 
                 chat.innerHTML += `<div class="bg-red-50 text-red-500 p-3 rounded-2xl rounded-tl-none shadow-sm fade-in-up">Network error.</div>`; 
@@ -715,4 +758,4 @@
         }
     </script>
 </body>
-</html>
+</html>.
