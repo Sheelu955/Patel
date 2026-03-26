@@ -6,6 +6,8 @@
     <title>Patel Traders | Apple Style Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- 🔥 MARKDOWN PARSER FOR VEDIKA AI -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background: #ffffff; color: #1d1d1f; overflow-x: hidden; scroll-behavior: smooth; }
@@ -36,7 +38,7 @@
         .collection-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; }
 
         /* Modals & Menus */
-        .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.4); backdrop-filter: blur(15px); z-index:100; align-items:center; justify-content:center; opacity: 0; transition: opacity 0.3s ease; }
+        .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.4); backdrop-filter: blur(15px); z-index:100; align-items:center; justify-content:center; opacity: 0; transition: opacity 0.3s ease; padding: 20px; }
         .modal.active { display:flex; opacity: 1; }
         .modal-content { transform: scale(0.95); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .modal.active .modal-content { transform: scale(1); opacity: 1; }
@@ -75,15 +77,29 @@
         ::-webkit-scrollbar-thumb { background: #d2d2d7; border-radius: 10px; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-        /* 🤖 Vedika AI */
+        /* 🤖 Vedika AI Floating */
         .vedika-float { animation: vedikaBreathe 3s infinite alternate ease-in-out; box-shadow: 0 15px 35px rgba(0,113,227,0.4); }
         @keyframes vedikaBreathe { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); box-shadow: 0 25px 45px rgba(0,113,227,0.5); } }
+
+        /* 🔥 VEDIKA AI MARKDOWN (Apple Style Design) */
+        .markdown-body p { margin-bottom: 8px; }
+        .markdown-body p:last-child { margin-bottom: 0; }
+        .markdown-body strong { font-weight: 900; color: #000; }
+        .markdown-body em { font-style: italic; }
+        .markdown-body ul { list-style-type: disc; margin-left: 20px; margin-bottom: 8px; }
+        .markdown-body ol { list-style-type: decimal; margin-left: 20px; margin-bottom: 8px; }
+        .markdown-body li { margin-bottom: 4px; }
+        /* Premium Table Design inside Chat */
+        .markdown-body table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #eee; }
+        .markdown-body th, .markdown-body td { border: 1px solid #e5e7eb; padding: 6px 10px; text-align: left; }
+        .markdown-body th { background: #f5f5f7; font-weight: 800; color: #1d1d1f; }
+        .markdown-body td { color: #555; font-weight: 500; }
+        .markdown-body code { background: #f0f8ff; color: #0071e3; padding: 2px 6px; border-radius: 6px; font-family: monospace; font-size: 11px; font-weight: 700; }
     </style>
 </head>
 <body>
 
     <div class="liquid-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
-
     <div id="toast"><i class="fas fa-check-circle mr-2 text-green-400"></i> <span id="toastMsg">Success!</span></div>
 
     <!-- 📢 Shipping Promo Bar -->
@@ -112,11 +128,10 @@
                 <span id="cartCount" class="absolute -top-2 -right-2 bg-[#e11d48] text-white text-[10px] w-[18px] h-[18px] rounded-full flex items-center justify-center font-bold shadow-sm border border-white">0</span>
             </div>
             
-            <!-- Profile Dropdown System -->
             <div class="relative">
                 <img src="https://ui-avatars.com/api/?name=Guest&background=f4f4f7" id="userAvatar" class="w-10 h-10 rounded-full cursor-pointer border-2 border-white shadow-md hover:scale-105 transition object-cover" onclick="toggleProfileMenu()">
                 
-                <div id="profileMenu" class="profile-dropdown">
+                <div id="profileMenu" class="profile-dropdown glass-card">
                     <div class="text-center pb-5 border-b border-gray-200/60 relative">
                         <img id="dropAvatar" src="https://ui-avatars.com/api/?name=Guest&background=f4f4f7" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-white shadow-sm object-cover">
                         <h3 id="dropName" class="font-bold text-xl text-gray-900 tracking-tight">Guest User</h3>
@@ -136,7 +151,7 @@
         </div>
     </nav>
 
-    <!-- Mobile Bottom Nav -->
+    <!-- Mobile Nav -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-200 z-40 flex justify-around p-3 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
         <button onclick="showView('view-home')" class="text-gray-500 flex flex-col items-center gap-1 hover:text-[#0071e3] w-1/4"><i class="fas fa-home text-lg"></i><span class="text-[10px] font-bold">Home</span></button>
         <button onclick="showView('view-collections')" class="text-gray-500 flex flex-col items-center gap-1 hover:text-[#0071e3] w-1/4"><i class="fas fa-layer-group text-lg"></i><span class="text-[10px] font-bold">Collect</span></button>
@@ -156,38 +171,28 @@
         </div>
     </div>
 
-    <!-- ℹ️ VIEW: ABOUT US (NEW FEATURE) -->
+    <!-- ℹ️ VIEW: ABOUT US -->
     <div id="view-about" class="hidden-view max-w-[1200px] mx-auto px-6 py-20 relative z-10 fade-in-up pb-32 md:pb-12">
         <div class="text-center max-w-3xl mx-auto mb-16">
             <h2 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-gray-900">Our Story.</h2>
             <p class="text-xl text-gray-500 font-medium leading-relaxed">Crafting pure, unpolished wooden masterpieces since 2026. Premium quality, direct from the vault to your home.</p>
         </div>
-        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="glass-card p-8 rounded-3xl text-center hover:-translate-y-2 transition-transform duration-300">
                 <div class="w-16 h-16 bg-blue-50 text-[#0071e3] rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-tree"></i></div>
                 <h3 class="text-2xl font-black mb-3">Pure Material</h3>
-                <p class="text-gray-500 text-sm">We strictly use authentic, high-quality solid wood like Sagwan and Sheesham. No compromises, no synthetic shortcuts.</p>
+                <p class="text-gray-500 text-sm">We strictly use authentic, high-quality solid wood like Sagwan and Sheesham.</p>
             </div>
             <div class="glass-card p-8 rounded-3xl text-center hover:-translate-y-2 transition-transform duration-300">
                 <div class="w-16 h-16 bg-blue-50 text-[#0071e3] rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-hammer"></i></div>
                 <h3 class="text-2xl font-black mb-3">Unpolished Beauty</h3>
-                <p class="text-gray-500 text-sm">Our furniture celebrates the raw, natural texture of wood. Experience the unpolished elegance that gets better with time.</p>
+                <p class="text-gray-500 text-sm">Our furniture celebrates the raw, natural texture of wood.</p>
             </div>
             <div class="glass-card p-8 rounded-3xl text-center hover:-translate-y-2 transition-transform duration-300">
                 <div class="w-16 h-16 bg-blue-50 text-[#0071e3] rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-shield-alt"></i></div>
                 <h3 class="text-2xl font-black mb-3">Direct from Vault</h3>
-                <p class="text-gray-500 text-sm">No middlemen. Every piece you buy is sourced directly from our master vault, ensuring transparency and premium value.</p>
+                <p class="text-gray-500 text-sm">No middlemen. Sourced directly from our master vault ensuring premium value.</p>
             </div>
-        </div>
-        
-        <div class="mt-20 glass-card p-10 md:p-16 rounded-[40px] flex flex-col md:flex-row items-center justify-between gap-10">
-            <div class="max-w-lg">
-                <h3 class="text-3xl md:text-4xl font-black mb-4">Ready to upgrade your space?</h3>
-                <p class="text-gray-500 mb-6">Browse our exclusive collection of premium furniture today.</p>
-                <button onclick="showView('view-shop')" class="bg-[#0071e3] text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-600 transition shadow-lg shadow-blue-500/30">Explore the Vault</button>
-            </div>
-            <img src="https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png" class="w-48 h-48 rounded-3xl shadow-xl rotate-3 hover:rotate-0 transition-transform duration-500">
         </div>
     </div>
 
@@ -200,36 +205,37 @@
 
     <!-- 🛍️ VIEW: SHOP (ALL PRODUCTS) -->
     <main id="view-shop" class="hidden-view max-w-[1400px] mx-auto px-6 py-12 relative z-10 pb-24 fade-in-up">
-        <div class="flex justify-between items-end mb-10">
+        <div class="flex justify-between items-end mb-8">
             <h2 id="shopTitle" class="text-5xl font-black tracking-tighter text-gray-900">All Items.</h2>
             <button onclick="showView('view-collections')" class="text-sm font-bold text-[#0071e3] hover:underline bg-blue-50 px-4 py-2 rounded-full transition">Clear Filter</button>
         </div>
         
+        <div id="categoryContainer" class="flex gap-3 overflow-x-auto pb-4 scrollbar-hide mb-8"></div>
+        
         <div id="loadingProducts" class="flex flex-col items-center justify-center py-20 text-gray-400">
-            <i class="fas fa-circle-notch fa-spin text-4xl mb-4 text-blue-600"></i>
-            <p class="font-bold text-lg">Syncing with Master Vault...</p>
+            <i class="fas fa-circle-notch fa-spin text-4xl mb-4 text-[#0071e3]"></i>
+            <p class="font-bold text-lg mt-2">Syncing with Master Vault...</p>
         </div>
         
         <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"></div>
     </main>
 
-    <!-- 🌟 VIEW: PRODUCT DETAIL (AMAZON STYLE + MULTI IMAGE) -->
+    <!-- 🌟 VIEW: PRODUCT DETAIL -->
     <div id="view-product" class="hidden-view min-h-screen pb-32 relative z-10 fade-in-up">
         <div class="max-w-[1300px] mx-auto px-6 py-12">
             <button onclick="showView('view-shop')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i> Back to Shop</button>
             
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-                <!-- Left: Multi-Image Gallery (Span 7) -->
+                <!-- Gallery -->
                 <div class="lg:col-span-7 flex flex-col gap-5">
                     <div class="glass-card rounded-[40px] p-10 flex items-center justify-center relative min-h-[400px] md:min-h-[550px] bg-white group overflow-hidden">
                         <button id="pd-wishlist-btn" class="absolute top-8 right-8 z-10 p-4 bg-white/90 backdrop-blur-md rounded-full shadow-lg hover:scale-110 transition border border-gray-100"></button>
                         <img id="pd-main-img" src="" class="max-h-[600px] w-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110">
                     </div>
-                    <!-- Thumbnails Area -->
                     <div id="pd-thumbnails" class="flex gap-4 overflow-x-auto py-2 scrollbar-hide px-2"></div>
                 </div>
 
-                <!-- Right: Detailed Specs & Actions (Span 5) -->
+                <!-- Details -->
                 <div class="lg:col-span-5 flex flex-col justify-center">
                     <p id="pd-cat" class="text-xs font-black text-[#0071e3] uppercase tracking-widest mb-3 bg-blue-50 w-fit px-3 py-1 rounded-md"></p>
                     <h1 id="pd-name" class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-4"></h1>
@@ -244,14 +250,13 @@
                         <span id="pd-mrp" class="text-xl text-gray-400 line-through font-medium mb-1.5"></span>
                     </div>
 
-                    <!-- Revolutionary Specs (From DB) -->
+                    <!-- Specs -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
                         <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100"><p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Material</p><p id="pd-mat" class="font-bold text-[15px] text-gray-900 truncate">Solid Wood</p></div>
                         <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100"><p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Dimensions</p><p id="pd-dim" class="font-bold text-[15px] text-gray-900 truncate">Standard</p></div>
                         <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100"><p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Weight</p><p id="pd-weight" class="font-bold text-[15px] text-gray-900 truncate">Heavy Duty</p></div>
                     </div>
 
-                    <!-- Size Selection -->
                     <div id="pd-size-box" class="mb-8 hidden-view">
                         <h3 class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-3 flex items-center"><i class="fas fa-ruler-combined mr-2"></i> Select Size</h3>
                         <div class="flex flex-wrap gap-3" id="pd-size-opts"></div>
@@ -321,9 +326,7 @@
     <!-- 🔑 MODAL: AUTH -->
     <div id="authModal" class="modal">
         <div class="glass-card p-10 rounded-[40px] w-[420px] text-center shadow-2xl relative modal-content bg-white/95">
-            <!-- Auth Close Button unchanged for consistency, or changed to back? Kept as cross as it's a direct popup -->
             <button onclick="closeAuthModal()" class="absolute top-6 right-6 text-gray-400 hover:text-red-500 text-xl bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fas fa-times"></i></button>
-            
             <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5 text-[#0071e3] border-4 border-white shadow-sm"><i class="fas fa-shield-alt text-4xl"></i></div>
             <h2 class="text-3xl font-black mb-2 text-gray-900 tracking-tight">Security.</h2>
             <p class="text-gray-500 text-sm mb-6 font-medium">Access your digital vault securely.</p>
@@ -334,16 +337,11 @@
             </div>
 
             <div id="authStep1" class="space-y-4 fade-in-up">
-                <div class="relative">
-                    <i class="fas fa-envelope absolute left-4 top-4 text-gray-400"></i>
-                    <input type="email" id="emailInput" placeholder="Email Address" class="premium-input pl-11 py-3.5">
-                </div>
-                
+                <div class="relative"><i class="fas fa-envelope absolute left-4 top-4 text-gray-400"></i><input type="email" id="emailInput" placeholder="Email Address" class="premium-input pl-11 py-3.5"></div>
                 <div id="regFields" class="hidden-view space-y-4">
                     <input type="text" id="nameInput" placeholder="Full Name" class="premium-input py-3.5">
                     <input type="tel" id="phoneInput" placeholder="Mobile Number" maxlength="10" class="premium-input py-3.5">
                 </div>
-
                 <button id="otpBtn" onclick="requestOTP()" class="btn-apple w-full py-4 mt-2 shadow-lg shadow-blue-500/30 text-lg">Request Secure Code</button>
             </div>
             
@@ -355,34 +353,21 @@
         </div>
     </div>
 
-    <!-- 📝 MODAL: EDIT PROFILE (FIXED BACK BUTTON) -->
+    <!-- 📝 MODAL: EDIT PROFILE (BACK BUTTON) -->
     <div id="modal-edit-profile" class="modal">
         <div class="glass-card px-8 py-10 sm:px-10 max-w-lg w-full mx-4 relative max-h-[90vh] overflow-y-auto modal-content bg-white/95 rounded-[40px]">
-            
-            <!-- 🔥 NEW PROMINENT BACK BUTTON (Replaced side cross) -->
-            <button onclick="closeEditModal()" class="absolute top-6 left-6 text-gray-500 hover:text-black hover:bg-gray-200 bg-gray-100 px-4 py-2 rounded-full flex items-center justify-center transition font-bold text-sm shadow-sm">
-                <i class="fas fa-arrow-left mr-2"></i> वापस
-            </button>
-            
+            <button onclick="closeEditModal()" class="absolute top-6 left-6 text-gray-500 hover:text-black hover:bg-gray-200 bg-gray-100 px-4 py-2 rounded-full flex items-center justify-center transition font-bold text-sm shadow-sm"><i class="fas fa-arrow-left mr-2"></i> वापस</button>
             <div class="mt-12 mb-8">
                 <h2 class="text-3xl font-black mb-2 tracking-tight text-gray-900">Update Profile</h2>
-                <div class="bg-red-50 border border-red-100 p-3 rounded-xl flex items-start gap-3 mt-4 mb-6">
-                    <i class="fas fa-exclamation-circle text-red-500 mt-0.5 text-lg"></i>
-                    <p class="text-xs text-red-600 font-bold uppercase tracking-wide leading-relaxed">Security Notice: You can only update details 5 times a month.</p>
-                </div>
+                <div class="bg-red-50 border border-red-100 p-3 rounded-xl flex items-start gap-3 mt-4 mb-6"><i class="fas fa-exclamation-circle text-red-500 mt-0.5 text-lg"></i><p class="text-xs text-red-600 font-bold uppercase tracking-wide leading-relaxed">Security Notice: You can only update details 5 times a month.</p></div>
             </div>
             
             <div class="space-y-5">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div class="sm:col-span-2 relative">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1.5 block">Registered Email (Locked)</label>
-                        <i class="fas fa-lock absolute right-4 top-9 text-red-400"></i>
-                        <input type="email" id="prof-email" disabled class="premium-input font-bold bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed" value="Locked">
-                    </div>
+                    <div class="sm:col-span-2 relative"><label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1.5 block">Registered Email (Locked)</label><i class="fas fa-lock absolute right-4 top-9 text-red-400"></i><input type="email" id="prof-email" disabled class="premium-input font-bold bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed" value="Locked"></div>
                     <div><label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1.5 block">Full Name</label><input type="text" id="prof-name" class="premium-input"></div>
                     <div><label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1.5 block">Mobile Number</label><input type="tel" id="prof-phone" maxlength="10" class="premium-input"></div>
                 </div>
-
                 <div class="border-t border-gray-200/60 pt-6 mt-4">
                     <h3 class="text-sm font-black mb-4 text-gray-900 flex items-center uppercase tracking-widest"><i class="fas fa-map-marker-alt text-[#0071e3] mr-2 text-lg"></i> Delivery Address</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -390,9 +375,7 @@
                         <div class="sm:col-span-2"><input type="text" id="addr-line2" placeholder="Area, Street, Sector, Village" class="premium-input"></div>
                         <div><input type="text" id="addr-pincode" placeholder="Pincode (6 digits)" maxlength="6" class="premium-input"></div>
                         <div><input type="text" id="addr-city" placeholder="Town/City" class="premium-input"></div>
-                        <div class="sm:col-span-2">
-                            <select id="addr-state" class="premium-input bg-white appearance-none cursor-pointer"><option value="">Choose State...</option><option value="Delhi">Delhi</option><option value="Gujarat">Gujarat</option><option value="Maharashtra">Maharashtra</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Other">Other State</option></select>
-                        </div>
+                        <div class="sm:col-span-2"><select id="addr-state" class="premium-input bg-white appearance-none cursor-pointer"><option value="">Choose State...</option><option value="Delhi">Delhi</option><option value="Gujarat">Gujarat</option><option value="Maharashtra">Maharashtra</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Other">Other State</option></select></div>
                     </div>
                 </div>
                 <button onclick="saveProfile()" id="btn-save-prof" class="w-full bg-[#1d1d1f] text-white font-bold py-4 rounded-xl hover:bg-black transition-all transform hover:-translate-y-1 shadow-xl mt-6 text-lg">Save Profile Settings</button>
@@ -408,7 +391,7 @@
                 <button onclick="toggleVedika()" class="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
             </div>
             <div id="chatBody" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50/50">
-                <div class="bg-white border border-gray-100 p-4 rounded-2xl rounded-tl-none w-[85%] text-[13.5px] text-gray-800 shadow-sm font-medium leading-relaxed">नमस्ते! मैं वेदिका हूँ। पटेल ट्रेडर्स में आपका स्वागत है।</div>
+                <div class="bg-white border border-gray-100 p-4 rounded-2xl rounded-tl-none w-[85%] text-[13.5px] text-gray-800 shadow-sm font-medium leading-relaxed markdown-body">नमस्ते! मैं वेदिका हूँ। पटेल ट्रेडर्स में आपका स्वागत है।</div>
             </div>
             <div class="p-4 bg-white border-t border-gray-100 flex gap-2">
                 <input type="text" id="chatInput" placeholder="Ask anything..." class="flex-1 bg-gray-100/80 border border-gray-200 rounded-full px-5 py-3 text-[14px] outline-none focus:border-[#0071e3] focus:bg-white transition-all font-medium" onkeypress="if(event.key === 'Enter') askAI()">
@@ -420,14 +403,34 @@
         </button>
     </div>
 
-    <!-- JAVASCRIPT CORE LOGIC -->
+    <!-- ⚙️ JAVASCRIPT CORE LOGIC -->
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWjg7WjTbDW31B1FVVcl0Epif_gnzury3MJUd7wq6o0OKXmUmvHIV82o3JFhVni5CqEg/exec"; 
         const TOKEN = "PT_SECURE_2026";
         
         let products = []; let filteredProducts = []; let cart = JSON.parse(localStorage.getItem('pt_cart')) || []; let wishlist = JSON.parse(localStorage.getItem('pt_wishlist')) || [];
-        let userEmail = localStorage.getItem("pt_email");
-        let authMode = "login"; // Track Auth Mode
+        let userEmail = localStorage.getItem("pt_email"); let authMode = "login";
+
+        // 🔥 IMAGE CONVERTER
+        function extractAllImages(urlStr) {
+            if (!urlStr || typeof urlStr !== 'string') return ['https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png'];
+            if (urlStr.startsWith('data:image')) {
+                let parts = []; let regex = /(https?:\/\/[^\s,]+|data:image\/[^;]+;base64,[a-zA-Z0-9+/=]+)/g;
+                let match; while ((match = regex.exec(urlStr)) !== null) { parts.push(match[0]); }
+                if(parts.length > 0) return parts;
+            }
+            return urlStr.split(',').map(s => s.trim());
+        }
+        function extractDirectImageUrl(urlStr) {
+            let urls = extractAllImages(urlStr); let firstUrl = urls[0];
+            if (firstUrl.includes('drive.google.com')) {
+                let fileId = null;
+                if (firstUrl.includes('id=')) fileId = firstUrl.split('id=')[1].split('&')[0];
+                else if (firstUrl.includes('/d/')) fileId = firstUrl.split('/d/')[1].split('/')[0];
+                if (fileId) return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
+            }
+            return firstUrl; 
+        }
 
         // --- 🌟 TOAST ---
         function showToast(msg, isError = false) {
@@ -445,36 +448,35 @@
 
         window.onload = async () => {
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getProducts&token=${TOKEN}`); products = await res.json(); filteredProducts = products;
+                const res = await fetch(`${SCRIPT_URL}?action=getProducts&token=${TOKEN}`); const data = await res.json();
+                if(data && data.status === 'error') { products = []; } else if(Array.isArray(data)) { products = data; } else { products = []; }
+                filteredProducts = products;
                 document.getElementById('loadingProducts').classList.add('hidden-view'); document.getElementById('loadingCollections').classList.add('hidden-view');
                 generateCategories(); renderProducts(); updateUI();
             } catch(e) { document.getElementById('loadingProducts').innerHTML = "<p class='text-red-500 font-bold'>System Error fetching DB.</p>"; }
-            if(userEmail) { 
-                fetchUserData(); fetchOrders();
-                document.getElementById('cart-addr-box').classList.remove('hidden-view');
-            }
+            if(userEmail) { fetchUserData(); fetchOrders(); document.getElementById('cart-addr-box').classList.remove('hidden-view'); }
         };
 
-        // --- VIEWS & NAVIGATION ---
+        // --- VIEWS ---
         function showView(id) { ['view-home', 'view-collections', 'view-shop', 'view-product', 'view-cart', 'view-orders', 'view-wishlist', 'view-about'].forEach(v => document.getElementById(v).classList.add('hidden-view')); document.getElementById(id).classList.remove('hidden-view'); window.scrollTo(0,0); if(id === 'view-orders') fetchOrders(); if(id === 'view-wishlist') renderWishlist(); }
         function toggleProfileMenu() { document.getElementById('profileMenu').classList.toggle('active'); }
         
-        // --- STORE & COLLECTIONS ---
+        // --- STORE ---
         function generateCategories() {
             const container = document.getElementById('categoryContainer'); const grid = document.getElementById('collectionsGrid');
             const cats = [...new Set(products.map(p => p.Category))].filter(Boolean);
-            if(cats.length === 0) return;
-            
-            // Tags for Shop View
-            let html = `<button onclick="filterCategory('All')" class="bg-[#1d1d1f] text-white px-6 py-2.5 rounded-full font-bold shadow-md whitespace-nowrap transition hover:scale-105">All Items</button>`;
-            cats.forEach(cat => { html += `<button onclick="filterCategory('${cat}')" class="bg-gray-100 text-gray-800 px-6 py-2.5 rounded-full font-bold hover:bg-gray-200 transition whitespace-nowrap shadow-sm hover:scale-105">${cat}</button>`; });
-            container.innerHTML = html;
-
-            // Banners for Collection View
-            grid.innerHTML = cats.map((cat, idx) => {
-                const firstProduct = products.find(p => p.Category === cat); const count = products.filter(p => p.Category === cat).length;
-                return `<div class="collection-card fade-in-up" style="animation-delay: ${idx*100}ms" onclick="openCategory('${cat}')"><img src="${firstProduct.Image_URL ? firstProduct.Image_URL.split(',')[0].trim() : 'https://via.placeholder.com/400'}"><div class="collection-overlay"><h3 class="text-4xl font-black text-white mb-2 tracking-tight">${cat}</h3><p class="text-[11px] font-bold text-gray-300 tracking-widest uppercase flex items-center">${count} Items <i class="fas fa-arrow-right ml-2 text-[#0071e3]"></i></p></div></div>`;
-            }).join('');
+            if(container && cats.length > 0) {
+                let html = `<button onclick="filterCategory('All')" class="bg-[#1d1d1f] text-white px-6 py-2.5 rounded-full font-bold shadow-md whitespace-nowrap transition hover:scale-105">All Items</button>`;
+                cats.forEach(cat => { html += `<button onclick="filterCategory('${cat}')" class="bg-gray-100 text-gray-800 px-6 py-2.5 rounded-full font-bold hover:bg-gray-200 transition whitespace-nowrap shadow-sm hover:scale-105">${cat}</button>`; });
+                container.innerHTML = html;
+            }
+            if(grid && cats.length > 0) {
+                grid.innerHTML = cats.map((cat, idx) => {
+                    const firstProduct = products.find(p => p.Category === cat); const count = products.filter(p => p.Category === cat).length;
+                    const imgLink = extractDirectImageUrl(firstProduct.Image_URL);
+                    return `<div class="collection-card fade-in-up" style="animation-delay: ${idx*100}ms" onclick="openCategory('${cat}')"><img src="${imgLink}" onerror="this.src='https://via.placeholder.com/400'"><div class="collection-overlay"><h3 class="text-4xl font-black text-white mb-2 tracking-tight">${cat}</h3><p class="text-[11px] font-bold text-gray-300 tracking-widest uppercase flex items-center">${count} Items <i class="fas fa-arrow-right ml-2 text-[#0071e3]"></i></p></div></div>`;
+                }).join('');
+            }
         }
 
         function filterCategory(cat) { document.getElementById('shopTitle').innerText = cat === 'All' ? 'All Items.' : cat; filteredProducts = cat === 'All' ? products : products.filter(p => p.Category === cat); renderProducts(); }
@@ -482,21 +484,21 @@
 
         function renderProducts() {
             const grid = document.getElementById('productGrid'); grid.innerHTML = '';
-            if(filteredProducts.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20"><i class="fas fa-box-open text-6xl text-gray-200 mb-6"></i><h3 class="text-2xl font-bold text-gray-900 mb-2">Nothing here yet</h3></div>`; return; }
+            if(filteredProducts.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20"><i class="fas fa-box-open text-6xl text-gray-200 mb-6"></i><h3 class="text-2xl font-bold text-gray-900 mb-2">Nothing here yet</h3><p class="text-gray-500">नया प्रोडक्ट एडमिन से अपलोड करें</p></div>`; return; }
 
             filteredProducts.forEach((p, idx) => {
-                if(p.Stock <= 0) return; 
+                if(p.Stock && Number(p.Stock) <= 0) return; 
                 const heartClass = wishlist.some(w => w.id == p.ID) ? 'text-red-500' : 'text-gray-400';
-                const mainImg = p.Image_URL ? p.Image_URL.split(',')[0].trim() : 'https://via.placeholder.com/300';
+                const mainImg = extractDirectImageUrl(p.Image_URL);
                 
                 grid.innerHTML += `
                     <div class="apple-card p-5 flex flex-col relative group fade-in-up" style="animation-delay: ${idx*50}ms" onclick="showProductDetail('${p.ID}')">
                         <button onclick="requireLogin(() => toggleWishlist('${p.ID}', '${p.Name}', event), true); event.stopPropagation();" class="absolute top-5 right-5 z-20 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full shadow-sm hover:scale-110 transition flex items-center justify-center ${heartClass}"><i class="fas fa-heart text-lg"></i></button>
-                        <div class="img-bg rounded-2xl mb-6"><img src="${mainImg}" class="max-h-[200px] object-contain mix-blend-multiply group-hover:scale-110 transition duration-700"></div>
+                        <div class="img-bg rounded-2xl mb-6"><img src="${mainImg}" onerror="this.src='https://via.placeholder.com/300'" class="max-h-[200px] object-contain mix-blend-multiply group-hover:scale-110 transition duration-700"></div>
                         <div class="flex-1 px-1">
                             <p class="text-[10px] font-black text-[#0071e3] uppercase tracking-widest mb-1">${p.Category || 'Premium'}</p>
-                            <h3 class="text-lg font-bold text-gray-900 leading-tight mb-2 truncate">${p.Name}</h3>
-                            <div class="flex items-end gap-3 mb-4"><span class="font-black text-2xl text-black tracking-tighter">₹${p.Price}</span><span class="text-sm font-semibold text-gray-400 line-through mb-1">₹${p.MRP}</span></div>
+                            <h3 class="text-lg font-bold text-gray-900 leading-tight mb-2 truncate">${p.Name || 'Patel Masterpiece'}</h3>
+                            <div class="flex items-end gap-3 mb-4"><span class="font-black text-2xl text-black tracking-tighter">₹${p.Price || 0}</span><span class="text-sm font-semibold text-gray-400 line-through mb-1">₹${p.MRP || ''}</span></div>
                         </div>
                         <div class="mt-auto space-y-2 z-10" onclick="event.stopPropagation()">
                             <div class="flex justify-between items-center bg-gray-50 rounded-xl p-1.5 border border-gray-100">
@@ -511,30 +513,25 @@
             });
         }
 
-        // --- 🌟 AMAZON-STYLE PRODUCT DETAIL PAGE (MULTI IMAGE) ---
+        // --- 🌟 PRODUCT DETAIL ---
         function showProductDetail(id) {
             const p = products.find(x => x.ID === id); if(!p) return;
-            let images = p.Image_URL ? p.Image_URL.split(',').map(url => url.trim()) : ['https://via.placeholder.com/500'];
-            document.getElementById('pd-main-img').src = images[0];
+            let images = extractAllImages(p.Image_URL);
+            document.getElementById('pd-main-img').src = extractDirectImageUrl(images[0]);
             
             const thumbs = document.getElementById('pd-thumbnails'); thumbs.innerHTML = '';
-            if(images.length > 1) { images.forEach((img, i) => { thumbs.innerHTML += `<img src="${img}" class="thumb-img ${i===0?'active':''}" onclick="changeMainImage(this, '${img}')">`; }); }
+            if(images.length > 1) { images.forEach((img, i) => { let safeImg = extractDirectImageUrl(img); thumbs.innerHTML += `<img src="${safeImg}" class="thumb-img ${i===0?'active':''}" onclick="changeMainImage(this, '${safeImg}')">`; }); }
 
-            document.getElementById('pd-cat').innerText = p.Category || 'Premium Collection'; document.getElementById('pd-name').innerText = p.Name;
-            document.getElementById('pd-price').innerText = `₹${p.Price}`; document.getElementById('pd-mrp').innerText = p.MRP ? `₹${p.MRP}` : '';
-            document.getElementById('pd-desc').innerText = p.Long_Description || p.Description || 'Premium masterpiece.';
+            document.getElementById('pd-cat').innerText = p.Category || 'Premium Collection'; document.getElementById('pd-name').innerText = p.Name || 'Patel Masterpiece';
+            document.getElementById('pd-price').innerText = `₹${p.Price || 0}`; document.getElementById('pd-mrp').innerText = p.MRP ? `₹${p.MRP}` : '';
             document.getElementById('pd-mat').innerText = p.Wood_Type || 'Solid Wood'; document.getElementById('pd-dim').innerText = p.Dimensions || 'Standard'; document.getElementById('pd-weight').innerText = p.Weight || 'Heavy Duty';
+            document.getElementById('pd-desc').innerText = p.Long_Description || p.Description || 'A beautifully crafted piece from Patel Traders.';
 
             const sizeBox = document.getElementById('pd-size-box'); const sizeOpts = document.getElementById('pd-size-opts');
-            if(p.Size_Options) {
-                sizeOpts.innerHTML = p.Size_Options.split(',').map((s, i) => `<button onclick="selectSize(this)" class="size-btn ${i===0?'active':''}">${s.trim()}</button>`).join('');
-                sizeBox.classList.remove('hidden-view');
-            } else { sizeBox.classList.add('hidden-view'); }
+            if(p.Size_Options) { sizeOpts.innerHTML = p.Size_Options.split(',').map((s, i) => `<button onclick="selectSize(this)" class="size-btn ${i===0?'active':''}">${s.trim()}</button>`).join(''); sizeBox.classList.remove('hidden-view'); } else { sizeBox.classList.add('hidden-view'); }
 
             document.getElementById('pd-qty').innerText = "1";
-            document.getElementById('pd-btn-cart').setAttribute('onclick', `addToCart('${p.ID}', true)`);
-            document.getElementById('pd-btn-buy').setAttribute('onclick', `buyNow('${p.ID}', true)`);
-            
+            document.getElementById('pd-btn-cart').setAttribute('onclick', `addToCart('${p.ID}', true)`); document.getElementById('pd-btn-buy').setAttribute('onclick', `buyNow('${p.ID}', true)`);
             const isWish = wishlist.some(w => w.id == p.ID);
             document.getElementById('pd-wishlist-btn').innerHTML = `<i class="fas fa-heart text-2xl ${isWish ? 'text-red-500' : 'text-gray-300'}"></i>`;
             document.getElementById('pd-wishlist-btn').setAttribute('onclick', `toggleWishlist('${p.ID}', '${p.Name}', event)`);
@@ -547,17 +544,15 @@
         function changeQtyPD(amt) { let el = document.getElementById('pd-qty'); let val = parseInt(el.innerText) + amt; if(val > 0 && val <= 10) el.innerText = val; }
         function changeQtyCard(id, amt) { let el = document.getElementById(`qty-${id}`); let val = parseInt(el.innerText) + amt; if(val > 0 && val <= 10) el.innerText = val; }
 
-        // --- CART & ACTIONS ---
+        // --- ACTIONS ---
         function addToCart(id, fromPD = false) {
             const p = products.find(x => x.ID === id); const qty = parseInt(document.getElementById(fromPD ? 'pd-qty' : `qty-${id}`)?.innerText || 1);
             let size = fromPD && !document.getElementById('pd-size-box').classList.contains('hidden-view') ? document.querySelector('.size-btn.active')?.innerText || "" : "";
             let ex = cart.find(x => x.ID === id && x.size === size);
-            if(ex) ex.qty += qty; else { let firstImg = p.Image_URL ? p.Image_URL.split(',')[0].trim() : 'https://via.placeholder.com/100'; cart.push({...p, qty: qty, Image_URL: firstImg, size: size}); }
-            
+            if(ex) ex.qty += qty; else { let firstImg = p.Image_URL ? extractDirectImageUrl(p.Image_URL) : 'https://via.placeholder.com/100'; cart.push({...p, qty: qty, Image_URL: firstImg, size: size}); }
             localStorage.setItem('pt_cart', JSON.stringify(cart)); updateUI();
             if(userEmail) api({action: 'syncCart', email: userEmail, cartItems: JSON.stringify(cart)});
-            showToast(`${qty}x ${p.Name} added to cart.`);
-            if(!fromPD && document.getElementById(`qty-${id}`)) document.getElementById(`qty-${id}`).innerText = "1";
+            showToast(`${qty}x ${p.Name} added to cart.`); if(!fromPD && document.getElementById(`qty-${id}`)) document.getElementById(`qty-${id}`).innerText = "1";
         }
 
         function buyNow(id, fromPD = false) { addToCart(id, fromPD); showView('view-cart'); }
@@ -565,16 +560,16 @@
         function shareWhatsApp(name, price) { let num = prompt("Enter WhatsApp number (10 digits):"); if(num && num.length >= 10) window.open(`https://wa.me/91${num}?text=${encodeURIComponent(`Check out this premium item from Patel Traders:\n\n*${name}*\nPrice: ₹${price}\n\n*Pure. Unpolished. Premium.*`)}`, '_blank'); }
         
         function toggleWishlist(id, name, event) {
-            if(event) event.stopPropagation();
-            const index = wishlist.findIndex(w => w.id === id);
+            if(event) event.stopPropagation(); const index = wishlist.findIndex(w => w.id === id);
             if(index > -1) { wishlist.splice(index, 1); showToast(`${name} removed from wishlist.`); } else { wishlist.push({id, name}); showToast(`${name} added to wishlist.`); }
             localStorage.setItem('pt_wishlist', JSON.stringify(wishlist)); renderProducts(); renderWishlist();
             if(!document.getElementById('view-product').classList.contains('hidden-view')) showProductDetail(id);
         }
+
         function renderWishlist() {
             const container = document.getElementById('wishlist-items'); container.innerHTML = '';
             if(wishlist.length === 0) { container.innerHTML = '<div class="glass-card p-10 col-span-full text-center text-gray-500 font-bold">Wishlist is Empty.</div>'; return; }
-            wishlist.forEach(w => { const p = products.find(x => x.ID == w.id); if(p) container.innerHTML += `<div class="glass-card p-5 flex items-center justify-between cursor-pointer hover:shadow-lg transition border border-gray-100" onclick="showProductDetail('${p.ID}')"><div class="flex items-center gap-4"><img src="${p.Image_URL ? p.Image_URL.split(',')[0].trim() : 'https://via.placeholder.com/100'}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 p-1 mix-blend-multiply"><div><h4 class="font-bold text-sm">${p.Name}</h4><p class="text-xs text-[#0071e3] font-black mt-1">₹${p.Price}</p></div></div><button onclick="toggleWishlist('${p.ID}', '${p.Name}', event)" class="text-red-500 bg-red-50 w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-100 transition z-10 shadow-sm"><i class="fas fa-trash text-sm"></i></button></div>`; });
+            wishlist.forEach(w => { const p = products.find(x => x.ID == w.id); if(p) { let imgLink = extractDirectImageUrl(p.Image_URL); container.innerHTML += `<div class="glass-card p-5 flex items-center justify-between cursor-pointer hover:shadow-lg transition border border-gray-100" onclick="showProductDetail('${p.ID}')"><div class="flex items-center gap-4"><img src="${imgLink}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 p-1 mix-blend-multiply"><div><h4 class="font-bold text-sm">${p.Name}</h4><p class="text-xs text-[#0071e3] font-black mt-1">₹${p.Price}</p></div></div><button onclick="toggleWishlist('${p.ID}', '${p.Name}', event)" class="text-red-500 bg-red-50 w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-100 transition z-10 shadow-sm"><i class="fas fa-trash text-sm"></i></button></div>`; }});
         }
 
         function updateUI() {
@@ -583,14 +578,14 @@
             else {
                 cart.forEach((item, index) => {
                     sub += Number(item.Price) * item.qty; let sizeText = item.size ? `<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-[10px] ml-2 border font-bold uppercase tracking-widest">${item.size}</span>` : "";
-                    document.getElementById('cartItems').innerHTML += `<div class="glass-card p-4 flex items-center justify-between mb-4 shadow-sm fade-in-up" style="animation-delay: ${index*50}ms"><div class="flex gap-4 items-center"><img src="${item.Image_URL}" class="w-16 h-16 object-cover rounded-xl border border-gray-100 bg-gray-50 p-1 mix-blend-multiply"><div><h4 class="font-bold text-[15px] text-gray-900 leading-tight">${item.Name} ${sizeText}</h4><p class="text-sm text-[#0071e3] font-black mt-1">₹${item.Price} <span class="text-xs text-gray-400 font-medium">x ${item.qty}</span></p></div></div><button onclick="cart.splice(${index}, 1); localStorage.setItem('pt_cart', JSON.stringify(cart)); updateUI();" class="text-red-500 bg-red-50 w-10 h-10 rounded-full hover:bg-red-100 transition shadow-sm flex items-center justify-center hover:scale-110"><i class="fas fa-trash text-sm"></i></button></div>`;
+                    let imgLink = extractDirectImageUrl(item.Image_URL);
+                    document.getElementById('cartItems').innerHTML += `<div class="glass-card p-4 flex items-center justify-between mb-4 shadow-sm fade-in-up" style="animation-delay: ${index*50}ms"><div class="flex gap-4 items-center"><img src="${imgLink}" class="w-16 h-16 object-cover rounded-xl border border-gray-100 bg-gray-50 p-1 mix-blend-multiply"><div><h4 class="font-bold text-[15px] text-gray-900 leading-tight">${item.Name} ${sizeText}</h4><p class="text-sm text-[#0071e3] font-black mt-1">₹${item.Price} <span class="text-xs text-gray-400 font-medium">x ${item.qty}</span></p></div></div><button onclick="cart.splice(${index}, 1); localStorage.setItem('pt_cart', JSON.stringify(cart)); updateUI();" class="text-red-500 bg-red-50 w-10 h-10 rounded-full hover:bg-red-100 transition shadow-sm flex items-center justify-center hover:scale-110"><i class="fas fa-trash text-sm"></i></button></div>`;
                 });
             }
             const fee = (sub > 0 && sub < 2000) ? 250 : 0;
             document.getElementById('subtotal').innerText = `₹${sub}`; document.getElementById('shipping').innerText = fee > 0 ? `+₹${fee}` : 'FREE'; document.getElementById('shipping').className = fee > 0 ? 'text-red-500 font-bold bg-red-50 px-3 py-1 rounded-lg' : 'text-green-600 font-bold bg-green-50 px-3 py-1 rounded-lg'; document.getElementById('total').innerText = `₹${sub + fee}`;
         }
 
-        // 🟢 FINAL CHECKOUT LOGIC (Login Mandatory)
         function processFinalCheckout(method) {
             if(cart.length === 0) return showToast("Cart Empty", true);
             if(!userEmail) { showToast("Please login securely to place order.", true); openAuthModal(); return; }
@@ -598,9 +593,7 @@
             if(!addr || addr.includes("update profile address")) { showToast("Address missing. Update profile.", true); openEditProfile(); return; }
             
             const sub = cart.reduce((a,b) => a + (Number(b.Price)*b.qty), 0); const fee = (sub > 0 && sub < 2000) ? 250 : 0;
-            const itemsList = cart.map(i => `${i.Name} ${i.size ? '('+i.size+')' : ''} x ${i.qty}`).join(", ");
-            showToast('Processing Secure Order...');
-            
+            const itemsList = cart.map(i => `${i.Name} ${i.size ? '('+i.size+')' : ''} x ${i.qty}`).join(", "); showToast('Processing Secure Order...');
             let pid = method === 'ONLINE' ? "PAY_" + Date.now() : "COD";
             api({ action: 'placeOrder', email: userEmail, items: itemsList, amount: sub+fee, razorpayId: pid }).then(res => {
                 if(res.status === 'success') {
@@ -611,7 +604,7 @@
             });
         }
 
-        // --- 🔑 AUTH & MODALS ---
+        // --- 🔑 AUTH & PROFILE ---
         function openAuthModal() { closeModals(); document.getElementById('profileMenu').classList.remove('active'); document.getElementById('authModal').classList.add('active'); }
         function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
         function closeEditModal() { document.getElementById('modal-edit-profile').classList.remove('active'); }
@@ -623,45 +616,32 @@
             authMode = mode;
             document.getElementById('tabLogin').className = mode === 'login' ? 'flex-1 py-3 rounded-lg font-bold text-blue-600 bg-white shadow-sm transition z-10' : 'flex-1 py-3 rounded-lg font-bold text-gray-500 hover:text-gray-800 transition z-10';
             document.getElementById('tabReg').className = mode === 'register' ? 'flex-1 py-3 rounded-lg font-bold text-blue-600 bg-white shadow-sm transition z-10' : 'flex-1 py-3 rounded-lg font-bold text-gray-500 hover:text-gray-800 transition z-10';
-            
             const regFields = document.getElementById('regFields');
-            if(mode === 'register') { regFields.classList.remove('hidden-view'); regFields.classList.add('fade-in-up'); } 
-            else { regFields.classList.add('hidden-view'); regFields.classList.remove('fade-in-up'); }
-            
+            if(mode === 'register') { regFields.classList.remove('hidden-view'); regFields.classList.add('fade-in-up'); } else { regFields.classList.add('hidden-view'); regFields.classList.remove('fade-in-up'); }
             document.getElementById('otpBtn').innerText = mode === 'register' ? 'Register & Get OTP' : 'Request Secure Code';
         }
 
         async function requestOTP() {
             const email = document.getElementById('emailInput').value; const phone = document.getElementById('phoneInput').value; const name = document.getElementById('nameInput').value;
-            if(!email) return showToast("Enter Email Address", true);
-            if(authMode === 'register' && (!name || !phone)) return showToast("Enter Full Name and Phone", true);
-
+            if(!email) return showToast("Enter Email Address", true); if(authMode === 'register' && (!name || !phone)) return showToast("Enter Full Name and Phone", true);
             const btn = document.getElementById('otpBtn'); btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Processing...`; btn.disabled = true;
-
             const res = await api({action: "sendOTP", email: email, phone: authMode === 'register' ? phone : ""});
-            if(res && res.status === "success") {
-                document.getElementById('authStep1').classList.add('hidden-view');
-                document.getElementById('authStep2').classList.remove('hidden-view');
-                showToast("OTP sent securely to your email.");
-            } else { btn.innerText = authMode === 'register' ? 'Register & Get OTP' : 'Request Secure Code'; btn.disabled = false; }
+            if(res && res.status === "success") { document.getElementById('authStep1').classList.add('hidden-view'); document.getElementById('authStep2').classList.remove('hidden-view'); showToast("OTP sent securely to your email."); } 
+            else { btn.innerText = authMode === 'register' ? 'Register & Get OTP' : 'Request Secure Code'; btn.disabled = false; }
         }
 
         async function verifyOTP() {
             const email = document.getElementById('emailInput').value; const otp = document.getElementById('otpInput').value;
             if(!otp || otp.length < 6) return showToast("Enter 6-digit OTP", true);
             const btn = document.getElementById('verifyBtn'); btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Verifying...`;
-
             const res = await api({ action: "verifyOTP", email: email, otp: otp, deviceInfo: navigator.userAgent.substring(0, 50), isNewReg: authMode === 'register', regName: document.getElementById('nameInput').value, regPhone: document.getElementById('phoneInput').value });
-
             if(res && res.status === "success") { localStorage.setItem("pt_email", email); showToast("Access Granted!"); setTimeout(() => location.reload(), 1000); } 
             else { btn.innerText = "Verify & Enter"; showToast("Invalid OTP. Try again.", true); }
         }
 
-        // --- PROFILE & ADDRESS LOGIC ---
         function updateProfileUIDirectly(name, email) {
             document.getElementById('dropName').innerText = name; document.getElementById('dropEmail').innerText = email; document.getElementById('prof-email').value = email; 
-            ['btn-menu-login'].forEach(id => document.getElementById(id).classList.add('hidden-view'));
-            ['btn-menu-orders', 'btn-menu-logout', 'btn-edit-prof'].forEach(id => document.getElementById(id).classList.remove('hidden-view'));
+            ['btn-menu-login'].forEach(id => document.getElementById(id).classList.add('hidden-view')); ['btn-menu-orders', 'btn-menu-logout', 'btn-edit-prof'].forEach(id => document.getElementById(id).classList.remove('hidden-view'));
             document.getElementById('prof-name').value = name;
             const avatarUrl = `https://ui-avatars.com/api/?name=${name}&background=f4f4f7&color=000&bold=true`;
             document.getElementById('userAvatar').src = avatarUrl; document.getElementById('dropAvatar').src = avatarUrl;
@@ -705,7 +685,7 @@
             else { showToast(data.message, true); btn.innerHTML = 'Save Profile Settings'; }
         }
 
-        // 🤖 VEDIKA AI WIDGET
+        // 🤖 VEDIKA AI WIDGET (WITH MARKDOWN PARSER FIX)
         function toggleVedika() {
             const ui = document.getElementById('vedikaBox');
             if(!ui.classList.contains('hidden-view')) { ui.classList.remove('fade-in-up'); ui.classList.add('hidden-view'); } 
@@ -719,13 +699,20 @@
             input.value = ''; chat.scrollTop = chat.scrollHeight;
             const id = 'l-'+Date.now(); chat.innerHTML += `<div id="${id}" class="bg-white p-3.5 rounded-2xl rounded-tl-sm w-[85%] text-xs flex items-center gap-2 font-bold text-gray-500 shadow-sm fade-in-up"><div class="loader w-3.5 h-3.5 border-t-[#0071e3]"></div> Processing Request...</div>`;
             chat.scrollTop = chat.scrollHeight;
-            let data = await api({action: 'askVedika', query: q, email: userEmail}); document.getElementById(id).remove();
-            if(data && data.status === 'success') { chat.innerHTML += `<div class="bg-white border border-gray-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] p-4 rounded-2xl rounded-tl-sm w-[90%] text-[13.5px] text-gray-900 font-medium leading-relaxed fade-in-up">${data.answer}</div>`; }
-            else { chat.innerHTML += `<div class="bg-red-50 text-red-500 p-3 rounded-2xl rounded-tl-none shadow-sm fade-in-up">Network error.</div>`; }
+            
+            let data = await api({action: 'askVedika', query: q, email: userEmail}); 
+            document.getElementById(id).remove();
+            
+            if(data && data.status === 'success') { 
+                // 🔥 THE FIX: Markdown parsing using marked.js
+                let formattedAnswer = typeof marked !== 'undefined' ? marked.parse(data.answer) : data.answer;
+                
+                chat.innerHTML += `<div class="bg-white border border-gray-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] p-4 rounded-2xl rounded-tl-sm w-[90%] text-[13.5px] text-gray-900 font-medium leading-relaxed fade-in-up markdown-body">${formattedAnswer}</div>`; 
+            } else { 
+                chat.innerHTML += `<div class="bg-red-50 text-red-500 p-3 rounded-2xl rounded-tl-none shadow-sm fade-in-up">Network error.</div>`; 
+            }
             chat.scrollTop = chat.scrollHeight;
         }
     </script>
 </body>
 </html>
-
-
