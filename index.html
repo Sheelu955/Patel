@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patel Traders | Premium Store</title>
+    <title>Patel Traders | Apple Style Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --apple-blue: #0071e3; --bg-gray: #f5f5f7; }
-        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #111; overflow-x: hidden; scroll-behavior: smooth; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #ffffff; color: #1d1d1f; overflow-x: hidden; scroll-behavior: smooth; }
         
         /* 🌊 Apple Premium Liquid Background */
         .liquid-bg { position: fixed; inset: 0; z-index: -1; background: #fbfbfd; overflow: hidden; pointer-events: none; }
@@ -18,794 +17,712 @@
         .orb-2 { width: 40vw; height: 40vw; background: rgba(217, 70, 239, 0.1); bottom: -20%; right: -10%; animation-delay: -5s; }
         @keyframes float { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(50px, 50px) scale(1.1); } }
 
-        /* Layout styles */
-        .top-promo { background: rgba(249, 249, 249, 0.8); backdrop-filter: blur(10px); font-size: 11px; text-align: center; padding: 8px; color: #e11d48; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .hero-banner { background: linear-gradient(to bottom, rgba(226,226,226,0.5) 0%, rgba(255,255,255,0) 100%); height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        
-        /* 📦 Premium Card Design */
-        .product-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 24px; background: white; border: 1px solid rgba(0,0,0,0.03); overflow: hidden; cursor: pointer; }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px -12px rgba(0,0,0,0.12); border-color: rgba(0,0,0,0.08); }
-        .img-bg { background-color: #fbfbfd; height: 280px; display: flex; align-items: center; justify-content: center; padding: 30px; position: relative; }
-        
-        .glass-overlay { background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: saturate(180%) blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
-        
-        .profile-dropdown {
-            position: absolute; right: 0; top: 50px; width: 340px; z-index: 100;
-            border-radius: 24px; padding: 24px; transform-origin: top right; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        /* 🎬 Smooth Animations */
+        .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
         
         .hidden-view { display: none !important; }
-        .loader { border: 3px solid rgba(0,0,0,0.1); border-top: 3px solid var(--apple-blue); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        .badge-sale { position: absolute; top: 15px; left: 15px; background: #111; color: white; font-size: 10px; padding: 4px 10px; font-weight: bold; text-transform: uppercase; border-radius: 8px; letter-spacing: 0.5px; z-index: 10; }
-        
-        .siri-float { box-shadow: 0 10px 30px rgba(0,113,227,0.4); animation: breathe 3s infinite alternate ease-in-out; }
-        @keyframes breathe { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
 
-        .premium-input { width: 100%; background: rgba(245,245,247,0.8); border: 1px solid rgba(0,0,0,0.05); border-radius: 14px; padding: 14px 16px; outline: none; transition: 0.3s; font-size: 14px; }
-        .premium-input:focus { border-color: var(--apple-blue); background: #fff; box-shadow: 0 0 0 4px rgba(0,113,227,0.15); }
+        /* 📦 Premium Card Design */
+        .apple-card { border-radius: 24px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #f2f2f2; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); cursor: pointer; overflow: hidden; }
+        .apple-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 30px 60px -15px rgba(0,0,0,0.12); border-color: rgba(0,0,0,0.08); background: #fff; z-index: 10; }
+        .img-bg { background-color: #f9f9fb; height: 240px; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; overflow: hidden; }
         
-        /* Stop Propagation utility class */
-        .z-action { position: relative; z-index: 20; }
+        /* Collection Premium Cards */
+        .collection-card { border-radius: 32px; overflow: hidden; position: relative; height: 350px; cursor: pointer; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.05); }
+        .collection-card:hover { transform: scale(1.03); box-shadow: 0 30px 60px rgba(0,0,0,0.15); z-index: 10;}
+        .collection-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        .collection-card:hover img { transform: scale(1.1); }
+        .collection-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; }
+
+        /* Modals & Menus */
+        .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.4); backdrop-filter: blur(15px); z-index:100; align-items:center; justify-content:center; opacity: 0; transition: opacity 0.3s ease; }
+        .modal.active { display:flex; opacity: 1; }
+        .modal-content { transform: scale(0.95); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal.active .modal-content { transform: scale(1); opacity: 1; }
+
+        .profile-dropdown { position: absolute; right: 0; top: 55px; width: 340px; z-index: 100; border-radius: 24px; padding: 24px; transform-origin: top right; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; pointer-events: none; transform: scale(0.95); background: rgba(255, 255, 255, 0.98); backdrop-filter: saturate(180%) blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .profile-dropdown.active { opacity: 1; pointer-events: auto; transform: scale(1); }
+
+        .btn-apple { background: #0071e3; color: white; padding: 14px 24px; border-radius: 14px; font-weight: bold; transition: all 0.3s; }
+        .btn-apple:hover { background: #0060c0; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,113,227,0.3); }
+        
+        .premium-input { width: 100%; background: rgba(245,245,247,0.8); border: 1px solid rgba(0,0,0,0.05); border-radius: 14px; padding: 14px 16px; outline: none; transition: 0.3s; font-size: 14px; font-weight: 500; }
+        .premium-input:focus:not(:disabled) { border-color: var(--apple-blue); background: #fff; box-shadow: 0 0 0 4px rgba(0,113,227,0.15); transform: translateY(-2px); }
+        .premium-input:disabled { background: #f0f0f0; color: #9ca3af; cursor: not-allowed; }
+
+        /* Custom Toast Notification */
+        #toast { position: fixed; top: 20px; right: -100%; transform: translateX(0); background: #1d1d1f; color: white; padding: 16px 24px; border-radius: 16px; font-weight: bold; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        #toast.show { right: 20px; }
+
+        /* Multiple Image Gallery Thumbs */
+        .thumb-img { border: 2px solid transparent; border-radius: 14px; cursor: pointer; transition: 0.3s; width: 80px; height: 80px; object-fit: cover; background: #f9f9fb; mix-blend-multiply; }
+        .thumb-img.active { border-color: var(--apple-blue); transform: scale(1.08); box-shadow: 0 5px 15px rgba(0,113,227,0.2); }
+        
+        /* Size Selector */
+        .size-btn { padding: 10px 20px; border: 1px solid #d2d2d7; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .size-btn:hover { background: #f5f5f7; }
+        .size-btn.active { border-color: var(--apple-blue); background: #f0f8ff; color: var(--apple-blue); transform: scale(1.05); }
+        
+        /* Action Buttons on Card */
+        .card-btn { flex: 1; padding: 10px 0; border-radius: 10px; font-size: 11px; font-weight: 700; transition: all 0.2s; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .btn-cart { background: #1d1d1f; color: white; } .btn-cart:hover { background: #000; transform: translateY(-2px); }
+        .btn-buy { background: var(--apple-blue); color: white; } .btn-buy:hover { background: #0060c0; transform: translateY(-2px); }
+        .btn-wait { border: 1px solid #d2d2d7; color: #1d1d1f; background: white; } .btn-wait:hover { background: #f5f5f7; transform: translateY(-2px); }
+        .btn-wa { background: #e8f5e9; color: #16a34a; border: 1px solid #bbf7d0; } .btn-wa:hover { background: #dcfce7; transform: translateY(-2px); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: #d2d2d7; border-radius: 10px; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+        /* 🤖 Vedika AI */
+        .vedika-float { animation: vedikaBreathe 3s infinite alternate ease-in-out; box-shadow: 0 15px 35px rgba(0,113,227,0.4); }
+        @keyframes vedikaBreathe { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); box-shadow: 0 25px 45px rgba(0,113,227,0.5); } }
     </style>
 </head>
 <body>
 
     <div class="liquid-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
-    <!-- ✨ CUSTOM PREMIUM TOAST -->
-    <div id="custom-toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] transition-all duration-400 opacity-0 -translate-y-10 pointer-events-none">
-        <div class="bg-white/95 backdrop-blur-xl border border-gray-200 shadow-[0_15px_40px_rgba(0,0,0,0.1)] rounded-[20px] p-4 flex items-start gap-4 min-w-[320px] max-w-[450px]">
-            <div id="toast-icon" class="mt-1 flex-shrink-0"></div>
-            <div>
-                <h4 id="toast-title" class="font-bold text-gray-900 text-[15px] tracking-tight"></h4>
-                <p id="toast-msg" class="text-[13px] text-gray-500 mt-1 leading-relaxed font-medium"></p>
-            </div>
-        </div>
-    </div>
+    <div id="toast"><i class="fas fa-check-circle mr-2 text-green-400"></i> <span id="toastMsg">Success!</span></div>
 
-    <!-- Top Promo Bar -->
-    <div class="top-promo">Free Premium Delivery on all orders above ₹2000</div>
+    <!-- 📢 Shipping Promo Bar -->
+    <div id="promoBar" class="bg-red-600 text-white text-center text-[10px] md:text-xs font-bold py-2 tracking-tight uppercase">
+        🚀 FREE SHIPPING ON ORDERS ABOVE ₹2000 | ₹250 FEE FOR ORDERS BELOW ₹2000
+    </div>
 
     <!-- Header -->
-    <header class="border-b border-gray-200/50 bg-white/70 backdrop-blur-xl sticky top-0 z-50 transition-all">
-        <div class="max-w-[1400px] mx-auto px-6 py-4 flex justify-between items-center">
+    <nav class="sticky top-0 bg-white/80 backdrop-blur-md z-50 border-b border-gray-100 px-6 py-4 flex justify-between items-center transition-all duration-300">
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="showView('view-home')">
+            <img src="https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png" class="w-10 h-10 rounded-xl shadow-sm border border-gray-100 group-hover:scale-105 transition-transform">
+            <h1 class="text-2xl font-black tracking-tighter hidden md:block text-gray-900">PATEL<span class="text-[#0071e3]">TRADERS</span></h1>
+        </div>
+
+        <div class="hidden md:flex items-center gap-10 font-bold text-sm text-gray-500">
+            <button onclick="showView('view-home')" class="hover:text-black transition">Home</button>
+            <button onclick="showView('view-collections')" class="hover:text-black transition">Collections</button>
+            <button onclick="showView('view-shop')" class="hover:text-black transition">Shop All</button>
+            <button onclick="showView('view-about')" class="hover:text-black transition">About Us</button>
+        </div>
+
+        <div class="flex items-center gap-6 relative">
+            <button onclick="requireLogin(() => showView('view-wishlist'), true)" class="text-gray-600 hover:text-red-500 transition hover:scale-110"><i class="fas fa-heart text-xl"></i></button>
+            <div class="relative cursor-pointer hover:scale-110 transition text-gray-600 hover:text-black" onclick="showView('view-cart')">
+                <i class="fas fa-shopping-bag text-xl"></i>
+                <span id="cartCount" class="absolute -top-2 -right-2 bg-[#e11d48] text-white text-[10px] w-[18px] h-[18px] rounded-full flex items-center justify-center font-bold shadow-sm border border-white">0</span>
+            </div>
             
-            <div class="flex gap-8 text-sm font-semibold text-gray-500 hidden md:flex">
-                <button onclick="showView('view-store')" class="text-black border-b-2 border-black pb-1">Home</button>
-                <button onclick="showView('view-store')" class="hover:text-black transition">Collection</button>
-                <button onclick="showView('view-about')" class="hover:text-black transition">About</button>
-            </div>
-
-            <div class="flex items-center gap-3 cursor-pointer" onclick="showView('view-store')">
-                <img src="https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png" class="w-10 h-10 rounded-[10px] shadow-sm border border-gray-100">
-                <div class="text-xl font-bold tracking-tight text-gray-900 hidden sm:block" style="font-family: 'Arial Black', sans-serif;">
-                    PATEL TRADERS
-                </div>
-            </div>
-
-            <div class="flex items-center gap-5 relative">
-                <button onclick="requireLogin(() => showView('view-wishlist'))" class="text-gray-500 hover:text-red-500 transition">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                </button>
-                <button onclick="requireLogin(() => showView('view-cart'))" class="relative text-gray-500 hover:text-black transition">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                    <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-[#e11d48] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
-                </button>
+            <!-- Profile Dropdown System -->
+            <div class="relative">
+                <img src="https://ui-avatars.com/api/?name=Guest&background=f4f4f7" id="userAvatar" class="w-10 h-10 rounded-full cursor-pointer border-2 border-white shadow-md hover:scale-105 transition object-cover" onclick="toggleProfileMenu()">
                 
-                <div class="relative">
-                    <button onclick="toggleProfileDropdown()" class="w-9 h-9 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center overflow-hidden hover:shadow-md transition transform hover:scale-105">
-                        <img id="header-avatar" src="https://ui-avatars.com/api/?name=Guest&background=f4f5f7&color=000" class="w-full h-full object-cover">
-                    </button>
-                    
-                    <div id="profile-dropdown" class="profile-dropdown glass-card hidden-view">
-                        <div class="text-center pb-5 border-b border-gray-200/60 relative">
-                            <img id="drop-avatar" src="https://ui-avatars.com/api/?name=Guest&background=f4f5f7&color=000" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-white shadow-sm object-cover">
-                            <h3 id="drop-name" class="font-bold text-xl text-gray-900 tracking-tight">Guest User</h3>
-                            <p id="drop-email" class="text-xs text-gray-500 mb-4 font-medium">Please login to manage account</p>
-                            
-                            <button id="btn-edit-profile" onclick="openEditProfile()" class="hidden-view absolute top-0 right-0 p-2.5 bg-gray-100/80 rounded-full text-gray-600 hover:bg-gray-200 transition shadow-sm" title="Edit Profile">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                            </button>
-
-                            <button id="btn-locked-profile" onclick="showToast('info', 'Profile Locked', 'You have an active order. Address updates are disabled to ensure safe delivery.')" class="hidden-view absolute top-0 right-0 p-2.5 bg-red-50 rounded-full text-red-500 shadow-sm border border-red-100" title="Profile Locked">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                            </button>
-                            
-                            <div id="limit-badge" class="hidden-view mx-auto w-fit text-[10px] bg-blue-50 text-blue-600 font-bold px-3 py-1.5 rounded-md mt-1 border border-blue-100 tracking-wider uppercase">Updates: 0/5</div>
-                        </div>
+                <div id="profileMenu" class="profile-dropdown">
+                    <div class="text-center pb-5 border-b border-gray-200/60 relative">
+                        <img id="dropAvatar" src="https://ui-avatars.com/api/?name=Guest&background=f4f4f7" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-white shadow-sm object-cover">
+                        <h3 id="dropName" class="font-bold text-xl text-gray-900 tracking-tight">Guest User</h3>
+                        <p id="dropEmail" class="text-xs text-gray-500 mb-4 font-medium">Please login securely</p>
                         
-                        <div id="auth-actions" class="mt-5 flex flex-col gap-3">
-                            <button id="btn-drop-login" onclick="openLoginModal()" class="w-full bg-[#1d1d1f] text-white font-bold py-3 rounded-xl hover:bg-black transition shadow-md">Secure Login / Register</button>
-                            <button id="btn-drop-orders" onclick="showOrders()" class="hidden-view w-full border border-gray-200 bg-white/50 text-black font-bold py-3 rounded-xl hover:bg-gray-50 transition shadow-sm">My Orders</button>
-                            <button id="btn-drop-logout" onclick="logout()" class="hidden-view w-full text-red-500 text-xs font-bold py-2 hover:underline tracking-widest uppercase">Logout</button>
-                        </div>
+                        <button id="btn-edit-prof" onclick="openEditProfile()" class="hidden-view absolute top-0 right-0 w-10 h-10 bg-gray-100/80 rounded-full text-gray-600 hover:bg-gray-200 hover:text-[#0071e3] transition shadow-sm flex items-center justify-center" title="Edit Profile"><i class="fas fa-pen"></i></button>
+                        <button id="btn-lock-prof" onclick="showToast('Profile Locked 🔒 Active orders found.', true)" class="hidden-view absolute top-0 right-0 w-10 h-10 bg-red-50 rounded-full text-red-500 shadow-sm border border-red-100 flex items-center justify-center" title="Profile Locked"><i class="fas fa-lock"></i></button>
+                        <div id="badge-limit" class="hidden-view mx-auto w-fit text-[10px] bg-blue-50 text-blue-600 font-bold px-3 py-1.5 rounded-md mt-2 border border-blue-100 tracking-wider uppercase">Updates: 0/5</div>
+                    </div>
+                    <div class="mt-5 flex flex-col gap-3">
+                        <button id="btn-menu-login" onclick="openAuthModal()" class="w-full bg-[#1d1d1f] text-white font-bold py-3.5 rounded-xl hover:bg-black transition shadow-md">Login / Register</button>
+                        <button id="btn-menu-orders" onclick="showView('view-orders'); toggleProfileMenu();" class="hidden-view w-full border border-gray-200 bg-white text-black font-bold py-3.5 rounded-xl hover:bg-gray-50 transition shadow-sm"><i class="fas fa-box-open mr-2 text-[#0071e3]"></i> My Orders</button>
+                        <button id="btn-menu-logout" onclick="logout()" class="hidden-view w-full text-red-500 text-xs font-bold py-2 mt-2 hover:underline uppercase tracking-widest">Logout</button>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <!-- 🌟 ABOUT US VIEW -->
-    <div id="view-about" class="hidden-view min-h-screen pb-32 relative z-10">
-        <div class="max-w-4xl mx-auto px-6 py-20">
-            <button onclick="showView('view-store')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition">← Back to Store</button>
-            <div class="glass-card p-10 md:p-16 rounded-[32px]">
-                <h1 class="text-5xl font-bold mb-6 tracking-tighter text-gray-900">Our Story</h1>
-                <p class="text-lg text-gray-600 leading-relaxed mb-8">
-                    Established in the year <strong class="text-black">2000</strong> by our visionary founder, <strong class="text-[#0071e3]">Sanjay Kumar</strong>, Patel Traders started with a simple yet powerful mission: to bring pure, unpolished, and highly durable premium furniture to every household.
-                </p>
-                <p class="text-gray-600 leading-relaxed mb-10">
-                    For over two decades, we have strictly adhered to our core philosophy. We do not believe in artificial polishing or deceptive masking; our wood speaks for itself. Quality craftsmanship and transparent business practices are the pillars that have earned us the trust of thousands of loyal customers across the nation.
-                </p>
-                
-                <div class="border-t border-gray-200/60 pt-8 mt-8">
-                    <h3 class="text-2xl font-bold mb-6 tracking-tight text-gray-900">Contact Us</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-gray-50/80 p-6 rounded-2xl border border-gray-100">
-                            <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2">Phone Support</p>
-                            <p class="text-lg font-bold text-black">+91-9876543210</p>
+    <!-- Mobile Bottom Nav -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-200 z-40 flex justify-around p-3 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
+        <button onclick="showView('view-home')" class="text-gray-500 flex flex-col items-center gap-1 hover:text-[#0071e3] w-1/4"><i class="fas fa-home text-lg"></i><span class="text-[10px] font-bold">Home</span></button>
+        <button onclick="showView('view-collections')" class="text-gray-500 flex flex-col items-center gap-1 hover:text-[#0071e3] w-1/4"><i class="fas fa-layer-group text-lg"></i><span class="text-[10px] font-bold">Collect</span></button>
+        <button onclick="showView('view-shop')" class="text-gray-500 flex flex-col items-center gap-1 hover:text-[#0071e3] w-1/4"><i class="fas fa-store text-lg"></i><span class="text-[10px] font-bold">Shop</span></button>
+        <button onclick="showView('view-about')" class="text-gray-500 flex flex-col items-center gap-1 hover:text-[#0071e3] w-1/4"><i class="fas fa-info-circle text-lg"></i><span class="text-[10px] font-bold">About</span></button>
+    </div>
+
+    <!-- 🌟 VIEW: HOME -->
+    <div id="view-home" class="fade-in-up">
+        <div class="flex flex-col items-center justify-center py-24 px-6 text-center min-h-[70vh]">
+            <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter text-gray-900 leading-tight">Elevate Your <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#0071e3] to-[#42a1ff]">Space.</span></h1>
+            <p class="text-gray-500 font-medium text-lg max-w-xl mb-12 leading-relaxed">Discover pure, unpolished wooden masterpieces crafted for durability and premium aesthetics.</p>
+            <div class="flex gap-4">
+                <button onclick="showView('view-shop')" class="bg-[#1d1d1f] text-white px-10 py-4 rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition">Shop Now</button>
+                <button onclick="showView('view-collections')" class="bg-white border border-gray-200 text-black px-10 py-4 rounded-full font-bold text-lg shadow-lg hover:scale-105 transition">Collections</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ℹ️ VIEW: ABOUT US (NEW FEATURE) -->
+    <div id="view-about" class="hidden-view max-w-[1200px] mx-auto px-6 py-20 relative z-10 fade-in-up pb-32 md:pb-12">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-gray-900">Our Story.</h2>
+            <p class="text-xl text-gray-500 font-medium leading-relaxed">Crafting pure, unpolished wooden masterpieces since 2026. Premium quality, direct from the vault to your home.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-card p-8 rounded-3xl text-center hover:-translate-y-2 transition-transform duration-300">
+                <div class="w-16 h-16 bg-blue-50 text-[#0071e3] rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-tree"></i></div>
+                <h3 class="text-2xl font-black mb-3">Pure Material</h3>
+                <p class="text-gray-500 text-sm">We strictly use authentic, high-quality solid wood like Sagwan and Sheesham. No compromises, no synthetic shortcuts.</p>
+            </div>
+            <div class="glass-card p-8 rounded-3xl text-center hover:-translate-y-2 transition-transform duration-300">
+                <div class="w-16 h-16 bg-blue-50 text-[#0071e3] rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-hammer"></i></div>
+                <h3 class="text-2xl font-black mb-3">Unpolished Beauty</h3>
+                <p class="text-gray-500 text-sm">Our furniture celebrates the raw, natural texture of wood. Experience the unpolished elegance that gets better with time.</p>
+            </div>
+            <div class="glass-card p-8 rounded-3xl text-center hover:-translate-y-2 transition-transform duration-300">
+                <div class="w-16 h-16 bg-blue-50 text-[#0071e3] rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fas fa-shield-alt"></i></div>
+                <h3 class="text-2xl font-black mb-3">Direct from Vault</h3>
+                <p class="text-gray-500 text-sm">No middlemen. Every piece you buy is sourced directly from our master vault, ensuring transparency and premium value.</p>
+            </div>
+        </div>
+        
+        <div class="mt-20 glass-card p-10 md:p-16 rounded-[40px] flex flex-col md:flex-row items-center justify-between gap-10">
+            <div class="max-w-lg">
+                <h3 class="text-3xl md:text-4xl font-black mb-4">Ready to upgrade your space?</h3>
+                <p class="text-gray-500 mb-6">Browse our exclusive collection of premium furniture today.</p>
+                <button onclick="showView('view-shop')" class="bg-[#0071e3] text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-600 transition shadow-lg shadow-blue-500/30">Explore the Vault</button>
+            </div>
+            <img src="https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png" class="w-48 h-48 rounded-3xl shadow-xl rotate-3 hover:rotate-0 transition-transform duration-500">
+        </div>
+    </div>
+
+    <!-- 📚 VIEW: COLLECTIONS -->
+    <div id="view-collections" class="hidden-view max-w-[1400px] mx-auto px-6 py-12 relative z-10 pb-24 fade-in-up">
+        <h2 class="text-5xl font-black mb-10 tracking-tighter text-gray-900">Collections.</h2>
+        <div id="loadingCollections" class="flex flex-col items-center justify-center py-20"><i class="fas fa-circle-notch fa-spin text-4xl mb-4 text-[#0071e3]"></i></div>
+        <div id="collectionsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+    </div>
+
+    <!-- 🛍️ VIEW: SHOP (ALL PRODUCTS) -->
+    <main id="view-shop" class="hidden-view max-w-[1400px] mx-auto px-6 py-12 relative z-10 pb-24 fade-in-up">
+        <div class="flex justify-between items-end mb-10">
+            <h2 id="shopTitle" class="text-5xl font-black tracking-tighter text-gray-900">All Items.</h2>
+            <button onclick="showView('view-collections')" class="text-sm font-bold text-[#0071e3] hover:underline bg-blue-50 px-4 py-2 rounded-full transition">Clear Filter</button>
+        </div>
+        
+        <div id="loadingProducts" class="flex flex-col items-center justify-center py-20 text-gray-400">
+            <i class="fas fa-circle-notch fa-spin text-4xl mb-4 text-blue-600"></i>
+            <p class="font-bold text-lg">Syncing with Master Vault...</p>
+        </div>
+        
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"></div>
+    </main>
+
+    <!-- 🌟 VIEW: PRODUCT DETAIL (AMAZON STYLE + MULTI IMAGE) -->
+    <div id="view-product" class="hidden-view min-h-screen pb-32 relative z-10 fade-in-up">
+        <div class="max-w-[1300px] mx-auto px-6 py-12">
+            <button onclick="showView('view-shop')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i> Back to Shop</button>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+                <!-- Left: Multi-Image Gallery (Span 7) -->
+                <div class="lg:col-span-7 flex flex-col gap-5">
+                    <div class="glass-card rounded-[40px] p-10 flex items-center justify-center relative min-h-[400px] md:min-h-[550px] bg-white group overflow-hidden">
+                        <button id="pd-wishlist-btn" class="absolute top-8 right-8 z-10 p-4 bg-white/90 backdrop-blur-md rounded-full shadow-lg hover:scale-110 transition border border-gray-100"></button>
+                        <img id="pd-main-img" src="" class="max-h-[600px] w-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110">
+                    </div>
+                    <!-- Thumbnails Area -->
+                    <div id="pd-thumbnails" class="flex gap-4 overflow-x-auto py-2 scrollbar-hide px-2"></div>
+                </div>
+
+                <!-- Right: Detailed Specs & Actions (Span 5) -->
+                <div class="lg:col-span-5 flex flex-col justify-center">
+                    <p id="pd-cat" class="text-xs font-black text-[#0071e3] uppercase tracking-widest mb-3 bg-blue-50 w-fit px-3 py-1 rounded-md"></p>
+                    <h1 id="pd-name" class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-4"></h1>
+                    
+                    <div class="flex items-center gap-2 mb-8 text-[#e11d48] text-sm bg-red-50 w-fit px-3 py-1.5 rounded-lg border border-red-100">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <span class="text-gray-600 text-xs ml-2 font-bold tracking-wide uppercase">Premium Certified</span>
+                    </div>
+                    
+                    <div class="flex items-end gap-4 mb-8 pb-8 border-b border-gray-100">
+                        <span id="pd-price" class="text-5xl font-black tracking-tighter text-black"></span>
+                        <span id="pd-mrp" class="text-xl text-gray-400 line-through font-medium mb-1.5"></span>
+                    </div>
+
+                    <!-- Revolutionary Specs (From DB) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100"><p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Material</p><p id="pd-mat" class="font-bold text-[15px] text-gray-900 truncate">Solid Wood</p></div>
+                        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100"><p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Dimensions</p><p id="pd-dim" class="font-bold text-[15px] text-gray-900 truncate">Standard</p></div>
+                        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100"><p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Weight</p><p id="pd-weight" class="font-bold text-[15px] text-gray-900 truncate">Heavy Duty</p></div>
+                    </div>
+
+                    <!-- Size Selection -->
+                    <div id="pd-size-box" class="mb-8 hidden-view">
+                        <h3 class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-3 flex items-center"><i class="fas fa-ruler-combined mr-2"></i> Select Size</h3>
+                        <div class="flex flex-wrap gap-3" id="pd-size-opts"></div>
+                    </div>
+
+                    <h3 class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-3 flex items-center"><i class="fas fa-align-left mr-2"></i> About this item</h3>
+                    <p id="pd-desc" class="text-gray-600 leading-relaxed text-[15px] font-medium mb-10 bg-gray-50/50 p-4 rounded-2xl border border-gray-50"></p>
+
+                    <!-- Actions -->
+                    <div class="flex flex-col sm:flex-row gap-4 mt-auto sticky bottom-4 z-20 bg-white/80 backdrop-blur-md p-2 rounded-[24px] shadow-[0_0_40px_rgba(0,0,0,0.05)] border border-gray-100">
+                        <div class="flex items-center border border-gray-200 rounded-xl bg-white h-16 w-full sm:w-36 justify-between px-3 shadow-sm">
+                            <button onclick="changeQtyPD(-1)" class="w-10 h-10 flex items-center justify-center text-2xl font-medium text-gray-500 bg-gray-50 rounded-lg hover:bg-gray-100 transition">−</button>
+                            <span id="pd-qty" class="font-black text-xl text-gray-900">1</span>
+                            <button onclick="changeQtyPD(1)" class="w-10 h-10 flex items-center justify-center text-2xl font-medium text-gray-500 bg-gray-50 rounded-lg hover:bg-gray-100 transition">+</button>
                         </div>
-                        <div class="bg-gray-50/80 p-6 rounded-2xl border border-gray-100">
-                            <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2">Email Address</p>
-                            <p class="text-lg font-bold text-[#0071e3]">contact@pateltraders.com</p>
-                        </div>
+                        <button id="pd-btn-cart" class="flex-1 h-16 rounded-xl text-[16px] font-bold transition-all shadow-lg bg-[#1d1d1f] text-white hover:bg-black"><i class="fas fa-cart-plus mr-2"></i> Add to Cart</button>
+                        <button id="pd-btn-buy" class="flex-1 h-16 rounded-xl text-[16px] font-bold transition-all shadow-lg bg-[#0071e3] text-white hover:bg-blue-600"><i class="fas fa-bolt mr-2"></i> Buy Now</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Main View (Shop) -->
-    <div id="view-store">
-        <div class="hero-banner mb-12">
-            <h1 class="text-6xl font-bold mb-4 tracking-tighter text-gray-900">Collection.</h1>
-            <p class="text-sm text-gray-500 font-medium tracking-widest uppercase">Pure • Unpolished • Premium</p>
+    <!-- ❤️ VIEW: WISHLIST -->
+    <div id="view-wishlist" class="hidden-view max-w-[1200px] mx-auto p-6 md:p-12 min-h-screen relative z-10 fade-in-up">
+        <button onclick="showView('view-home')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i>Back Home</button>
+        <h2 class="text-5xl font-black mb-10 tracking-tighter text-gray-900">Your Wishlist <span class="text-red-500 ml-2 animate-pulse">❤️</span></h2>
+        <div id="wishlist-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </div>
+
+    <!-- 📦 VIEW: ORDERS -->
+    <div id="view-orders" class="hidden-view max-w-[1000px] mx-auto p-6 md:p-12 min-h-screen relative z-10 fade-in-up">
+        <button onclick="showView('view-home')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i>Back Home</button>
+        <h2 class="text-5xl font-black mb-10 tracking-tighter text-gray-900">Secure Vault <span class="text-[#0071e3] text-2xl align-middle"><i class="fas fa-shield-check"></i></span></h2>
+        <div id="orders-list" class="space-y-6"></div>
+    </div>
+
+    <!-- 🛒 VIEW: CART & CHECKOUT -->
+    <div id="view-cart" class="hidden-view max-w-[1300px] mx-auto p-6 md:p-12 min-h-screen relative z-10 pb-32 fade-in-up">
+        <button onclick="showView('view-shop')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i>Continue Shopping</button>
+        <h2 class="text-5xl font-black mb-10 tracking-tighter text-gray-900">Your Cart.</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div id="cartItems" class="lg:col-span-7 space-y-5"></div>
+            
+            <div class="lg:col-span-5">
+                <div class="glass-card p-8 md:p-10 rounded-[40px] h-fit sticky top-32 shadow-2xl border-white/60">
+                    <h3 class="font-black text-3xl mb-8 pb-6 border-b border-gray-100 tracking-tight">Summary</h3>
+                    <div class="flex justify-between text-[16px] mb-5 text-gray-600 font-medium"><span>Subtotal</span><span id="subtotal" class="text-gray-900 font-bold">₹0</span></div>
+                    <div class="flex justify-between text-[16px] mb-8 text-gray-600 font-medium"><span>Delivery Fee</span><span id="shipping" class="text-red-500 font-bold bg-red-50 px-3 py-1 rounded-lg">₹250</span></div>
+                    
+                    <div id="cart-addr-box" class="bg-gray-50 p-5 rounded-2xl mb-8 border border-gray-100 hidden-view">
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mb-2"><i class="fas fa-map-marker-alt mr-1 text-[#0071e3]"></i> Delivering To</p>
+                        <p id="checkout-addr" class="text-[15px] font-bold text-gray-900 line-clamp-3 leading-relaxed">Please update profile address.</p>
+                    </div>
+
+                    <div class="flex justify-between font-black text-4xl mb-10 pt-8 border-t border-gray-200/80 text-black"><span>Total</span><span id="total" class="text-[#0071e3]">₹0</span></div>
+                    
+                    <div class="space-y-4">
+                        <button onclick="processFinalCheckout('ONLINE')" class="w-full bg-[#1d1d1f] text-white font-bold py-5 rounded-2xl hover:bg-black transition transform hover:-translate-y-1 shadow-xl text-lg flex items-center justify-center"><i class="fas fa-credit-card mr-3"></i>Pay Online</button>
+                        <button onclick="processFinalCheckout('COD')" class="w-full bg-white border-2 border-green-600 text-green-700 font-bold py-5 rounded-2xl hover:bg-green-50 transition transform hover:-translate-y-1 shadow-md text-lg flex items-center justify-center"><i class="fas fa-truck mr-3"></i>Cash on Delivery</button>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <main class="max-w-[1400px] mx-auto px-6 pb-24 relative z-10">
-            <div id="loading-products" class="flex flex-col items-center justify-center py-20">
-                <div class="loader mb-4"></div>
-                <p class="text-gray-400 font-medium text-sm tracking-wide">Loading Masterpieces...</p>
+    <!-- 🔑 MODAL: AUTH -->
+    <div id="authModal" class="modal">
+        <div class="glass-card p-10 rounded-[40px] w-[420px] text-center shadow-2xl relative modal-content bg-white/95">
+            <!-- Auth Close Button unchanged for consistency, or changed to back? Kept as cross as it's a direct popup -->
+            <button onclick="closeAuthModal()" class="absolute top-6 right-6 text-gray-400 hover:text-red-500 text-xl bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+            
+            <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5 text-[#0071e3] border-4 border-white shadow-sm"><i class="fas fa-shield-alt text-4xl"></i></div>
+            <h2 class="text-3xl font-black mb-2 text-gray-900 tracking-tight">Security.</h2>
+            <p class="text-gray-500 text-sm mb-6 font-medium">Access your digital vault securely.</p>
+            
+            <div class="flex bg-gray-100 p-1.5 rounded-xl mb-6 relative">
+                <button id="tabLogin" onclick="switchAuth('login')" class="flex-1 py-3 rounded-lg font-bold text-blue-600 bg-white shadow-sm transition z-10">Login</button>
+                <button id="tabReg" onclick="switchAuth('register')" class="flex-1 py-3 rounded-lg font-bold text-gray-500 hover:text-gray-800 transition z-10">Register</button>
             </div>
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
-                <!-- Products via JS -->
-            </div>
-        </main>
 
-        <button onclick="openVedika()" class="fixed bottom-8 right-8 w-16 h-16 rounded-full bg-[#0071e3] text-white flex items-center justify-center siri-float z-40 border-2 border-white/20">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v3M8 22h8"/></svg>
+            <div id="authStep1" class="space-y-4 fade-in-up">
+                <div class="relative">
+                    <i class="fas fa-envelope absolute left-4 top-4 text-gray-400"></i>
+                    <input type="email" id="emailInput" placeholder="Email Address" class="premium-input pl-11 py-3.5">
+                </div>
+                
+                <div id="regFields" class="hidden-view space-y-4">
+                    <input type="text" id="nameInput" placeholder="Full Name" class="premium-input py-3.5">
+                    <input type="tel" id="phoneInput" placeholder="Mobile Number" maxlength="10" class="premium-input py-3.5">
+                </div>
+
+                <button id="otpBtn" onclick="requestOTP()" class="btn-apple w-full py-4 mt-2 shadow-lg shadow-blue-500/30 text-lg">Request Secure Code</button>
+            </div>
+            
+            <div id="authStep2" class="hidden-view space-y-5 border-t border-gray-100 pt-6 mt-4 fade-in-up">
+                <p class="text-xs text-gray-500 font-bold tracking-widest uppercase flex items-center justify-center"><i class="fas fa-key text-[#0071e3] mr-2"></i> Enter 6-Digit OTP</p>
+                <input type="text" id="otpInput" placeholder="000000" maxlength="6" class="premium-input text-center tracking-[1em] font-mono font-black text-3xl py-4 bg-gray-50 border-2 focus:border-green-500 focus:shadow-[0_0_0_4px_rgba(34,197,94,0.15)]">
+                <button id="verifyBtn" onclick="verifyOTP()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-green-500/30 hover:bg-green-700 transition text-lg">Verify & Enter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📝 MODAL: EDIT PROFILE (FIXED BACK BUTTON) -->
+    <div id="modal-edit-profile" class="modal">
+        <div class="glass-card px-8 py-10 sm:px-10 max-w-lg w-full mx-4 relative max-h-[90vh] overflow-y-auto modal-content bg-white/95 rounded-[40px]">
+            
+            <!-- 🔥 NEW PROMINENT BACK BUTTON (Replaced side cross) -->
+            <button onclick="closeEditModal()" class="absolute top-6 left-6 text-gray-500 hover:text-black hover:bg-gray-200 bg-gray-100 px-4 py-2 rounded-full flex items-center justify-center transition font-bold text-sm shadow-sm">
+                <i class="fas fa-arrow-left mr-2"></i> वापस
+            </button>
+            
+            <div class="mt-12 mb-8">
+                <h2 class="text-3xl font-black mb-2 tracking-tight text-gray-900">Update Profile</h2>
+                <div class="bg-red-50 border border-red-100 p-3 rounded-xl flex items-start gap-3 mt-4 mb-6">
+                    <i class="fas fa-exclamation-circle text-red-500 mt-0.5 text-lg"></i>
+                    <p class="text-xs text-red-600 font-bold uppercase tracking-wide leading-relaxed">Security Notice: You can only update details 5 times a month.</p>
+                </div>
+            </div>
+            
+            <div class="space-y-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div class="sm:col-span-2 relative">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1.5 block">Registered Email (Locked)</label>
+                        <i class="fas fa-lock absolute right-4 top-9 text-red-400"></i>
+                        <input type="email" id="prof-email" disabled class="premium-input font-bold bg-gray-100 border-gray-200 text-gray-500 cursor-not-allowed" value="Locked">
+                    </div>
+                    <div><label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1.5 block">Full Name</label><input type="text" id="prof-name" class="premium-input"></div>
+                    <div><label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1.5 block">Mobile Number</label><input type="tel" id="prof-phone" maxlength="10" class="premium-input"></div>
+                </div>
+
+                <div class="border-t border-gray-200/60 pt-6 mt-4">
+                    <h3 class="text-sm font-black mb-4 text-gray-900 flex items-center uppercase tracking-widest"><i class="fas fa-map-marker-alt text-[#0071e3] mr-2 text-lg"></i> Delivery Address</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2"><input type="text" id="addr-line1" placeholder="Flat, House no., Building" class="premium-input"></div>
+                        <div class="sm:col-span-2"><input type="text" id="addr-line2" placeholder="Area, Street, Sector, Village" class="premium-input"></div>
+                        <div><input type="text" id="addr-pincode" placeholder="Pincode (6 digits)" maxlength="6" class="premium-input"></div>
+                        <div><input type="text" id="addr-city" placeholder="Town/City" class="premium-input"></div>
+                        <div class="sm:col-span-2">
+                            <select id="addr-state" class="premium-input bg-white appearance-none cursor-pointer"><option value="">Choose State...</option><option value="Delhi">Delhi</option><option value="Gujarat">Gujarat</option><option value="Maharashtra">Maharashtra</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Other">Other State</option></select>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="saveProfile()" id="btn-save-prof" class="w-full bg-[#1d1d1f] text-white font-bold py-4 rounded-xl hover:bg-black transition-all transform hover:-translate-y-1 shadow-xl mt-6 text-lg">Save Profile Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🤖 VEDIKA AI WIDGET -->
+    <div class="fixed bottom-24 md:bottom-8 right-6 z-50 flex flex-col items-end">
+        <div id="vedikaBox" class="hidden-view mb-6 w-[350px] sm:w-[380px] bg-white/95 backdrop-blur-xl rounded-[32px] shadow-[0_30px_60px_rgba(0,113,227,0.2)] border border-white/50 flex-col h-[500px] overflow-hidden fade-in-up">
+            <div class="p-5 bg-gradient-to-r from-[#0071e3] to-[#42a1ff] flex justify-between items-center text-white shadow-md">
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center border border-white/30"><i class="fas fa-robot text-lg"></i></div><div><span class="font-black text-lg block leading-tight">Vedika AI</span><span class="text-[9px] font-bold uppercase tracking-widest text-blue-100">Store Manager</span></div></div>
+                <button onclick="toggleVedika()" class="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="chatBody" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50/50">
+                <div class="bg-white border border-gray-100 p-4 rounded-2xl rounded-tl-none w-[85%] text-[13.5px] text-gray-800 shadow-sm font-medium leading-relaxed">नमस्ते! मैं वेदिका हूँ। पटेल ट्रेडर्स में आपका स्वागत है।</div>
+            </div>
+            <div class="p-4 bg-white border-t border-gray-100 flex gap-2">
+                <input type="text" id="chatInput" placeholder="Ask anything..." class="flex-1 bg-gray-100/80 border border-gray-200 rounded-full px-5 py-3 text-[14px] outline-none focus:border-[#0071e3] focus:bg-white transition-all font-medium" onkeypress="if(event.key === 'Enter') askAI()">
+                <button onclick="askAI()" class="w-12 h-12 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center hover:bg-[#0071e3] transition-colors shadow-md hover:scale-105"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button onclick="toggleVedika()" class="w-16 h-16 bg-gradient-to-tr from-[#0071e3] to-[#42a1ff] rounded-full text-white flex items-center justify-center border-[3px] border-white vedika-float hover:scale-110 transition-transform">
+            <i class="fas fa-robot text-2xl"></i>
         </button>
     </div>
 
-    <!-- 🌟 PRODUCT DETAIL VIEW (New Premium Page) -->
-    <div id="view-product" class="hidden-view min-h-screen pb-32 relative z-10">
-        <div class="max-w-6xl mx-auto px-6 py-12">
-            <button onclick="showView('view-store')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition">← Back to Collection</button>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <!-- Left: Huge Image -->
-                <div class="bg-gray-50/80 border border-gray-100 rounded-[32px] p-10 flex items-center justify-center relative min-h-[400px]">
-                    <button id="pd-wishlist-btn" class="absolute top-6 right-6 z-10 p-3 bg-white/80 backdrop-blur-md rounded-full shadow-sm hover:scale-110 transition border border-gray-100">
-                        <!-- Heart SVg injected by JS -->
-                    </button>
-                    <img id="pd-image" src="" class="max-h-[500px] w-full object-contain mix-blend-multiply transition-transform duration-700 hover:scale-105">
-                </div>
-
-                <!-- Right: Product Details -->
-                <div class="flex flex-col justify-center">
-                    <span id="pd-stock" class="mb-4 w-fit"></span>
-                    <h1 id="pd-name" class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight leading-tight mb-2">Product Name</h1>
-                    <div class="flex gap-1 mb-6 text-[#e11d48] text-sm">★★★★★ <span class="text-gray-400 text-xs ml-2 mt-0.5">(Premium Certified)</span></div>
-                    
-                    <div class="flex items-end gap-4 mb-6 pb-6 border-b border-gray-100">
-                        <span id="pd-price" class="text-4xl font-bold tracking-tighter text-black">₹0</span>
-                        <span id="pd-mrp" class="text-lg text-gray-400 line-through font-medium mb-1"></span>
-                    </div>
-
-                    <h3 class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-3">Description</h3>
-                    <p id="pd-desc" class="text-gray-600 leading-relaxed font-medium mb-8">Description goes here...</p>
-
-                    <!-- Quantity & Add to Cart -->
-                    <div class="flex flex-col sm:flex-row gap-4 mt-auto">
-                        <div id="pd-qty-container" class="flex items-center border border-gray-200 rounded-xl bg-gray-50 h-14 w-full sm:w-32 justify-between px-2">
-                            <button onclick="changeQty(-1)" class="w-10 h-10 flex items-center justify-center text-xl font-medium text-gray-500 hover:text-black transition">−</button>
-                            <input type="number" id="pd-qty" value="1" min="1" max="10" class="w-10 text-center bg-transparent font-bold text-lg outline-none" readonly>
-                            <button onclick="changeQty(1)" class="w-10 h-10 flex items-center justify-center text-xl font-medium text-gray-500 hover:text-black transition">+</button>
-                        </div>
-                        <button id="pd-action-btn" class="flex-1 h-14 rounded-xl text-lg font-bold transition shadow-lg flex items-center justify-center gap-2">
-                            Add to Cart
-                        </button>
-                    </div>
-                    <div class="mt-6 flex items-center gap-2 text-xs font-bold text-gray-400 bg-gray-50 p-3 rounded-xl border border-gray-100">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Secure Checkout & Free Premium Delivery
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ❤️ WISHLIST VIEW -->
-    <div id="view-wishlist" class="hidden-view max-w-5xl mx-auto p-6 md:p-12 min-h-screen relative z-10">
-        <button onclick="showView('view-store')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition">← Back to Store</button>
-        <h2 class="text-4xl font-bold mb-8 tracking-tight flex items-center gap-3">Your Wishlist <span class="text-red-500">❤️</span></h2>
-        <div id="wishlist-items" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-    </div>
-
-    <!-- 📦 ORDERS VIEW -->
-    <div id="view-orders" class="hidden-view max-w-4xl mx-auto p-6 md:p-12 min-h-screen relative z-10">
-        <button onclick="showView('view-store')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition">← Back to Store</button>
-        <h2 class="text-4xl font-bold mb-8 tracking-tight">My Orders</h2>
-        <div id="orders-list" class="space-y-5"></div>
-    </div>
-
-    <!-- 🛒 CART VIEW -->
-    <div id="view-cart" class="hidden-view max-w-5xl mx-auto p-6 md:p-12 min-h-screen relative z-10">
-        <button onclick="showView('view-store')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition">← Back to Store</button>
-        <h2 class="text-4xl font-bold mb-8 tracking-tight">Your Cart</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <div id="cart-items" class="lg:col-span-2 space-y-4"></div>
-            <div class="glass-card p-8 rounded-[24px] h-fit">
-                <h3 class="font-bold text-xl mb-6 pb-4 border-b border-gray-200/50">Order Summary</h3>
-                <div class="flex justify-between text-sm mb-3 text-gray-600 font-medium"><span>Subtotal</span><span id="cart-subtotal" class="text-black font-bold">₹0</span></div>
-                <div class="flex justify-between text-sm mb-6 text-gray-600 font-medium"><span>Delivery</span><span class="text-green-600 font-bold bg-green-50 px-2 py-1 rounded">Free</span></div>
-                <div class="flex justify-between font-bold text-2xl mb-8 pt-5 border-t border-gray-200/50 text-black"><span>Total</span><span id="cart-total">₹0</span></div>
-                <button onclick="checkout()" class="w-full bg-[#0071e3] text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition shadow-lg shadow-blue-500/30">Secure Checkout</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 🔒 MODALS -->
-    
-    <div id="modal-auth" class="fixed inset-0 glass-overlay z-[100] hidden-view flex items-center justify-center p-4 transition-all">
-        <div class="glass-card p-10 rounded-[32px] max-w-sm w-full relative transform transition-transform scale-95" id="auth-box">
-            <button onclick="closeModals()" class="absolute top-5 right-5 text-gray-400 hover:text-black bg-gray-100 p-2 rounded-full">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-[#0071e3]">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                </div>
-                <h2 id="auth-title" class="text-2xl font-bold tracking-tight text-gray-900">Secure Login</h2>
-                <p id="auth-subtitle" class="text-sm text-gray-500 mt-2 font-medium">Please login to continue</p>
-            </div>
-
-            <div id="form-details" class="space-y-4">
-                <div id="register-fields" class="hidden-view space-y-4">
-                    <input type="text" id="regName" placeholder="Full Name" class="premium-input">
-                    <input type="tel" id="regPhone" placeholder="Mobile Number" class="premium-input">
-                </div>
-                <input type="email" id="authEmail" placeholder="Email Address" class="premium-input">
-                <button onclick="sendOTP()" id="btn-send-otp" class="w-full bg-[#1d1d1f] text-white font-bold py-3.5 rounded-xl hover:bg-black transition shadow-md mt-2">Get OTP</button>
-            </div>
-
-            <div id="otp-section" class="hidden-view space-y-5">
-                <input type="text" id="authOTP" placeholder="••••••" maxlength="6" class="premium-input text-center tracking-[1em] font-mono font-bold text-xl">
-                <button onclick="verifyOTP()" id="btn-verify-otp" class="w-full bg-[#0071e3] text-white font-bold py-3.5 rounded-xl shadow-md hover:bg-blue-600 transition">Verify OTP</button>
-            </div>
-            
-            <div class="mt-8 pt-5 border-t border-gray-200/60 text-center text-sm">
-                <span id="toggle-text" class="text-gray-500 font-medium">New Account? <button onclick="toggleAuthMode()" class="text-[#0071e3] font-bold hover:underline">Register Here</button></span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Profile Form (Pencil Click) -->
-    <div id="modal-edit-profile" class="fixed inset-0 glass-overlay z-[100] hidden-view flex items-center justify-center p-4">
-        <div class="glass-card p-10 rounded-[32px] max-w-md w-full relative">
-            <button onclick="closeModals()" class="absolute top-5 right-5 text-gray-400 hover:text-black bg-gray-100 p-2 rounded-full">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-            <h2 class="text-3xl font-bold mb-2 tracking-tight">Update Profile</h2>
-            <p class="text-[11px] text-red-600 font-bold mb-6 bg-red-50 p-2.5 rounded-lg border border-red-100 uppercase tracking-wide">Note: You can only update details 5 times a month.</p>
-            
-            <div class="space-y-4">
-                <input type="text" id="prof-name" placeholder="Full Name" class="premium-input">
-                <input type="text" id="prof-phone" placeholder="Phone Number" class="premium-input">
-                <textarea id="prof-address" placeholder="Complete Delivery Address" class="premium-input h-24 resize-none"></textarea>
-                <button onclick="saveProfile()" id="btn-save-prof" class="w-full bg-[#0071e3] text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition shadow-lg shadow-blue-500/30 mt-2">Save Details</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Vedika AI Modal -->
-    <div id="modal-vedika" class="fixed inset-0 glass-overlay z-[100] hidden-view flex items-end justify-center sm:items-center p-4">
-        <div class="glass-card w-full max-w-lg rounded-t-[32px] sm:rounded-[32px] flex flex-col h-[75vh] sm:h-[600px] overflow-hidden">
-            <div class="p-5 border-b border-gray-200/50 flex justify-between items-center bg-white/50">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#0071e3] to-[#d946ef] flex items-center justify-center text-white shadow-md siri-float">
-                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v3M8 22h8"/></svg>
-                    </div>
-                    <div>
-                        <span class="font-bold text-xl text-gray-900 block">Vedika AI</span>
-                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Smart Assistant</span>
-                    </div>
-                </div>
-                <button onclick="closeModals()" class="text-gray-400 hover:text-black bg-gray-100 p-2.5 rounded-full"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
-            </div>
-            <div id="chat-area" class="flex-1 overflow-y-auto p-6 space-y-5 bg-white/30">
-                <div class="bg-white border border-gray-100 p-4 rounded-2xl rounded-tl-sm w-[85%] text-[14px] text-gray-800 shadow-sm font-medium">Hello! I am Vedika, the store manager. How can I help you today?</div>
-            </div>
-            <div class="p-4 border-t border-gray-200/50 bg-white/80 flex gap-2">
-                <input type="text" id="ai-input" placeholder="Type your message..." class="flex-1 bg-gray-100/80 border border-gray-200 rounded-full px-5 text-[15px] outline-none focus:border-[#0071e3] transition font-medium" onkeypress="if(event.key === 'Enter') askVedika()">
-                <button onclick="askVedika()" class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:scale-105 transition"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT CORE LOGIC -->
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbyECJ37_2VTwCqR0_5KIKanO2A6OdawuNq-2leDr6ECgvJADJsPS9jXtPLHgUIN7VaB3Q/exec";
-        const SECURE_TOKEN = "PT_SECURE_2026"; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWjg7WjTbDW31B1FVVcl0Epif_gnzury3MJUd7wq6o0OKXmUmvHIV82o3JFhVni5CqEg/exec"; 
+        const TOKEN = "PT_SECURE_2026";
         
-        let currentUser = localStorage.getItem('pt_user_email');
-        let cart = JSON.parse(localStorage.getItem('pt_cart')) || [];
-        let wishlist = JSON.parse(localStorage.getItem('pt_wishlist')) || [];
-        let productsData = [];
-        let isRegisterMode = false;
-        let hasActiveOrder = false;
+        let products = []; let filteredProducts = []; let cart = JSON.parse(localStorage.getItem('pt_cart')) || []; let wishlist = JSON.parse(localStorage.getItem('pt_wishlist')) || [];
+        let userEmail = localStorage.getItem("pt_email");
+        let authMode = "login"; // Track Auth Mode
 
-        // --- 🌟 CUSTOM PREMIUM TOAST NOTIFICATION ---
-        function showToast(type, title, msg) {
-            const toast = document.getElementById('custom-toast');
-            const iconWrap = document.getElementById('toast-icon');
-            
-            let iconHtml = '';
-            if(type === 'success') {
-                iconHtml = `<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg></div>`;
-            } else if(type === 'error') {
-                iconHtml = `<div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg></div>`;
-            } else if(type === 'payment') {
-                iconHtml = `<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>`;
-            } else {
-                iconHtml = `<div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>`;
-            }
-
-            iconWrap.innerHTML = iconHtml;
-            document.getElementById('toast-title').innerHTML = title;
-            document.getElementById('toast-msg').innerHTML = msg;
-
-            toast.classList.remove('opacity-0', '-translate-y-10');
-            toast.classList.add('opacity-100', 'translate-y-0');
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', '-translate-y-10');
-            }, 5000);
+        // --- 🌟 TOAST ---
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast'); document.getElementById('toastMsg').innerText = msg;
+            toast.querySelector('i').className = isError ? "fas fa-exclamation-circle mr-2 text-red-500" : "fas fa-check-circle mr-2 text-green-400";
+            toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // --- INIT ---
-        window.onload = () => {
-            fetchProducts(); 
-            updateCartUI();
-            if (currentUser) {
-                let cachedName = localStorage.getItem('pt_cached_name') || currentUser.split('@')[0];
-                updateProfileUIDirectly(cachedName, currentUser);
-                fetchOrders();   
-                fetchUserData(); 
+        async function api(payload) {
+            payload.token = TOKEN;
+            try { const response = await fetch(SCRIPT_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+                const res = await response.json(); if(res.status === "error" && !res.message.includes('Token')) showToast(res.message, true); return res;
+            } catch (err) { showToast("Connection Error.", true); return {status:"error"}; }
+        }
+
+        window.onload = async () => {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getProducts&token=${TOKEN}`); products = await res.json(); filteredProducts = products;
+                document.getElementById('loadingProducts').classList.add('hidden-view'); document.getElementById('loadingCollections').classList.add('hidden-view');
+                generateCategories(); renderProducts(); updateUI();
+            } catch(e) { document.getElementById('loadingProducts').innerHTML = "<p class='text-red-500 font-bold'>System Error fetching DB.</p>"; }
+            if(userEmail) { 
+                fetchUserData(); fetchOrders();
+                document.getElementById('cart-addr-box').classList.remove('hidden-view');
             }
         };
 
-        // --- NAVIGATION & MODALS ---
-        function showView(id) {
-            ['view-store', 'view-cart', 'view-orders', 'view-about', 'view-wishlist', 'view-product'].forEach(v => document.getElementById(v).classList.add('hidden-view'));
-            document.getElementById(id).classList.remove('hidden-view');
-            window.scrollTo(0,0);
-            if(id === 'view-orders') fetchOrders();
-            if(id === 'view-wishlist') renderWishlist();
+        // --- VIEWS & NAVIGATION ---
+        function showView(id) { ['view-home', 'view-collections', 'view-shop', 'view-product', 'view-cart', 'view-orders', 'view-wishlist', 'view-about'].forEach(v => document.getElementById(v).classList.add('hidden-view')); document.getElementById(id).classList.remove('hidden-view'); window.scrollTo(0,0); if(id === 'view-orders') fetchOrders(); if(id === 'view-wishlist') renderWishlist(); }
+        function toggleProfileMenu() { document.getElementById('profileMenu').classList.toggle('active'); }
+        
+        // --- STORE & COLLECTIONS ---
+        function generateCategories() {
+            const container = document.getElementById('categoryContainer'); const grid = document.getElementById('collectionsGrid');
+            const cats = [...new Set(products.map(p => p.Category))].filter(Boolean);
+            if(cats.length === 0) return;
+            
+            // Tags for Shop View
+            let html = `<button onclick="filterCategory('All')" class="bg-[#1d1d1f] text-white px-6 py-2.5 rounded-full font-bold shadow-md whitespace-nowrap transition hover:scale-105">All Items</button>`;
+            cats.forEach(cat => { html += `<button onclick="filterCategory('${cat}')" class="bg-gray-100 text-gray-800 px-6 py-2.5 rounded-full font-bold hover:bg-gray-200 transition whitespace-nowrap shadow-sm hover:scale-105">${cat}</button>`; });
+            container.innerHTML = html;
+
+            // Banners for Collection View
+            grid.innerHTML = cats.map((cat, idx) => {
+                const firstProduct = products.find(p => p.Category === cat); const count = products.filter(p => p.Category === cat).length;
+                return `<div class="collection-card fade-in-up" style="animation-delay: ${idx*100}ms" onclick="openCategory('${cat}')"><img src="${firstProduct.Image_URL ? firstProduct.Image_URL.split(',')[0].trim() : 'https://via.placeholder.com/400'}"><div class="collection-overlay"><h3 class="text-4xl font-black text-white mb-2 tracking-tight">${cat}</h3><p class="text-[11px] font-bold text-gray-300 tracking-widest uppercase flex items-center">${count} Items <i class="fas fa-arrow-right ml-2 text-[#0071e3]"></i></p></div></div>`;
+            }).join('');
         }
 
-        function toggleProfileDropdown() { document.getElementById('profile-dropdown').classList.toggle('hidden-view'); }
-
-        function closeModals() {
-            document.getElementById('modal-auth').classList.add('hidden-view');
-            document.getElementById('modal-edit-profile').classList.add('hidden-view');
-            document.getElementById('modal-vedika').classList.add('hidden-view');
-            document.getElementById('auth-box')?.classList.replace('scale-100', 'scale-95');
-        }
-
-        function requireLogin(actionFunction) {
-            if (!currentUser) { openLoginModal(); } else { actionFunction(); }
-        }
-
-        function openLoginModal() {
-            closeModals(); document.getElementById('profile-dropdown').classList.add('hidden-view');
-            document.getElementById('modal-auth').classList.remove('hidden-view');
-            setTimeout(() => document.getElementById('auth-box').classList.replace('scale-95', 'scale-100'), 10);
-        }
-
-        // --- STORE & PRODUCTS ---
-        async function fetchProducts() {
-            try {
-                let res = await fetch(API_URL + "?action=getProducts&token=" + SECURE_TOKEN);
-                productsData = await res.json();
-                document.getElementById('loading-products').classList.add('hidden-view');
-                renderProducts();
-            } catch (e) { document.getElementById('loading-products').innerHTML = "<p class='text-red-500 font-bold'>Error loading store.</p>"; }
-        }
+        function filterCategory(cat) { document.getElementById('shopTitle').innerText = cat === 'All' ? 'All Items.' : cat; filteredProducts = cat === 'All' ? products : products.filter(p => p.Category === cat); renderProducts(); }
+        function openCategory(cat) { filterCategory(cat); showView('view-shop'); }
 
         function renderProducts() {
-            const grid = document.getElementById('products-grid'); grid.innerHTML = '';
-            productsData.forEach(p => {
-                if(p.Status === 'Hidden') return;
-                const isOutOfStock = Number(p.Stock) === 0;
-                const isWishlisted = wishlist.some(w => w.id == p.ID);
-                const heartColor = isWishlisted ? 'fill-red-500 text-red-500' : 'fill-none text-gray-400';
-                
-                const btnAction = isOutOfStock 
-                    ? `onclick="requireLogin(() => joinWaitlist('${p.ID}')); event.stopPropagation();"` 
-                    : `onclick="requireLogin(() => addToCart('${p.ID}', '${p.Name}', ${p.Price})); event.stopPropagation();"`;
-                
-                const btnText = isOutOfStock ? "Waitlist" : "+ Add to Cart";
-                const badge = isOutOfStock ? `<div class="badge-sale bg-black">Sold Out</div>` : (p.MRP ? `<div class="badge-sale">Sale</div>` : '');
+            const grid = document.getElementById('productGrid'); grid.innerHTML = '';
+            if(filteredProducts.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20"><i class="fas fa-box-open text-6xl text-gray-200 mb-6"></i><h3 class="text-2xl font-bold text-gray-900 mb-2">Nothing here yet</h3></div>`; return; }
 
-                // Product Card - NOW CLICKABLE!
+            filteredProducts.forEach((p, idx) => {
+                if(p.Stock <= 0) return; 
+                const heartClass = wishlist.some(w => w.id == p.ID) ? 'text-red-500' : 'text-gray-400';
+                const mainImg = p.Image_URL ? p.Image_URL.split(',')[0].trim() : 'https://via.placeholder.com/300';
+                
                 grid.innerHTML += `
-                    <div class="product-card group relative flex flex-col cursor-pointer" onclick="showProductDetail('${p.ID}')">
-                        <!-- ❤️ Floating Wishlist Heart -->
-                        <button onclick="requireLogin(() => toggleWishlist('${p.ID}', '${p.Name}', event)); event.stopPropagation();" class="absolute top-4 right-4 z-20 p-2.5 bg-white/80 backdrop-blur-md rounded-full shadow-sm hover:scale-110 transition border border-gray-100">
-                            <svg width="18" height="18" class="${heartColor} transition-colors" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                        </button>
-
-                        <div class="img-bg">
-                            ${badge}
-                            <img src="${p.Image_URL}" class="max-h-full object-contain mix-blend-multiply group-hover:scale-110 transition duration-700">
+                    <div class="apple-card p-5 flex flex-col relative group fade-in-up" style="animation-delay: ${idx*50}ms" onclick="showProductDetail('${p.ID}')">
+                        <button onclick="requireLogin(() => toggleWishlist('${p.ID}', '${p.Name}', event), true); event.stopPropagation();" class="absolute top-5 right-5 z-20 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full shadow-sm hover:scale-110 transition flex items-center justify-center ${heartClass}"><i class="fas fa-heart text-lg"></i></button>
+                        <div class="img-bg rounded-2xl mb-6"><img src="${mainImg}" class="max-h-[200px] object-contain mix-blend-multiply group-hover:scale-110 transition duration-700"></div>
+                        <div class="flex-1 px-1">
+                            <p class="text-[10px] font-black text-[#0071e3] uppercase tracking-widest mb-1">${p.Category || 'Premium'}</p>
+                            <h3 class="text-lg font-bold text-gray-900 leading-tight mb-2 truncate">${p.Name}</h3>
+                            <div class="flex items-end gap-3 mb-4"><span class="font-black text-2xl text-black tracking-tighter">₹${p.Price}</span><span class="text-sm font-semibold text-gray-400 line-through mb-1">₹${p.MRP}</span></div>
                         </div>
-                        <div class="p-6 flex flex-col flex-1">
-                            <h3 class="text-[15px] font-bold text-gray-900 leading-tight mb-2 truncate">${p.Name}</h3>
-                            <p class="text-[12px] text-gray-500 leading-relaxed line-clamp-2 mb-4 h-[36px]">${p.Description || 'Premium unpolished wooden masterpiece.'}</p>
-                            
-                            <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-4">
-                                <span class="font-bold text-lg text-black tracking-tighter">₹${p.Price}</span>
-                                <button ${btnAction} class="z-action text-[11px] font-bold bg-white border border-gray-200 text-black hover:bg-black hover:text-white px-4 py-2 rounded-full transition shadow-sm">${btnText}</button>
+                        <div class="mt-auto space-y-2 z-10" onclick="event.stopPropagation()">
+                            <div class="flex justify-between items-center bg-gray-50 rounded-xl p-1.5 border border-gray-100">
+                                <button onclick="changeQtyCard('${p.ID}', -1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-lg text-gray-600 font-bold shadow-sm hover:bg-gray-100">-</button>
+                                <span id="qty-${p.ID}" class="font-black text-sm text-gray-900">1</span>
+                                <button onclick="changeQtyCard('${p.ID}', 1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-lg text-gray-600 font-bold shadow-sm hover:bg-gray-100">+</button>
                             </div>
+                            <div class="flex gap-2"><button onclick="addToCart('${p.ID}')" class="card-btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button><button onclick="buyNow('${p.ID}')" class="card-btn btn-buy"><i class="fas fa-bolt"></i> Buy</button></div>
+                            <div class="flex gap-2"><button onclick="requireLogin(() => joinWaitlist('${p.ID}'))" class="card-btn btn-wait"><i class="fas fa-clock"></i> Waitlist</button><button onclick="shareWhatsApp('${p.Name}', '${p.Price}')" class="card-btn btn-wa"><i class="fab fa-whatsapp text-green-600 text-sm"></i> Share</button></div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
-        // --- 🌟 PRODUCT DETAIL PAGE LOGIC ---
+        // --- 🌟 AMAZON-STYLE PRODUCT DETAIL PAGE (MULTI IMAGE) ---
         function showProductDetail(id) {
-            const p = productsData.find(x => x.ID === id);
-            if(!p) return;
-
-            const isOutOfStock = Number(p.Stock) === 0;
-            const isWishlisted = wishlist.some(w => w.id == p.ID);
-            const heartColor = isWishlisted ? 'fill-red-500 text-red-500' : 'fill-none text-gray-400';
-
-            const btnAction = isOutOfStock
-                ? `requireLogin(() => joinWaitlist('${p.ID}'))`
-                : `requireLogin(() => addMultipleToCart('${p.ID}', '${p.Name}', ${p.Price}))`;
-            const btnText = isOutOfStock ? "Join Waitlist" : "Add to Cart";
-
-            // Fill Detail Page Elements
-            document.getElementById('pd-image').src = p.Image_URL;
-            document.getElementById('pd-name').innerText = p.Name;
-            document.getElementById('pd-price').innerText = `₹${p.Price}`;
-            document.getElementById('pd-mrp').innerText = p.MRP ? `₹${p.MRP}` : '';
-            document.getElementById('pd-desc').innerText = p.Description || 'Premium unpolished wooden masterpiece from Patel Traders.';
+            const p = products.find(x => x.ID === id); if(!p) return;
+            let images = p.Image_URL ? p.Image_URL.split(',').map(url => url.trim()) : ['https://via.placeholder.com/500'];
+            document.getElementById('pd-main-img').src = images[0];
             
-            // Dynamic Stock Badge
-            const stockBadge = document.getElementById('pd-stock');
-            stockBadge.innerText = isOutOfStock ? 'Out of Stock' : `In Stock: ${p.Stock} units available`;
-            stockBadge.className = isOutOfStock ? 'mb-4 w-fit text-red-500 font-bold text-xs bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 uppercase tracking-widest' : 'mb-4 w-fit text-green-600 font-bold text-xs bg-green-50 px-3 py-1.5 rounded-lg border border-green-100 uppercase tracking-widest';
+            const thumbs = document.getElementById('pd-thumbnails'); thumbs.innerHTML = '';
+            if(images.length > 1) { images.forEach((img, i) => { thumbs.innerHTML += `<img src="${img}" class="thumb-img ${i===0?'active':''}" onclick="changeMainImage(this, '${img}')">`; }); }
 
-            // Reset Quantity Selector
-            document.getElementById('pd-qty').value = 1;
-            document.getElementById('pd-qty-container').style.display = isOutOfStock ? 'none' : 'flex';
+            document.getElementById('pd-cat').innerText = p.Category || 'Premium Collection'; document.getElementById('pd-name').innerText = p.Name;
+            document.getElementById('pd-price').innerText = `₹${p.Price}`; document.getElementById('pd-mrp').innerText = p.MRP ? `₹${p.MRP}` : '';
+            document.getElementById('pd-desc').innerText = p.Long_Description || p.Description || 'Premium masterpiece.';
+            document.getElementById('pd-mat').innerText = p.Wood_Type || 'Solid Wood'; document.getElementById('pd-dim').innerText = p.Dimensions || 'Standard'; document.getElementById('pd-weight').innerText = p.Weight || 'Heavy Duty';
 
-            // Setup Action Button
-            const actionBtn = document.getElementById('pd-action-btn');
-            actionBtn.setAttribute('onclick', btnAction);
-            actionBtn.innerText = btnText;
-            actionBtn.className = isOutOfStock 
-                ? "flex-1 h-14 rounded-xl text-lg font-bold transition shadow-lg flex items-center justify-center gap-2 w-full bg-[#1d1d1f] text-white hover:bg-black" 
-                : "flex-1 h-14 rounded-xl text-lg font-bold transition shadow-lg flex items-center justify-center gap-2 w-full bg-[#0071e3] text-white hover:bg-blue-600 shadow-blue-500/30";
+            const sizeBox = document.getElementById('pd-size-box'); const sizeOpts = document.getElementById('pd-size-opts');
+            if(p.Size_Options) {
+                sizeOpts.innerHTML = p.Size_Options.split(',').map((s, i) => `<button onclick="selectSize(this)" class="size-btn ${i===0?'active':''}">${s.trim()}</button>`).join('');
+                sizeBox.classList.remove('hidden-view');
+            } else { sizeBox.classList.add('hidden-view'); }
 
-            // Setup Wishlist Button
-            document.getElementById('pd-wishlist-btn').innerHTML = `<svg width="24" height="24" class="${heartColor} transition-colors" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`;
-            document.getElementById('pd-wishlist-btn').setAttribute('onclick', `requireLogin(() => toggleWishlist('${p.ID}', '${p.Name}', event))`);
+            document.getElementById('pd-qty').innerText = "1";
+            document.getElementById('pd-btn-cart').setAttribute('onclick', `addToCart('${p.ID}', true)`);
+            document.getElementById('pd-btn-buy').setAttribute('onclick', `buyNow('${p.ID}', true)`);
+            
+            const isWish = wishlist.some(w => w.id == p.ID);
+            document.getElementById('pd-wishlist-btn').innerHTML = `<i class="fas fa-heart text-2xl ${isWish ? 'text-red-500' : 'text-gray-300'}"></i>`;
+            document.getElementById('pd-wishlist-btn').setAttribute('onclick', `toggleWishlist('${p.ID}', '${p.Name}', event)`);
 
             showView('view-product');
         }
 
-        function changeQty(amt) {
-            let q = parseInt(document.getElementById('pd-qty').value);
-            q += amt;
-            if(q < 1) q = 1;
-            if(q > 10) {
-                showToast('info', 'Maximum Limit', 'You can only add up to 10 items at a time.');
-                q = 10;
-            }
-            document.getElementById('pd-qty').value = q;
+        function changeMainImage(el, src) { document.getElementById('pd-main-img').src = src; document.querySelectorAll('.thumb-img').forEach(e => e.classList.remove('active')); el.classList.add('active'); }
+        function selectSize(btn) { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
+        function changeQtyPD(amt) { let el = document.getElementById('pd-qty'); let val = parseInt(el.innerText) + amt; if(val > 0 && val <= 10) el.innerText = val; }
+        function changeQtyCard(id, amt) { let el = document.getElementById(`qty-${id}`); let val = parseInt(el.innerText) + amt; if(val > 0 && val <= 10) el.innerText = val; }
+
+        // --- CART & ACTIONS ---
+        function addToCart(id, fromPD = false) {
+            const p = products.find(x => x.ID === id); const qty = parseInt(document.getElementById(fromPD ? 'pd-qty' : `qty-${id}`)?.innerText || 1);
+            let size = fromPD && !document.getElementById('pd-size-box').classList.contains('hidden-view') ? document.querySelector('.size-btn.active')?.innerText || "" : "";
+            let ex = cart.find(x => x.ID === id && x.size === size);
+            if(ex) ex.qty += qty; else { let firstImg = p.Image_URL ? p.Image_URL.split(',')[0].trim() : 'https://via.placeholder.com/100'; cart.push({...p, qty: qty, Image_URL: firstImg, size: size}); }
+            
+            localStorage.setItem('pt_cart', JSON.stringify(cart)); updateUI();
+            if(userEmail) api({action: 'syncCart', email: userEmail, cartItems: JSON.stringify(cart)});
+            showToast(`${qty}x ${p.Name} added to cart.`);
+            if(!fromPD && document.getElementById(`qty-${id}`)) document.getElementById(`qty-${id}`).innerText = "1";
         }
 
-        function addMultipleToCart(id, name, price) {
-            const qty = parseInt(document.getElementById('pd-qty').value) || 1;
-            for(let i=0; i<qty; i++) {
-                cart.push({ id, name, price });
-            }
-            localStorage.setItem('pt_cart', JSON.stringify(cart));
-            updateCartUI();
-            fetchSecure({action: 'syncCart', email: currentUser, cartItems: JSON.stringify(cart)});
-            showToast('success', 'Added to Cart', `<strong>${qty}x ${name}</strong> added to your cart.`);
-        }
-
-        // --- ❤️ WISHLIST LOGIC ---
+        function buyNow(id, fromPD = false) { addToCart(id, fromPD); showView('view-cart'); }
+        function joinWaitlist(id) { api({action: 'addWaitlist', email: userEmail || 'guest', productId: id}); showToast('Waitlist Joined. We will notify you.'); }
+        function shareWhatsApp(name, price) { let num = prompt("Enter WhatsApp number (10 digits):"); if(num && num.length >= 10) window.open(`https://wa.me/91${num}?text=${encodeURIComponent(`Check out this premium item from Patel Traders:\n\n*${name}*\nPrice: ₹${price}\n\n*Pure. Unpolished. Premium.*`)}`, '_blank'); }
+        
         function toggleWishlist(id, name, event) {
             if(event) event.stopPropagation();
             const index = wishlist.findIndex(w => w.id === id);
-            if(index > -1) {
-                wishlist.splice(index, 1);
-                showToast('info', 'Removed from Wishlist', `${name} has been removed.`);
-            } else {
-                wishlist.push({id, name});
-                fetchSecure({ action: 'universalWrite', sheetName: 'Wishlists', rowData: [currentUser, id, name, new Date().toLocaleString()] });
-                showToast('success', 'Added to Wishlist', `${name} is saved to your wishlist.`);
-            }
-            localStorage.setItem('pt_wishlist', JSON.stringify(wishlist));
-            renderProducts(); 
-            
-            // Re-render product detail page button if it is currently open
-            if(!document.getElementById('view-product').classList.contains('hidden-view')) {
-                const heartColor = index > -1 ? 'fill-none text-gray-400' : 'fill-red-500 text-red-500';
-                document.getElementById('pd-wishlist-btn').innerHTML = `<svg width="24" height="24" class="${heartColor} transition-colors" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`;
-            }
-
-            if(!document.getElementById('view-wishlist').classList.contains('hidden-view')) renderWishlist();
+            if(index > -1) { wishlist.splice(index, 1); showToast(`${name} removed from wishlist.`); } else { wishlist.push({id, name}); showToast(`${name} added to wishlist.`); }
+            localStorage.setItem('pt_wishlist', JSON.stringify(wishlist)); renderProducts(); renderWishlist();
+            if(!document.getElementById('view-product').classList.contains('hidden-view')) showProductDetail(id);
         }
-
         function renderWishlist() {
             const container = document.getElementById('wishlist-items'); container.innerHTML = '';
-            if(wishlist.length === 0) { container.innerHTML = '<div class="glass-card p-10 col-span-2 text-center text-gray-500 font-bold text-lg">Your Wishlist is Empty.</div>'; return; }
-            wishlist.forEach(item => {
-                const product = productsData.find(p => p.ID == item.id);
-                if(product) {
-                    container.innerHTML += `
-                        <div class="glass-card p-5 flex items-center justify-between cursor-pointer hover:shadow-md transition" onclick="showProductDetail('${product.ID}')">
-                            <div class="flex items-center gap-5">
-                                <img src="${product.Image_URL}" class="w-20 h-20 object-cover rounded-2xl bg-white shadow-sm border border-gray-100 p-2 mix-blend-multiply">
-                                <div><h4 class="font-bold text-lg text-black">${product.Name}</h4><p class="text-[15px] text-gray-500 font-bold mt-1">₹${product.Price}</p></div>
-                            </div>
-                            <button onclick="toggleWishlist('${product.ID}', '${product.Name}', event)" class="z-action text-red-500 p-3 bg-red-50 rounded-full hover:bg-red-100 hover:scale-110 transition-all"><svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
-                        </div>
-                    `;
-                }
+            if(wishlist.length === 0) { container.innerHTML = '<div class="glass-card p-10 col-span-full text-center text-gray-500 font-bold">Wishlist is Empty.</div>'; return; }
+            wishlist.forEach(w => { const p = products.find(x => x.ID == w.id); if(p) container.innerHTML += `<div class="glass-card p-5 flex items-center justify-between cursor-pointer hover:shadow-lg transition border border-gray-100" onclick="showProductDetail('${p.ID}')"><div class="flex items-center gap-4"><img src="${p.Image_URL ? p.Image_URL.split(',')[0].trim() : 'https://via.placeholder.com/100'}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 p-1 mix-blend-multiply"><div><h4 class="font-bold text-sm">${p.Name}</h4><p class="text-xs text-[#0071e3] font-black mt-1">₹${p.Price}</p></div></div><button onclick="toggleWishlist('${p.ID}', '${p.Name}', event)" class="text-red-500 bg-red-50 w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-100 transition z-10 shadow-sm"><i class="fas fa-trash text-sm"></i></button></div>`; });
+        }
+
+        function updateUI() {
+            document.getElementById('cartCount').innerText = cart.length; document.getElementById('cartItems').innerHTML = ''; let sub = 0;
+            if(cart.length === 0) { document.getElementById('cartItems').innerHTML = '<div class="glass-card p-12 text-center text-gray-500 font-bold text-lg"><i class="fas fa-shopping-basket text-4xl mb-4 text-gray-300"></i><br>Your cart is empty.</div>'; } 
+            else {
+                cart.forEach((item, index) => {
+                    sub += Number(item.Price) * item.qty; let sizeText = item.size ? `<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-[10px] ml-2 border font-bold uppercase tracking-widest">${item.size}</span>` : "";
+                    document.getElementById('cartItems').innerHTML += `<div class="glass-card p-4 flex items-center justify-between mb-4 shadow-sm fade-in-up" style="animation-delay: ${index*50}ms"><div class="flex gap-4 items-center"><img src="${item.Image_URL}" class="w-16 h-16 object-cover rounded-xl border border-gray-100 bg-gray-50 p-1 mix-blend-multiply"><div><h4 class="font-bold text-[15px] text-gray-900 leading-tight">${item.Name} ${sizeText}</h4><p class="text-sm text-[#0071e3] font-black mt-1">₹${item.Price} <span class="text-xs text-gray-400 font-medium">x ${item.qty}</span></p></div></div><button onclick="cart.splice(${index}, 1); localStorage.setItem('pt_cart', JSON.stringify(cart)); updateUI();" class="text-red-500 bg-red-50 w-10 h-10 rounded-full hover:bg-red-100 transition shadow-sm flex items-center justify-center hover:scale-110"><i class="fas fa-trash text-sm"></i></button></div>`;
+                });
+            }
+            const fee = (sub > 0 && sub < 2000) ? 250 : 0;
+            document.getElementById('subtotal').innerText = `₹${sub}`; document.getElementById('shipping').innerText = fee > 0 ? `+₹${fee}` : 'FREE'; document.getElementById('shipping').className = fee > 0 ? 'text-red-500 font-bold bg-red-50 px-3 py-1 rounded-lg' : 'text-green-600 font-bold bg-green-50 px-3 py-1 rounded-lg'; document.getElementById('total').innerText = `₹${sub + fee}`;
+        }
+
+        // 🟢 FINAL CHECKOUT LOGIC (Login Mandatory)
+        function processFinalCheckout(method) {
+            if(cart.length === 0) return showToast("Cart Empty", true);
+            if(!userEmail) { showToast("Please login securely to place order.", true); openAuthModal(); return; }
+            const addr = document.getElementById('checkout-addr').innerText;
+            if(!addr || addr.includes("update profile address")) { showToast("Address missing. Update profile.", true); openEditProfile(); return; }
+            
+            const sub = cart.reduce((a,b) => a + (Number(b.Price)*b.qty), 0); const fee = (sub > 0 && sub < 2000) ? 250 : 0;
+            const itemsList = cart.map(i => `${i.Name} ${i.size ? '('+i.size+')' : ''} x ${i.qty}`).join(", ");
+            showToast('Processing Secure Order...');
+            
+            let pid = method === 'ONLINE' ? "PAY_" + Date.now() : "COD";
+            api({ action: 'placeOrder', email: userEmail, items: itemsList, amount: sub+fee, razorpayId: pid }).then(res => {
+                if(res.status === 'success') {
+                    closeModals();
+                    document.getElementById('view-shop').innerHTML = `<div class="max-w-xl mx-auto py-20 text-center fade-in-up"><div class="w-28 h-28 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-green-100 shadow-xl"><i class="fas fa-check text-6xl text-green-500"></i></div><h2 class="text-5xl font-black mb-4 tracking-tight text-gray-900">Order Confirmed!</h2><p class="text-gray-500 mb-2 font-medium text-lg">Thank you. Your order has been securely placed.</p><p class="font-black text-2xl mb-10 tracking-wider bg-gray-50 py-4 rounded-2xl border border-gray-200 shadow-inner">${res.orderId}</p><br><button onclick="location.reload()" class="bg-[#1d1d1f] text-white px-12 py-5 rounded-2xl font-bold shadow-2xl hover:bg-black hover:scale-105 transition-all text-lg">Continue Shopping</button></div>`;
+                    showView('view-shop'); cart = []; localStorage.removeItem('pt_cart'); updateUI();
+                } else { showToast("Order Failed. Try again.", true); }
             });
         }
 
-        // --- AUTH LOGIC ---
-        async function fetchSecure(dataObj) {
-            dataObj.token = SECURE_TOKEN;
-            const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(dataObj) });
-            return await res.json();
+        // --- 🔑 AUTH & MODALS ---
+        function openAuthModal() { closeModals(); document.getElementById('profileMenu').classList.remove('active'); document.getElementById('authModal').classList.add('active'); }
+        function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+        function closeEditModal() { document.getElementById('modal-edit-profile').classList.remove('active'); }
+        function closeModals() { ['authModal', 'modal-edit-profile'].forEach(id => document.getElementById(id).classList.remove('active')); }
+        function requireLogin(fn, forceLogin = false) { if (!userEmail) { if(forceLogin) openAuthModal(); else showToast("Login Required", true); } else fn(); }
+        function logout() { localStorage.clear(); location.reload(); }
+
+        function switchAuth(mode) {
+            authMode = mode;
+            document.getElementById('tabLogin').className = mode === 'login' ? 'flex-1 py-3 rounded-lg font-bold text-blue-600 bg-white shadow-sm transition z-10' : 'flex-1 py-3 rounded-lg font-bold text-gray-500 hover:text-gray-800 transition z-10';
+            document.getElementById('tabReg').className = mode === 'register' ? 'flex-1 py-3 rounded-lg font-bold text-blue-600 bg-white shadow-sm transition z-10' : 'flex-1 py-3 rounded-lg font-bold text-gray-500 hover:text-gray-800 transition z-10';
+            
+            const regFields = document.getElementById('regFields');
+            if(mode === 'register') { regFields.classList.remove('hidden-view'); regFields.classList.add('fade-in-up'); } 
+            else { regFields.classList.add('hidden-view'); regFields.classList.remove('fade-in-up'); }
+            
+            document.getElementById('otpBtn').innerText = mode === 'register' ? 'Register & Get OTP' : 'Request Secure Code';
         }
 
-        function toggleAuthMode() {
-            isRegisterMode = !isRegisterMode;
-            document.getElementById('register-fields').classList.toggle('hidden-view');
-            document.getElementById('auth-title').innerText = isRegisterMode ? "Create Account" : "Secure Login";
-            document.getElementById('auth-subtitle').innerText = isRegisterMode ? "Enter details below" : "Please login to continue";
-            document.getElementById('toggle-text').innerHTML = isRegisterMode 
-                ? 'Already registered? <button onclick="toggleAuthMode()" class="text-[#0071e3] font-bold hover:underline">Login Here</button>'
-                : 'New Account? <button onclick="toggleAuthMode()" class="text-[#0071e3] font-bold hover:underline">Register Here</button>';
-        }
+        async function requestOTP() {
+            const email = document.getElementById('emailInput').value; const phone = document.getElementById('phoneInput').value; const name = document.getElementById('nameInput').value;
+            if(!email) return showToast("Enter Email Address", true);
+            if(authMode === 'register' && (!name || !phone)) return showToast("Enter Full Name and Phone", true);
 
-        async function sendOTP() {
-            const email = document.getElementById('authEmail').value; if(!email) return;
-            if(isRegisterMode) localStorage.setItem('temp_reg', JSON.stringify({n: document.getElementById('regName').value, p: document.getElementById('regPhone').value}));
-            document.getElementById('btn-send-otp').innerHTML = '<div class="loader mx-auto border-t-white"></div>';
-            await fetchSecure({action: 'sendOTP', email: email});
-            showToast('info', 'OTP Sent', 'Please check your email inbox.');
-            document.getElementById('form-details').classList.add('hidden-view'); document.getElementById('otp-section').classList.remove('hidden-view');
+            const btn = document.getElementById('otpBtn'); btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Processing...`; btn.disabled = true;
+
+            const res = await api({action: "sendOTP", email: email, phone: authMode === 'register' ? phone : ""});
+            if(res && res.status === "success") {
+                document.getElementById('authStep1').classList.add('hidden-view');
+                document.getElementById('authStep2').classList.remove('hidden-view');
+                showToast("OTP sent securely to your email.");
+            } else { btn.innerText = authMode === 'register' ? 'Register & Get OTP' : 'Request Secure Code'; btn.disabled = false; }
         }
 
         async function verifyOTP() {
-            const email = document.getElementById('authEmail').value; const otp = document.getElementById('authOTP').value;
-            const regData = isRegisterMode ? JSON.parse(localStorage.getItem('temp_reg')) : null;
-            document.getElementById('btn-verify-otp').innerHTML = '<div class="loader mx-auto border-t-white"></div>';
-            
-            let data = await fetchSecure({
-                action: 'verifyOTP', email: email, otp: otp, 
-                deviceInfo: navigator.userAgent.substring(0, 50), 
-                isNewReg: isRegisterMode, regName: regData?.n, regPhone: regData?.p
-            });
-            
-            if(data.status === 'success') { 
-                localStorage.setItem('pt_user_email', email); 
-                if(isRegisterMode && regData) { localStorage.setItem('pt_cached_name', regData.n); localStorage.removeItem('temp_reg'); }
-                location.reload(); 
-            } else { 
-                showToast('error', 'Authentication Failed', 'Invalid OTP entered. Please try again.');
-                document.getElementById('btn-verify-otp').innerHTML = 'Verify OTP'; 
-            }
+            const email = document.getElementById('emailInput').value; const otp = document.getElementById('otpInput').value;
+            if(!otp || otp.length < 6) return showToast("Enter 6-digit OTP", true);
+            const btn = document.getElementById('verifyBtn'); btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Verifying...`;
+
+            const res = await api({ action: "verifyOTP", email: email, otp: otp, deviceInfo: navigator.userAgent.substring(0, 50), isNewReg: authMode === 'register', regName: document.getElementById('nameInput').value, regPhone: document.getElementById('phoneInput').value });
+
+            if(res && res.status === "success") { localStorage.setItem("pt_email", email); showToast("Access Granted!"); setTimeout(() => location.reload(), 1000); } 
+            else { btn.innerText = "Verify & Enter"; showToast("Invalid OTP. Try again.", true); }
         }
 
-        function logout() { localStorage.clear(); location.reload(); }
-
-        // --- 🔒 SMART PROFILE & ORDER LOGIC ---
+        // --- PROFILE & ADDRESS LOGIC ---
         function updateProfileUIDirectly(name, email) {
-            document.getElementById('drop-name').innerText = name;
-            document.getElementById('drop-email').innerText = email;
-            document.getElementById('btn-drop-login').classList.add('hidden-view');
-            document.getElementById('btn-drop-orders').classList.remove('hidden-view');
-            document.getElementById('btn-drop-logout').classList.remove('hidden-view');
-            document.getElementById('btn-edit-profile').classList.remove('hidden-view');
+            document.getElementById('dropName').innerText = name; document.getElementById('dropEmail').innerText = email; document.getElementById('prof-email').value = email; 
+            ['btn-menu-login'].forEach(id => document.getElementById(id).classList.add('hidden-view'));
+            ['btn-menu-orders', 'btn-menu-logout', 'btn-edit-prof'].forEach(id => document.getElementById(id).classList.remove('hidden-view'));
             document.getElementById('prof-name').value = name;
-            
-            const avatarUrl = `https://ui-avatars.com/api/?name=${name}&background=f4f5f7&color=000&bold=true`;
-            document.getElementById('header-avatar').src = avatarUrl;
-            document.getElementById('drop-avatar').src = avatarUrl;
-        }
-
-        async function fetchOrders() {
-            const container = document.getElementById('orders-list'); 
-            if(document.getElementById('view-orders').classList.contains('hidden-view') === false) {
-                container.innerHTML = '<div class="loader mx-auto"></div>';
-            }
-            
-            try {
-                let res = await fetch(API_URL + "?action=getOrderHistory&email=" + currentUser + "&token=" + SECURE_TOKEN);
-                let data = await res.json();
-                
-                hasActiveOrder = data.some(o => {
-                    const status = o.Status.toLowerCase();
-                    return status.includes('pending') || status.includes('processing') || status.includes('shipped');
-                });
-
-                if(hasActiveOrder) {
-                    document.getElementById('btn-edit-profile').classList.add('hidden-view');
-                    document.getElementById('btn-locked-profile').classList.remove('hidden-view');
-                } else {
-                    document.getElementById('btn-locked-profile').classList.add('hidden-view');
-                    document.getElementById('btn-edit-profile').classList.remove('hidden-view');
-                }
-
-                if(data.length === 0) { container.innerHTML = '<div class="glass-card p-10 text-center font-bold text-gray-500">No orders found.</div>'; return; }
-                container.innerHTML = '';
-                [...data].reverse().forEach(o => {
-                    const color = o.Status.toLowerCase().includes('pending') ? 'bg-orange-50 text-orange-600 border-orange-100' : 'bg-green-50 text-green-600 border-green-100';
-                    container.innerHTML += `
-                        <div class="glass-card p-6 flex justify-between items-center transition hover:shadow-md">
-                            <div><p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase mb-1">ID: ${o.Order_ID}</p><h4 class="font-bold text-lg text-black leading-tight">${o.Items}</h4><p class="text-sm font-bold mt-2 text-gray-600">₹${o.Amount}</p></div>
-                            <span class="text-[11px] font-bold px-3 py-1.5 rounded-md border shadow-sm ${color}">${o.Status}</span>
-                        </div>
-                    `;
-                });
-            } catch(e) { container.innerHTML = "Error loading orders."; }
+            const avatarUrl = `https://ui-avatars.com/api/?name=${name}&background=f4f4f7&color=000&bold=true`;
+            document.getElementById('userAvatar').src = avatarUrl; document.getElementById('dropAvatar').src = avatarUrl;
         }
 
         async function fetchUserData() {
             try {
-                let res = await fetch(API_URL + "?action=readUniversal&sheetName=Users&token=" + SECURE_TOKEN);
-                let users = await res.json();
-                let me = users.find(u => u.Email === currentUser || Object.values(u)[1] === currentUser);
-                
+                let res = await fetch(`${SCRIPT_URL}?action=readUniversal&sheetName=Users&token=${TOKEN}`); let users = await res.json(); let me = users.find(u => u.Email === userEmail);
                 if(me) {
-                    let nameField = me.Name || me['Full Name'] || Object.values(me)[0];
-                    const name = (nameField && nameField !== "New User") ? nameField : (localStorage.getItem('pt_cached_name') || currentUser.split('@')[0]);
-                    
-                    updateProfileUIDirectly(name, currentUser);
-                    
-                    const updatesUsed = me.UpdateCount || Object.values(me)[9] || 0;
-                    const badge = document.getElementById('limit-badge');
-                    badge.innerText = `Updates: ${updatesUsed}/5`;
-                    badge.classList.remove('hidden-view');
-                    if(updatesUsed >= 5) badge.classList.replace('text-blue-600', 'text-red-600');
-
-                    document.getElementById('prof-phone').value = me.Phone || Object.values(me)[2] || "";
-                    document.getElementById('prof-address').value = me.Address || Object.values(me)[3] || "";
+                    updateProfileUIDirectly(me.Name || userEmail.split('@')[0], userEmail);
+                    const updatesUsed = me.UpdateCount || 0; document.getElementById('badge-limit').innerText = `Updates: ${updatesUsed}/5`; document.getElementById('badge-limit').classList.remove('hidden-view');
+                    if(updatesUsed >= 5) document.getElementById('badge-limit').classList.replace('text-blue-600', 'text-red-600');
+                    document.getElementById('prof-phone').value = me.Phone || ""; document.getElementById('checkout-addr').innerText = me.Address || "Please update profile address.";
                 }
-            } catch(e) { console.log("Data fetch error"); }
+            } catch(e) {}
+        }
+
+        async function fetchOrders() {
+            const container = document.getElementById('orders-list'); container.innerHTML = '<div class="loader mx-auto"></div>';
+            try {
+                let res = await fetch(`${SCRIPT_URL}?action=getOrderHistory&email=${userEmail}&token=${TOKEN}`); let data = await res.json();
+                let hasActiveOrder = data.some(o => o.Status.toLowerCase().includes('pending') || o.Status.toLowerCase().includes('processing'));
+                if(hasActiveOrder) { document.getElementById('btn-edit-prof').classList.add('hidden-view'); document.getElementById('btn-lock-prof').classList.remove('hidden-view'); }
+                if(data.length === 0) { container.innerHTML = '<div class="glass-card p-10 text-center font-bold text-gray-500 text-lg">No orders found in Vault.</div>'; return; }
+                container.innerHTML = [...data].reverse().map((o, i) => `<div class="glass-card p-6 flex justify-between items-center fade-in-up shadow-sm border border-gray-100" style="animation-delay: ${i*100}ms"><div><p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase mb-2">ID: ${o.Order_ID}</p><h4 class="font-bold text-[16px] text-gray-900 leading-tight max-w-[200px] md:max-w-md truncate">${o.Items}</h4><p class="text-sm font-black mt-2 text-[#0071e3]">₹${o.Amount}</p></div><span class="text-[11px] font-bold px-4 py-2 rounded-lg shadow-sm uppercase tracking-wider ${o.Status.toLowerCase().includes('pending') ? 'bg-orange-50 text-orange-600 border border-orange-200' : 'bg-green-50 text-green-600 border border-green-200'}">${o.Status}</span></div>`).join('');
+            } catch(e) { container.innerHTML = "Error loading orders."; }
         }
 
         function openEditProfile() {
-            closeModals(); document.getElementById('profile-dropdown').classList.add('hidden-view');
-            const badgeText = document.getElementById('limit-badge').innerText;
-            if(badgeText.includes('5/5')) { 
-                showToast('error', 'Limit Exceeded', 'You have reached the maximum of 5 updates this month.');
-                return; 
-            }
-            document.getElementById('modal-edit-profile').classList.remove('hidden-view');
+            closeModals(); document.getElementById('profileMenu').classList.remove('active');
+            if(document.getElementById('badge-limit').innerText.includes('5/5')) return showToast('Maximum 5 updates per month allowed.', true);
+            document.getElementById('modal-edit-profile').classList.add('active');
         }
 
         async function saveProfile() {
-            const btn = document.getElementById('btn-save-prof'); btn.innerHTML = '<div class="loader mx-auto border-t-white"></div>';
-            const nameToSave = document.getElementById('prof-name').value;
-            
-            let data = await fetchSecure({
-                action: 'updateProfile', email: currentUser, 
-                name: nameToSave, phone: document.getElementById('prof-phone').value, address: document.getElementById('prof-address').value
-            });
-            if(data.status === 'success') {
-                localStorage.setItem('pt_cached_name', nameToSave);
-                updateProfileUIDirectly(nameToSave, currentUser);
-                showToast('success', 'Profile Updated', 'Your details have been successfully saved.');
-                btn.innerHTML = '✓ Saved Successfully'; fetchUserData(); setTimeout(() => { closeModals(); btn.innerHTML = 'Save Details'; }, 1500);
-            } else { 
-                showToast('error', 'Update Failed', data.message);
-                btn.innerHTML = 'Save Details'; 
-            }
+            const btn = document.getElementById('btn-save-prof'); btn.innerHTML = '<div class="loader mx-auto border-t-white"></div>'; const nameToSave = document.getElementById('prof-name').value;
+            const l1 = document.getElementById('addr-line1').value; const l2 = document.getElementById('addr-line2').value; const pin = document.getElementById('addr-pincode').value; const city = document.getElementById('addr-city').value; const state = document.getElementById('addr-state').value;
+            let fullAddress = [l1, l2, city, state].filter(Boolean).join(", "); if(pin) fullAddress += ` - ${pin}`;
+            let data = await api({ action: 'updateProfile', email: userEmail, name: nameToSave, phone: document.getElementById('prof-phone').value, address: fullAddress });
+            if(data.status === 'success') { localStorage.setItem('pt_cached_name', nameToSave); updateProfileUIDirectly(nameToSave, userEmail); showToast('Profile details saved successfully.'); fetchUserData(); setTimeout(() => { closeEditModal(); btn.innerHTML = 'Save Profile Settings'; }, 1000); } 
+            else { showToast(data.message, true); btn.innerHTML = 'Save Profile Settings'; }
         }
 
-        // --- CART LOGIC ---
-        function addToCart(id, name, price) {
-            cart.push({ id, name, price }); localStorage.setItem('pt_cart', JSON.stringify(cart)); updateCartUI();
-            fetchSecure({action: 'syncCart', email: currentUser, cartItems: JSON.stringify(cart)});
-            
-            showToast('success', 'Added to Cart', `<strong>${name}</strong> is now in your cart.`);
+        // 🤖 VEDIKA AI WIDGET
+        function toggleVedika() {
+            const ui = document.getElementById('vedikaBox');
+            if(!ui.classList.contains('hidden-view')) { ui.classList.remove('fade-in-up'); ui.classList.add('hidden-view'); } 
+            else { ui.classList.remove('hidden-view'); ui.classList.add('fade-in-up'); ui.style.display = 'flex'; }
         }
-
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            const container = document.getElementById('cart-items'); container.innerHTML = '';
-            let total = 0;
-            if(cart.length === 0) { container.innerHTML = '<div class="glass-card p-12 text-center text-gray-500 font-bold">Your cart is empty.</div>'; } 
-            else {
-                cart.forEach((item, index) => {
-                    total += Number(item.price);
-                    container.innerHTML += `
-                        <div class="glass-card p-5 flex items-center justify-between transition">
-                            <div><h4 class="font-bold text-[15px] text-gray-900">${item.name}</h4><p class="text-xs text-gray-500 font-bold mt-1">₹${item.price}</p></div>
-                            <button onclick="removeFromCart(${index})" class="text-xs text-red-500 font-bold bg-red-50 border border-red-100 px-4 py-2 rounded-full hover:bg-red-100 transition">Remove</button>
-                        </div>
-                    `;
-                });
-            }
-            document.getElementById('cart-subtotal').innerText = `₹${total}`; document.getElementById('cart-total').innerText = `₹${total}`;
-        }
-
-        function removeFromCart(index) { 
-            cart.splice(index, 1); localStorage.setItem('pt_cart', JSON.stringify(cart)); updateCartUI(); 
-            showToast('info', 'Item Removed', 'The item was removed from your cart.');
-        }
-
-        async function checkout() {
-            if(cart.length === 0) return showToast('error', 'Cart Empty', 'Please add items to cart before checkout.');
-            const address = document.getElementById('prof-address').value;
-            if(!address || address.length < 5) { 
-                showToast('error', 'Address Missing', 'Please save your delivery address in your profile.');
-                return; 
-            }
-
-            const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
-            const itemsList = cart.map(i => i.name).join(", ");
-            
-            showToast('info', 'Initializing Payment...', 'Connecting to secure gateway.');
-            
-            try {
-                let razorpayId = "pay_" + Date.now();
-                let data = await fetchSecure({ action: 'placeOrder', email: currentUser, items: itemsList, amount: total, razorpayId: razorpayId });
-                if(data.status === 'success') { 
-                    showToast('payment', 'Order Confirmed!', `Transaction successful.<br><strong>Txn ID:</strong> ${razorpayId}<br><strong>Amount:</strong> ₹${total}`);
-                    cart = []; localStorage.removeItem('pt_cart'); updateCartUI(); showOrders(); 
-                }
-            } catch (e) { showToast('error', 'Payment Failed', 'An error occurred during transaction.'); }
-        }
-
-        async function joinWaitlist(productId) { 
-            showToast('success', 'Waitlist Joined', 'We will notify you when this item is back in stock.');
-            fetchSecure({action: 'addWaitlist', email: currentUser, productId: productId}); 
-        }
-
-        // --- VEDIKA AI ---
-        function openVedika() { closeModals(); document.getElementById('modal-vedika').classList.remove('hidden-view'); }
-        async function askVedika() {
-            const input = document.getElementById('ai-input'); const chat = document.getElementById('chat-area');
+        
+        async function askAI() {
+            const input = document.getElementById('chatInput'); const chat = document.getElementById('chatBody');
             const q = input.value.trim(); if(!q) return;
-            chat.innerHTML += `<div class="bg-[#1d1d1f] text-white p-4 rounded-2xl rounded-tr-sm w-fit max-w-[85%] text-[14px] ml-auto shadow-md">${q}</div>`;
+            chat.innerHTML += `<div class="bg-gradient-to-r from-[#0071e3] to-[#42a1ff] text-white p-3.5 rounded-2xl rounded-tr-sm w-fit max-w-[85%] text-[13.5px] ml-auto shadow-md fade-in-up font-medium">${q}</div>`;
             input.value = ''; chat.scrollTop = chat.scrollHeight;
-            const id = 'l-'+Date.now(); chat.innerHTML += `<div id="${id}" class="bg-white border border-gray-100 p-4 rounded-2xl rounded-tl-sm w-[85%] text-sm flex items-center gap-3"><div class="loader w-4 h-4 border-t-black"></div> Thinking...</div>`;
+            const id = 'l-'+Date.now(); chat.innerHTML += `<div id="${id}" class="bg-white p-3.5 rounded-2xl rounded-tl-sm w-[85%] text-xs flex items-center gap-2 font-bold text-gray-500 shadow-sm fade-in-up"><div class="loader w-3.5 h-3.5 border-t-[#0071e3]"></div> Processing Request...</div>`;
             chat.scrollTop = chat.scrollHeight;
-            try {
-                let data = await fetchSecure({action: 'askVedika', query: q});
-                document.getElementById(id).remove();
-                chat.innerHTML += `<div class="bg-white border border-gray-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] p-5 rounded-2xl rounded-tl-sm w-[90%] text-[14px] text-gray-900 leading-relaxed font-medium">${data.answer}</div>`;
-                chat.scrollTop = chat.scrollHeight;
-            } catch(e) { document.getElementById(id).remove(); }
+            let data = await api({action: 'askVedika', query: q, email: userEmail}); document.getElementById(id).remove();
+            if(data && data.status === 'success') { chat.innerHTML += `<div class="bg-white border border-gray-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] p-4 rounded-2xl rounded-tl-sm w-[90%] text-[13.5px] text-gray-900 font-medium leading-relaxed fade-in-up">${data.answer}</div>`; }
+            else { chat.innerHTML += `<div class="bg-red-50 text-red-500 p-3 rounded-2xl rounded-tl-none shadow-sm fade-in-up">Network error.</div>`; }
+            chat.scrollTop = chat.scrollHeight;
         }
     </script>
 </body>
