@@ -6,7 +6,9 @@
     <title>Patel Traders | Apple Style Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- 🔥 MARKDOWN PARSER FOR VEDIKA AI -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 🔥 RAZORPAY SDK (PAYMENT GATEWAY) -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap');
@@ -26,7 +28,7 @@
         .hidden-view { display: none !important; }
 
         /* 📦 Premium Card Design */
-        .apple-card { border-radius: 24px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #f2f2f2; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); cursor: pointer; overflow: hidden; }
+        .apple-card { border-radius: 24px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #f2f2f2; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); cursor: pointer; overflow: hidden; display: flex; flex-direction: column; }
         .apple-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 30px 60px -15px rgba(0,0,0,0.12); border-color: rgba(0,0,0,0.08); background: #fff; z-index: 10; }
         .img-bg { background-color: #f9f9fb; height: 240px; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; overflow: hidden; }
         
@@ -40,7 +42,7 @@
         /* Modals & Menus */
         .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.4); backdrop-filter: blur(15px); z-index:100; align-items:center; justify-content:center; opacity: 0; transition: opacity 0.3s ease; padding: 20px; }
         .modal.active { display:flex; opacity: 1; }
-        .modal-content { transform: scale(0.95); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-content { transform: scale(0.95); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto; }
         .modal.active .modal-content { transform: scale(1); opacity: 1; }
 
         .profile-dropdown { position: absolute; right: 0; top: 55px; width: 340px; z-index: 100; border-radius: 24px; padding: 24px; transform-origin: top right; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; pointer-events: none; transform: scale(0.95); background: rgba(255, 255, 255, 0.98); backdrop-filter: saturate(180%) blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
@@ -213,7 +215,13 @@
     <main id="view-shop" class="hidden-view max-w-[1400px] mx-auto px-6 py-12 relative z-10 pb-24 fade-in-up">
         <div class="flex justify-between items-end mb-8">
             <h2 id="shopTitle" class="text-5xl font-black tracking-tighter text-gray-900">All Items.</h2>
-            <button onclick="showView('view-collections')" class="text-sm font-bold text-[#0071e3] hover:underline bg-blue-50 px-4 py-2 rounded-full transition">Clear Filter</button>
+            <button onclick="document.getElementById('searchInput').value=''; filterCategory('All')" class="text-sm font-bold text-[#0071e3] hover:underline bg-blue-50 px-4 py-2 rounded-full transition">Clear Filter</button>
+        </div>
+
+        <!-- 🔥 LIVE AI SEARCH BAR -->
+        <div class="relative w-full mb-8 fade-in-up">
+            <i class="fas fa-search absolute left-4 top-4 text-gray-400 text-lg"></i>
+            <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="🔍 Search for pure wood products, categories..." class="w-full bg-gray-50/80 border border-gray-100 rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:border-[#0071e3] focus:bg-white transition-all shadow-sm font-medium text-gray-700">
         </div>
         
         <div id="categoryContainer" class="flex gap-3 overflow-x-auto pb-4 scrollbar-hide mb-8"></div>
@@ -244,8 +252,11 @@
                 <!-- Details -->
                 <div class="lg:col-span-5 flex flex-col justify-center">
                     <p id="pd-cat" class="text-xs font-black text-[#0071e3] uppercase tracking-widest mb-3 bg-blue-50 w-fit px-3 py-1 rounded-md"></p>
+                    
+                    <!-- 🔥 Full Title Display (No Truncation) -->
                     <h1 id="pd-name" class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-4"></h1>
                     
+                    <!-- 🔥 STOCK BADGE -->
                     <div id="pd-stock-badge" class="mb-4"></div>
 
                     <div class="flex items-center gap-2 mb-8 text-[#e11d48] text-sm bg-red-50 w-fit px-3 py-1.5 rounded-lg border border-red-100">
@@ -271,7 +282,9 @@
                     </div>
 
                     <h3 class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-3 flex items-center"><i class="fas fa-align-left mr-2"></i> About this item</h3>
-                    <p id="pd-desc" class="text-gray-600 leading-relaxed text-[15px] font-medium mb-10 bg-gray-50/50 p-4 rounded-2xl border border-gray-50"></p>
+                    
+                    <!-- 🔥 Full Long Description with line breaks -->
+                    <p id="pd-desc" class="text-gray-600 leading-relaxed text-[15px] font-medium mb-10 bg-gray-50/50 p-5 rounded-2xl border border-gray-50 whitespace-pre-line"></p>
 
                     <div id="pd-actions-area"></div>
                 </div>
@@ -382,7 +395,7 @@
         </div>
     </div>
 
-    <!-- 🔥 MODAL: COD SWIPE -->
+    <!-- 🔥 MODAL: COD SWIPE TO CONFIRM -->
     <div id="codSwipeModal" class="modal">
         <div class="glass-card p-8 rounded-[40px] w-[380px] text-center shadow-2xl relative modal-content bg-white/95">
             <button onclick="closeCodModal()" class="absolute top-6 right-6 text-gray-400 hover:text-red-500 text-xl bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fas fa-times"></i></button>
@@ -421,7 +434,7 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWjg7WjTbDW31B1FVVcl0Epif_gnzury3MJUd7wq6o0OKXmUmvHIV82o3JFhVni5CqEg/exec"; 
         const TOKEN = "PT_SECURE_2026";
-        const RZP_KEY = "rzp_live_SVstISgPrcivjP"; // 🔥 Razorpay Live Key
+        const RZP_KEY = "rzp_live_SVstISgPrcivjP"; 
         
         let products = []; let filteredProducts = []; let cart = JSON.parse(localStorage.getItem('pt_cart')) || []; let wishlist = JSON.parse(localStorage.getItem('pt_wishlist')) || [];
         let userEmail = localStorage.getItem("pt_email"); let authMode = "login";
@@ -461,7 +474,7 @@
             } catch (err) { showToast("Connection Error.", true); return {status:"error"}; }
         }
 
-        // 🔥 GUEST LOADER BUG FIX & LAST SEEN LOGIC
+        // 🔥 INITIAL LOAD & GUEST FIX
         window.onload = async () => {
             if(userEmail) { api({action: 'logActivity', email: userEmail, activityType: 'LastSeen', details: 'Browsing Store'}); }
 
@@ -478,8 +491,7 @@
             }
             
             if(userEmail) { fetchUserData(); fetchOrders(); document.getElementById('cart-addr-box').classList.remove('hidden-view'); }
-            
-            initSwipe(); // COD Swipe Init
+            initSwipe();
         };
 
         function showView(id) { ['view-home', 'view-collections', 'view-shop', 'view-product', 'view-cart', 'view-orders', 'view-wishlist', 'view-about'].forEach(v => document.getElementById(v).classList.add('hidden-view')); document.getElementById(id).classList.remove('hidden-view'); window.scrollTo(0,0); if(id === 'view-orders') fetchOrders(); if(id === 'view-wishlist') renderWishlist(); }
@@ -502,16 +514,38 @@
             }
         }
 
-        function filterCategory(cat) { document.getElementById('shopTitle').innerText = cat === 'All' ? 'All Items.' : cat; filteredProducts = cat === 'All' ? products : products.filter(p => p.Category === cat); renderProducts(); }
+        // 🔥 LIVE AI SEARCH LOGIC
+        function searchProducts() {
+            let q = document.getElementById('searchInput').value.toLowerCase();
+            document.getElementById('shopTitle').innerText = q ? 'Search Results.' : 'All Items.';
+            
+            if (!q) {
+                filteredProducts = products;
+            } else {
+                filteredProducts = products.filter(p => 
+                    (p.Name && p.Name.toLowerCase().includes(q)) || 
+                    (p.Category && p.Category.toLowerCase().includes(q)) ||
+                    (p.Long_Description && p.Long_Description.toLowerCase().includes(q)) ||
+                    (p.Description && p.Description.toLowerCase().includes(q))
+                );
+            }
+            renderProducts();
+        }
+
+        function filterCategory(cat) { 
+            document.getElementById('searchInput').value = ''; 
+            document.getElementById('shopTitle').innerText = cat === 'All' ? 'All Items.' : cat; 
+            filteredProducts = cat === 'All' ? products : products.filter(p => p.Category === cat); 
+            renderProducts(); 
+        }
         function openCategory(cat) { filterCategory(cat); showView('view-shop'); }
 
-        // 🔥 SMART STOCK FIX & PRODUCT RENDERING
+        // 🔥 RENDER PRODUCTS
         function renderProducts() {
             const grid = document.getElementById('productGrid'); grid.innerHTML = '';
-            if(filteredProducts.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20"><i class="fas fa-box-open text-6xl text-gray-200 mb-6"></i><h3 class="text-2xl font-bold text-gray-900 mb-2">Nothing here yet</h3><p class="text-gray-500">नया प्रोडक्ट एडमिन से अपलोड करें</p></div>`; return; }
+            if(filteredProducts.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20"><i class="fas fa-box-open text-6xl text-gray-200 mb-6"></i><h3 class="text-2xl font-bold text-gray-900 mb-2">Nothing here yet</h3></div>`; return; }
 
             filteredProducts.forEach((p, idx) => {
-                // If soft deleted from admin, completely skip
                 if(p.Status === 'Deleted') return;
                 
                 let isOutOfStock = (p.Stock !== undefined && p.Stock !== "" && Number(p.Stock) <= 0);
@@ -538,7 +572,7 @@
                         <div class="img-bg rounded-2xl mb-6 ${overlayClass}"><img src="${mainImg}" onerror="this.src='https://via.placeholder.com/300'" class="max-h-[200px] object-contain mix-blend-multiply group-hover:scale-110 transition duration-700"></div>
                         <div class="flex-1 px-1 ${overlayClass}">
                             <p class="text-[10px] font-black text-[#0071e3] uppercase tracking-widest mb-1">${p.Category || 'Premium'}</p>
-                            <h3 class="text-lg font-bold text-gray-900 leading-tight mb-2 truncate">${p.Name || 'Patel Masterpiece'}</h3>
+                            <h3 class="text-lg font-bold text-gray-900 leading-tight mb-2">${p.Name || 'Patel Masterpiece'}</h3>
                             <div class="flex items-end gap-3 mb-4"><span class="font-black text-2xl text-black tracking-tighter">₹${p.Price || 0}</span><span class="text-sm font-semibold text-gray-400 line-through mb-1">₹${p.MRP || ''}</span></div>
                         </div>
                         <div class="mt-auto space-y-2 z-10" onclick="event.stopPropagation()">
@@ -548,9 +582,11 @@
             });
         }
 
-        // --- 🌟 PRODUCT DETAIL (CRASH FIX & DEDICATED PAGE FULL RESTORE) ---
+        // --- 🌟 PRODUCT DETAIL (100% FIXED & RESTORED) ---
         function showProductDetail(id) {
             const p = products.find(x => x.ID === id); if(!p) return;
+            
+            // 🔥 The Fix: We don't block opening the page anymore.
             let isOutOfStock = (p.Stock !== undefined && p.Stock !== "" && Number(p.Stock) <= 0);
             
             let images = extractAllImages(p.Image_URL);
@@ -568,12 +604,14 @@
             document.getElementById('pd-dim').innerText = p.Dimensions || 'Standard'; 
             document.getElementById('pd-weight').innerText = p.Weight || 'Heavy Duty';
             
+            // 🔥 FIXED: Full Description with line breaks without truncating
             let descText = p.Long_Description || p.Description || 'A beautifully crafted piece from Patel Traders.';
             document.getElementById('pd-desc').innerHTML = descText.replace(/\n/g, '<br>');
 
             const sizeBox = document.getElementById('pd-size-box'); const sizeOpts = document.getElementById('pd-size-opts');
             if(p.Size_Options) { sizeOpts.innerHTML = p.Size_Options.split(',').map((s, i) => `<button onclick="selectSize(this)" class="size-btn ${i===0?'active':''}">${s.trim()}</button>`).join(''); sizeBox.classList.remove('hidden-view'); } else { sizeBox.classList.add('hidden-view'); }
 
+            // 🔥 FIXED: We conditionally render the pd-qty span so it doesn't crash
             if(isOutOfStock) {
                 document.getElementById('pd-stock-badge').innerHTML = `<span class="bg-red-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-sm">OUT OF STOCK</span>`;
                 document.getElementById('pd-actions-area').innerHTML = `<div class="bg-red-50 border border-red-100 text-red-500 text-sm font-black text-center py-4 rounded-xl uppercase tracking-widest mt-auto w-full">Currently Unavailable</div>`;
@@ -887,3 +925,5 @@
     </script>
 </body>
 </html>
+
+
