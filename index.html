@@ -96,6 +96,13 @@
         .markdown-body th { background: #f5f5f7; font-weight: 800; color: #1d1d1f; }
         .markdown-body td { color: #555; font-weight: 500; }
         .markdown-body code { background: #f0f8ff; color: #0071e3; padding: 2px 6px; border-radius: 6px; font-family: monospace; font-size: 11px; font-weight: 700; }
+        
+        /* 🔥 COD SWIPE BUTTON CSS */
+        .swipe-track { position: relative; width: 100%; height: 60px; background: #f5f5f7; border-radius: 30px; overflow: hidden; border: 1px solid #d2d2d7; display: flex; align-items: center; justify-content: center; }
+        .swipe-thumb { position: absolute; left: 4px; top: 4px; width: 52px; height: 52px; background: #1d1d1f; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: background 0.3s; }
+        .swipe-thumb:hover { background: #0071e3; }
+        .swipe-progress { position: absolute; left: 0; top: 0; height: 100%; background: #dcfce7; width: 0; z-index: 1; border-radius: 30px; }
+        .swipe-text { position: relative; z-index: 5; color: #86868b; font-weight: 900; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; user-select: none; margin-left: 30px; }
     </style>
 </head>
 <body>
@@ -227,7 +234,6 @@
             <button onclick="showView('view-shop')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i> Back to Shop</button>
             
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-                <!-- Gallery -->
                 <div class="lg:col-span-7 flex flex-col gap-5">
                     <div class="glass-card rounded-[40px] p-10 flex items-center justify-center relative min-h-[400px] md:min-h-[550px] bg-white group overflow-hidden">
                         <button id="pd-wishlist-btn" class="absolute top-8 right-8 z-10 p-4 bg-white/90 backdrop-blur-md rounded-full shadow-lg hover:scale-110 transition border border-gray-100"></button>
@@ -236,11 +242,13 @@
                     <div id="pd-thumbnails" class="flex gap-4 overflow-x-auto py-2 scrollbar-hide px-2"></div>
                 </div>
 
-                <!-- Details -->
                 <div class="lg:col-span-5 flex flex-col justify-center">
                     <p id="pd-cat" class="text-xs font-black text-[#0071e3] uppercase tracking-widest mb-3 bg-blue-50 w-fit px-3 py-1 rounded-md"></p>
                     <h1 id="pd-name" class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-4"></h1>
                     
+                    <!-- 🔥 STOCK BADGE IN DETAIL VIEW -->
+                    <div id="pd-stock-badge" class="mb-4"></div>
+
                     <div class="flex items-center gap-2 mb-8 text-[#e11d48] text-sm bg-red-50 w-fit px-3 py-1.5 rounded-lg border border-red-100">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                         <span class="text-gray-600 text-xs ml-2 font-bold tracking-wide uppercase">Premium Certified</span>
@@ -251,7 +259,6 @@
                         <span id="pd-mrp" class="text-xl text-gray-400 line-through font-medium mb-1.5"></span>
                     </div>
 
-                    <!-- Specs -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
                         <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100"><p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Material</p><p id="pd-mat" class="font-bold text-[15px] text-gray-900 truncate">Solid Wood</p></div>
                         <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100"><p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Dimensions</p><p id="pd-dim" class="font-bold text-[15px] text-gray-900 truncate">Standard</p></div>
@@ -266,33 +273,10 @@
                     <h3 class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-3 flex items-center"><i class="fas fa-align-left mr-2"></i> About this item</h3>
                     <p id="pd-desc" class="text-gray-600 leading-relaxed text-[15px] font-medium mb-10 bg-gray-50/50 p-4 rounded-2xl border border-gray-50"></p>
 
-                    <!-- Actions -->
-                    <div class="flex flex-col sm:flex-row gap-4 mt-auto sticky bottom-4 z-20 bg-white/80 backdrop-blur-md p-2 rounded-[24px] shadow-[0_0_40px_rgba(0,0,0,0.05)] border border-gray-100">
-                        <div class="flex items-center border border-gray-200 rounded-xl bg-white h-16 w-full sm:w-36 justify-between px-3 shadow-sm">
-                            <button onclick="changeQtyPD(-1)" class="w-10 h-10 flex items-center justify-center text-2xl font-medium text-gray-500 bg-gray-50 rounded-lg hover:bg-gray-100 transition">−</button>
-                            <span id="pd-qty" class="font-black text-xl text-gray-900">1</span>
-                            <button onclick="changeQtyPD(1)" class="w-10 h-10 flex items-center justify-center text-2xl font-medium text-gray-500 bg-gray-50 rounded-lg hover:bg-gray-100 transition">+</button>
-                        </div>
-                        <button id="pd-btn-cart" class="flex-1 h-16 rounded-xl text-[16px] font-bold transition-all shadow-lg bg-[#1d1d1f] text-white hover:bg-black"><i class="fas fa-cart-plus mr-2"></i> Add to Cart</button>
-                        <button id="pd-btn-buy" class="flex-1 h-16 rounded-xl text-[16px] font-bold transition-all shadow-lg bg-[#0071e3] text-white hover:bg-blue-600"><i class="fas fa-bolt mr-2"></i> Buy Now</button>
-                    </div>
+                    <div id="pd-actions-area"></div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- ❤️ VIEW: WISHLIST -->
-    <div id="view-wishlist" class="hidden-view max-w-[1200px] mx-auto p-6 md:p-12 min-h-screen relative z-10 fade-in-up">
-        <button onclick="showView('view-home')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i>Back Home</button>
-        <h2 class="text-5xl font-black mb-10 tracking-tighter text-gray-900">Your Wishlist <span class="text-red-500 ml-2 animate-pulse">❤️</span></h2>
-        <div id="wishlist-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-    </div>
-
-    <!-- 📦 VIEW: ORDERS -->
-    <div id="view-orders" class="hidden-view max-w-[1000px] mx-auto p-6 md:p-12 min-h-screen relative z-10 fade-in-up">
-        <button onclick="showView('view-home')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i>Back Home</button>
-        <h2 class="text-5xl font-black mb-10 tracking-tighter text-gray-900">Secure Vault <span class="text-[#0071e3] text-2xl align-middle"><i class="fas fa-shield-check"></i></span></h2>
-        <div id="orders-list" class="space-y-6"></div>
     </div>
 
     <!-- 🛒 VIEW: CART & CHECKOUT -->
@@ -322,6 +306,20 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- ❤️ VIEW: WISHLIST -->
+    <div id="view-wishlist" class="hidden-view max-w-[1200px] mx-auto p-6 md:p-12 min-h-screen relative z-10 fade-in-up">
+        <button onclick="showView('view-home')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i>Back Home</button>
+        <h2 class="text-5xl font-black mb-10 tracking-tighter text-gray-900">Your Wishlist <span class="text-red-500 ml-2 animate-pulse">❤️</span></h2>
+        <div id="wishlist-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </div>
+
+    <!-- 📦 VIEW: ORDERS -->
+    <div id="view-orders" class="hidden-view max-w-[1000px] mx-auto p-6 md:p-12 min-h-screen relative z-10 fade-in-up">
+        <button onclick="showView('view-home')" class="text-sm font-bold text-gray-500 mb-8 hover:text-black transition flex items-center"><i class="fas fa-arrow-left mr-2 bg-gray-100 p-2 rounded-full"></i>Back Home</button>
+        <h2 class="text-5xl font-black mb-10 tracking-tighter text-gray-900">Secure Vault <span class="text-[#0071e3] text-2xl align-middle"><i class="fas fa-shield-check"></i></span></h2>
+        <div id="orders-list" class="space-y-6"></div>
     </div>
 
     <!-- 🔑 MODAL: AUTH -->
@@ -354,7 +352,7 @@
         </div>
     </div>
 
-    <!-- 📝 MODAL: EDIT PROFILE (BACK BUTTON) -->
+    <!-- 📝 MODAL: EDIT PROFILE -->
     <div id="modal-edit-profile" class="modal">
         <div class="glass-card px-8 py-10 sm:px-10 max-w-lg w-full mx-4 relative max-h-[90vh] overflow-y-auto modal-content bg-white/95 rounded-[40px]">
             <button onclick="closeEditModal()" class="absolute top-6 left-6 text-gray-500 hover:text-black hover:bg-gray-200 bg-gray-100 px-4 py-2 rounded-full flex items-center justify-center transition font-bold text-sm shadow-sm"><i class="fas fa-arrow-left mr-2"></i> वापस</button>
@@ -380,6 +378,22 @@
                     </div>
                 </div>
                 <button onclick="saveProfile()" id="btn-save-prof" class="w-full bg-[#1d1d1f] text-white font-bold py-4 rounded-xl hover:bg-black transition-all transform hover:-translate-y-1 shadow-xl mt-6 text-lg">Save Profile Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔥 MODAL: COD SWIPE TO CONFIRM (PREMIUM UX) -->
+    <div id="codSwipeModal" class="modal">
+        <div class="glass-card p-8 rounded-[40px] w-[380px] text-center shadow-2xl relative modal-content bg-white/95">
+            <button onclick="closeCodModal()" class="absolute top-6 right-6 text-gray-400 hover:text-red-500 text-xl bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+            <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5 text-green-600 border-4 border-white shadow-sm"><i class="fas fa-truck text-4xl"></i></div>
+            <h2 class="text-3xl font-black mb-2 text-gray-900 tracking-tight">Confirm Order</h2>
+            <p class="text-gray-500 text-sm mb-8 font-medium">Swipe right to place your Cash on Delivery order securely.</p>
+
+            <div class="swipe-track" id="swipeTrackContainer">
+                <div id="swipeProgress" class="swipe-progress"></div>
+                <span class="swipe-text" id="swipeText">Swipe to Order</span>
+                <div id="swipeThumb" class="swipe-thumb"><i class="fas fa-chevron-right text-lg pointer-events-none"></i></div>
             </div>
         </div>
     </div>
@@ -412,7 +426,7 @@
         let products = []; let filteredProducts = []; let cart = JSON.parse(localStorage.getItem('pt_cart')) || []; let wishlist = JSON.parse(localStorage.getItem('pt_wishlist')) || [];
         let userEmail = localStorage.getItem("pt_email"); let authMode = "login";
 
-        // 🔥 IMAGE CONVERTER
+        // 🔥 IMAGE EXTRACTOR
         function extractAllImages(urlStr) {
             if (!urlStr || typeof urlStr !== 'string') return ['https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png'];
             if (urlStr.startsWith('data:image')) {
@@ -447,28 +461,31 @@
             } catch (err) { showToast("Connection Error.", true); return {status:"error"}; }
         }
 
+        // 🔥 GUEST LOADER BUG FIX: Safe Initialization
         window.onload = async () => {
-            // Track Customer Last Seen if logged in
-            if(userEmail) {
-                api({action: 'logActivity', email: userEmail, activityType: 'LastSeen', details: 'Browsing Store'});
-            }
+            if(userEmail) { api({action: 'logActivity', email: userEmail, activityType: 'LastSeen', details: 'Browsing Store'}); }
 
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getProducts&token=${TOKEN}`); const data = await res.json();
                 if(data && data.status === 'error') { products = []; } else if(Array.isArray(data)) { products = data; } else { products = []; }
+            } catch(e) { 
+                console.error("Backend fetching error."); products = []; 
+            } finally {
                 filteredProducts = products;
-                document.getElementById('loadingProducts').classList.add('hidden-view'); document.getElementById('loadingCollections').classList.add('hidden-view');
+                document.getElementById('loadingProducts').classList.add('hidden-view'); 
+                document.getElementById('loadingCollections').classList.add('hidden-view');
                 generateCategories(); renderProducts(); updateUI();
-            } catch(e) { document.getElementById('loadingProducts').innerHTML = "<p class='text-red-500 font-bold'>System Error fetching DB.</p>"; }
+            }
             
             if(userEmail) { fetchUserData(); fetchOrders(); document.getElementById('cart-addr-box').classList.remove('hidden-view'); }
+            
+            // Init Swipe For COD
+            initSwipe();
         };
 
-        // --- VIEWS ---
         function showView(id) { ['view-home', 'view-collections', 'view-shop', 'view-product', 'view-cart', 'view-orders', 'view-wishlist', 'view-about'].forEach(v => document.getElementById(v).classList.add('hidden-view')); document.getElementById(id).classList.remove('hidden-view'); window.scrollTo(0,0); if(id === 'view-orders') fetchOrders(); if(id === 'view-wishlist') renderWishlist(); }
         function toggleProfileMenu() { document.getElementById('profileMenu').classList.toggle('active'); }
         
-        // --- STORE ---
         function generateCategories() {
             const container = document.getElementById('categoryContainer'); const grid = document.getElementById('collectionsGrid');
             const cats = [...new Set(products.map(p => p.Category))].filter(Boolean);
@@ -489,40 +506,51 @@
         function filterCategory(cat) { document.getElementById('shopTitle').innerText = cat === 'All' ? 'All Items.' : cat; filteredProducts = cat === 'All' ? products : products.filter(p => p.Category === cat); renderProducts(); }
         function openCategory(cat) { filterCategory(cat); showView('view-shop'); }
 
+        // 🔥 SMART STOCK FIX: Show OUT OF STOCK badge instead of hiding
         function renderProducts() {
             const grid = document.getElementById('productGrid'); grid.innerHTML = '';
             if(filteredProducts.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20"><i class="fas fa-box-open text-6xl text-gray-200 mb-6"></i><h3 class="text-2xl font-bold text-gray-900 mb-2">Nothing here yet</h3><p class="text-gray-500">नया प्रोडक्ट एडमिन से अपलोड करें</p></div>`; return; }
 
             filteredProducts.forEach((p, idx) => {
-                if(p.Stock && Number(p.Stock) <= 0) return; 
+                let isOutOfStock = (p.Stock !== undefined && p.Stock !== "" && Number(p.Stock) <= 0);
                 const heartClass = wishlist.some(w => w.id == p.ID) ? 'text-red-500' : 'text-gray-400';
                 const mainImg = extractDirectImageUrl(p.Image_URL);
                 
+                let stockBadge = isOutOfStock ? `<span class="absolute top-5 left-5 bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full z-20 shadow-md">OUT OF STOCK</span>` : '';
+                let overlayClass = isOutOfStock ? 'opacity-60 grayscale' : '';
+                
+                let actionsHTML = isOutOfStock 
+                    ? `<div class="bg-red-50 border border-red-100 text-red-500 text-[11px] font-black text-center py-3.5 rounded-xl uppercase tracking-widest w-full">Currently Unavailable</div>`
+                    : `<div class="flex justify-between items-center bg-gray-50 rounded-xl p-1.5 border border-gray-100">
+                            <button onclick="changeQtyCard('${p.ID}', -1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-lg text-gray-600 font-bold shadow-sm hover:bg-gray-100">-</button>
+                            <span id="qty-${p.ID}" class="font-black text-sm text-gray-900">1</span>
+                            <button onclick="changeQtyCard('${p.ID}', 1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-lg text-gray-600 font-bold shadow-sm hover:bg-gray-100">+</button>
+                        </div>
+                        <div class="flex gap-2"><button onclick="addToCart('${p.ID}')" class="card-btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button><button onclick="buyNow('${p.ID}')" class="card-btn btn-buy"><i class="fas fa-bolt"></i> Buy</button></div>
+                        <div class="flex gap-2"><button onclick="requireLogin(() => joinWaitlist('${p.ID}'))" class="card-btn btn-wait"><i class="fas fa-clock"></i> Waitlist</button><button onclick="shareWhatsApp('${p.Name}', '${p.Price}')" class="card-btn btn-wa"><i class="fab fa-whatsapp text-green-600 text-sm"></i> Share</button></div>`;
+
                 grid.innerHTML += `
-                    <div class="apple-card p-5 flex flex-col relative group fade-in-up" style="animation-delay: ${idx*50}ms" onclick="showProductDetail('${p.ID}')">
+                    <div class="apple-card p-5 flex flex-col relative group fade-in-up" style="animation-delay: ${idx*50}ms" onclick="${isOutOfStock ? '' : `showProductDetail('${p.ID}')`}">
+                        ${stockBadge}
                         <button onclick="requireLogin(() => toggleWishlist('${p.ID}', '${p.Name}', event), true); event.stopPropagation();" class="absolute top-5 right-5 z-20 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full shadow-sm hover:scale-110 transition flex items-center justify-center ${heartClass}"><i class="fas fa-heart text-lg"></i></button>
-                        <div class="img-bg rounded-2xl mb-6"><img src="${mainImg}" onerror="this.src='https://via.placeholder.com/300'" class="max-h-[200px] object-contain mix-blend-multiply group-hover:scale-110 transition duration-700"></div>
-                        <div class="flex-1 px-1">
+                        <div class="img-bg rounded-2xl mb-6 ${overlayClass}"><img src="${mainImg}" onerror="this.src='https://via.placeholder.com/300'" class="max-h-[200px] object-contain mix-blend-multiply group-hover:scale-110 transition duration-700"></div>
+                        <div class="flex-1 px-1 ${overlayClass}">
                             <p class="text-[10px] font-black text-[#0071e3] uppercase tracking-widest mb-1">${p.Category || 'Premium'}</p>
                             <h3 class="text-lg font-bold text-gray-900 leading-tight mb-2 truncate">${p.Name || 'Patel Masterpiece'}</h3>
                             <div class="flex items-end gap-3 mb-4"><span class="font-black text-2xl text-black tracking-tighter">₹${p.Price || 0}</span><span class="text-sm font-semibold text-gray-400 line-through mb-1">₹${p.MRP || ''}</span></div>
                         </div>
                         <div class="mt-auto space-y-2 z-10" onclick="event.stopPropagation()">
-                            <div class="flex justify-between items-center bg-gray-50 rounded-xl p-1.5 border border-gray-100">
-                                <button onclick="changeQtyCard('${p.ID}', -1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-lg text-gray-600 font-bold shadow-sm hover:bg-gray-100">-</button>
-                                <span id="qty-${p.ID}" class="font-black text-sm text-gray-900">1</span>
-                                <button onclick="changeQtyCard('${p.ID}', 1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-lg text-gray-600 font-bold shadow-sm hover:bg-gray-100">+</button>
-                            </div>
-                            <div class="flex gap-2"><button onclick="addToCart('${p.ID}')" class="card-btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button><button onclick="buyNow('${p.ID}')" class="card-btn btn-buy"><i class="fas fa-bolt"></i> Buy</button></div>
-                            <div class="flex gap-2"><button onclick="requireLogin(() => joinWaitlist('${p.ID}'))" class="card-btn btn-wait"><i class="fas fa-clock"></i> Waitlist</button><button onclick="shareWhatsApp('${p.Name}', '${p.Price}')" class="card-btn btn-wa"><i class="fab fa-whatsapp text-green-600 text-sm"></i> Share</button></div>
+                            ${actionsHTML}
                         </div>
                     </div>`;
             });
         }
 
-        // --- 🌟 PRODUCT DETAIL ---
+        // --- 🌟 PRODUCT DETAIL (Added Stock Protection) ---
         function showProductDetail(id) {
             const p = products.find(x => x.ID === id); if(!p) return;
+            if(Number(p.Stock) <= 0) return showToast("This item is currently out of stock.", true);
+            
             let images = extractAllImages(p.Image_URL);
             document.getElementById('pd-main-img').src = extractDirectImageUrl(images[0]);
             
@@ -538,7 +566,17 @@
             if(p.Size_Options) { sizeOpts.innerHTML = p.Size_Options.split(',').map((s, i) => `<button onclick="selectSize(this)" class="size-btn ${i===0?'active':''}">${s.trim()}</button>`).join(''); sizeBox.classList.remove('hidden-view'); } else { sizeBox.classList.add('hidden-view'); }
 
             document.getElementById('pd-qty').innerText = "1";
-            document.getElementById('pd-btn-cart').setAttribute('onclick', `addToCart('${p.ID}', true)`); document.getElementById('pd-btn-buy').setAttribute('onclick', `buyNow('${p.ID}', true)`);
+            document.getElementById('pd-actions-area').innerHTML = `
+                <div class="flex flex-col sm:flex-row gap-4 mt-auto sticky bottom-4 z-20 bg-white/80 backdrop-blur-md p-2 rounded-[24px] shadow-[0_0_40px_rgba(0,0,0,0.05)] border border-gray-100">
+                    <div class="flex items-center border border-gray-200 rounded-xl bg-white h-16 w-full sm:w-36 justify-between px-3 shadow-sm">
+                        <button onclick="changeQtyPD(-1)" class="w-10 h-10 flex items-center justify-center text-2xl font-medium text-gray-500 bg-gray-50 rounded-lg hover:bg-gray-100 transition">−</button>
+                        <span id="pd-qty" class="font-black text-xl text-gray-900">1</span>
+                        <button onclick="changeQtyPD(1)" class="w-10 h-10 flex items-center justify-center text-2xl font-medium text-gray-500 bg-gray-50 rounded-lg hover:bg-gray-100 transition">+</button>
+                    </div>
+                    <button onclick="addToCart('${p.ID}', true)" class="flex-1 h-16 rounded-xl text-[16px] font-bold transition-all shadow-lg bg-[#1d1d1f] text-white hover:bg-black"><i class="fas fa-cart-plus mr-2"></i> Add to Cart</button>
+                    <button onclick="buyNow('${p.ID}', true)" class="flex-1 h-16 rounded-xl text-[16px] font-bold transition-all shadow-lg bg-[#0071e3] text-white hover:bg-blue-600"><i class="fas fa-bolt mr-2"></i> Buy Now</button>
+                </div>`;
+            
             const isWish = wishlist.some(w => w.id == p.ID);
             document.getElementById('pd-wishlist-btn').innerHTML = `<i class="fas fa-heart text-2xl ${isWish ? 'text-red-500' : 'text-gray-300'}"></i>`;
             document.getElementById('pd-wishlist-btn').setAttribute('onclick', `toggleWishlist('${p.ID}', '${p.Name}', event)`);
@@ -551,12 +589,20 @@
         function changeQtyPD(amt) { let el = document.getElementById('pd-qty'); let val = parseInt(el.innerText) + amt; if(val > 0 && val <= 10) el.innerText = val; }
         function changeQtyCard(id, amt) { let el = document.getElementById(`qty-${id}`); let val = parseInt(el.innerText) + amt; if(val > 0 && val <= 10) el.innerText = val; }
 
-        // --- ACTIONS ---
         function addToCart(id, fromPD = false) {
-            const p = products.find(x => x.ID === id); const qty = parseInt(document.getElementById(fromPD ? 'pd-qty' : `qty-${id}`)?.innerText || 1);
+            const p = products.find(x => x.ID === id); 
+            if(Number(p.Stock) <= 0) return showToast("Product is Out of Stock", true);
+            const qty = parseInt(document.getElementById(fromPD ? 'pd-qty' : `qty-${id}`)?.innerText || 1);
             let size = fromPD && !document.getElementById('pd-size-box').classList.contains('hidden-view') ? document.querySelector('.size-btn.active')?.innerText || "" : "";
             let ex = cart.find(x => x.ID === id && x.size === size);
-            if(ex) ex.qty += qty; else { let firstImg = p.Image_URL ? extractDirectImageUrl(p.Image_URL) : 'https://via.placeholder.com/100'; cart.push({...p, qty: qty, Image_URL: firstImg, size: size}); }
+            
+            if(ex) {
+                if((ex.qty + qty) > Number(p.Stock)) return showToast(`Only ${p.Stock} items available in stock.`, true);
+                ex.qty += qty; 
+            } else { 
+                if(qty > Number(p.Stock)) return showToast(`Only ${p.Stock} items available in stock.`, true);
+                let firstImg = p.Image_URL ? extractDirectImageUrl(p.Image_URL) : 'https://via.placeholder.com/100'; cart.push({...p, qty: qty, Image_URL: firstImg, size: size}); 
+            }
             
             localStorage.setItem('pt_cart', JSON.stringify(cart)); updateUI();
             if(userEmail) api({action: 'syncCart', email: userEmail, cartItems: JSON.stringify(cart)});
@@ -580,43 +626,104 @@
             wishlist.forEach(w => { const p = products.find(x => x.ID == w.id); if(p) { let imgLink = extractDirectImageUrl(p.Image_URL); container.innerHTML += `<div class="glass-card p-5 flex items-center justify-between cursor-pointer hover:shadow-lg transition border border-gray-100" onclick="showProductDetail('${p.ID}')"><div class="flex items-center gap-4"><img src="${imgLink}" class="w-16 h-16 object-cover rounded-xl bg-gray-50 border border-gray-100 p-1 mix-blend-multiply"><div><h4 class="font-bold text-sm">${p.Name}</h4><p class="text-xs text-[#0071e3] font-black mt-1">₹${p.Price}</p></div></div><button onclick="toggleWishlist('${p.ID}', '${p.Name}', event)" class="text-red-500 bg-red-50 w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-100 transition z-10 shadow-sm"><i class="fas fa-trash text-sm"></i></button></div>`; }});
         }
 
+        // 🔥 CART OOS SYNC
         function updateUI() {
             document.getElementById('cartCount').innerText = cart.length; document.getElementById('cartItems').innerHTML = ''; let sub = 0;
+            let hasStockIssue = false;
+            
             if(cart.length === 0) { document.getElementById('cartItems').innerHTML = '<div class="glass-card p-12 text-center text-gray-500 font-bold text-lg"><i class="fas fa-shopping-basket text-4xl mb-4 text-gray-300"></i><br>Your cart is empty.</div>'; } 
             else {
                 cart.forEach((item, index) => {
+                    let liveP = products.find(p => p.ID === item.ID);
+                    let availableStock = liveP ? Number(liveP.Stock) : 0;
+                    let stockWarning = "";
+                    
+                    if (availableStock <= 0) {
+                        stockWarning = `<span class="text-[10px] text-red-500 font-black bg-red-50 px-2 py-0.5 rounded border border-red-200 ml-2 uppercase">Out of Stock</span>`;
+                        hasStockIssue = true;
+                    } else if (item.qty > availableStock) {
+                        stockWarning = `<span class="text-[10px] text-orange-500 font-black bg-orange-50 px-2 py-0.5 rounded border border-orange-200 ml-2 uppercase">Only ${availableStock} left</span>`;
+                        hasStockIssue = true;
+                    }
+
                     sub += Number(item.Price) * item.qty; let sizeText = item.size ? `<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-[10px] ml-2 border font-bold uppercase tracking-widest">${item.size}</span>` : "";
                     let imgLink = extractDirectImageUrl(item.Image_URL);
-                    document.getElementById('cartItems').innerHTML += `<div class="glass-card p-4 flex items-center justify-between mb-4 shadow-sm fade-in-up" style="animation-delay: ${index*50}ms"><div class="flex gap-4 items-center"><img src="${imgLink}" class="w-16 h-16 object-cover rounded-xl border border-gray-100 bg-gray-50 p-1 mix-blend-multiply"><div><h4 class="font-bold text-[15px] text-gray-900 leading-tight">${item.Name} ${sizeText}</h4><p class="text-sm text-[#0071e3] font-black mt-1">₹${item.Price} <span class="text-xs text-gray-400 font-medium">x ${item.qty}</span></p></div></div><button onclick="cart.splice(${index}, 1); localStorage.setItem('pt_cart', JSON.stringify(cart)); updateUI();" class="text-red-500 bg-red-50 w-10 h-10 rounded-full hover:bg-red-100 transition shadow-sm flex items-center justify-center hover:scale-110"><i class="fas fa-trash text-sm"></i></button></div>`;
+                    document.getElementById('cartItems').innerHTML += `<div class="glass-card p-4 flex items-center justify-between mb-4 shadow-sm fade-in-up" style="animation-delay: ${index*50}ms"><div class="flex gap-4 items-center"><img src="${imgLink}" class="w-16 h-16 object-cover rounded-xl border border-gray-100 bg-gray-50 p-1 mix-blend-multiply"><div><h4 class="font-bold text-[15px] text-gray-900 leading-tight">${item.Name} ${sizeText} ${stockWarning}</h4><p class="text-sm text-[#0071e3] font-black mt-1">₹${item.Price} <span class="text-xs text-gray-400 font-medium">x ${item.qty}</span></p></div></div><button onclick="cart.splice(${index}, 1); localStorage.setItem('pt_cart', JSON.stringify(cart)); updateUI();" class="text-red-500 bg-red-50 w-10 h-10 rounded-full hover:bg-red-100 transition shadow-sm flex items-center justify-center hover:scale-110"><i class="fas fa-trash text-sm"></i></button></div>`;
                 });
             }
             const fee = (sub > 0 && sub < 2000) ? 250 : 0;
             document.getElementById('subtotal').innerText = `₹${sub}`; document.getElementById('shipping').innerText = fee > 0 ? `+₹${fee}` : 'FREE'; document.getElementById('shipping').className = fee > 0 ? 'text-red-500 font-bold bg-red-50 px-3 py-1 rounded-lg' : 'text-green-600 font-bold bg-green-50 px-3 py-1 rounded-lg'; document.getElementById('total').innerText = `₹${sub + fee}`;
+            
+            const btnOnline = document.getElementById('btn-pay-online');
+            const btnCod = document.getElementById('btn-pay-cod');
+            if(btnOnline && btnCod) {
+                if(hasStockIssue || cart.length === 0) {
+                    btnOnline.disabled = true; btnOnline.classList.add('opacity-50', 'cursor-not-allowed');
+                    btnCod.disabled = true; btnCod.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    btnOnline.disabled = false; btnOnline.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btnCod.disabled = false; btnCod.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
         }
 
-        // 🟢 FINAL CHECKOUT LOGIC (RAZORPAY INTEGRATED)
+        // 🔥 COD SWIPE LOGIC
+        let isSwiping = false; let startX = 0;
+        function initSwipe() {
+            const thumb = document.getElementById('swipeThumb'); const track = document.getElementById('swipeProgress'); const container = document.getElementById('swipeTrackContainer');
+            if(!thumb || !track || !container) return;
+            thumb.style.transform = `translateX(0px)`; track.style.width = '0px'; document.getElementById('swipeText').innerText = "Swipe to Order";
+            
+            const maxSwipe = container.offsetWidth - 56; // 52px thumb + 4px padding
+            const handleStart = (clientX) => { isSwiping = true; startX = clientX; thumb.style.transition = 'none'; track.style.transition = 'none'; };
+            const handleMove = (clientX) => {
+                if(!isSwiping) return; let diff = clientX - startX; if(diff < 0) diff = 0; if(diff > maxSwipe) diff = maxSwipe;
+                thumb.style.transform = `translateX(${diff}px)`; track.style.width = `${diff + 26}px`;
+                if(diff >= maxSwipe - 5) { isSwiping = false; document.getElementById('swipeText').innerText = "Processing..."; closeCodModal(); executeVerifiedOrder("COD"); }
+            };
+            const handleEnd = () => { if(!isSwiping) return; isSwiping = false; thumb.style.transition = 'transform 0.3s ease'; track.style.transition = 'width 0.3s ease'; thumb.style.transform = `translateX(0px)`; track.style.width = '0px'; };
+
+            thumb.onmousedown = (e) => handleStart(e.clientX); document.onmousemove = (e) => handleMove(e.clientX); document.onmouseup = handleEnd;
+            thumb.ontouchstart = (e) => handleStart(e.touches[0].clientX); document.ontouchmove = (e) => handleMove(e.touches[0].clientX); document.ontouchend = handleEnd;
+        }
+        function openCodModal() { document.getElementById('codSwipeModal').classList.add('active'); initSwipe(); }
+        function closeCodModal() { document.getElementById('codSwipeModal').classList.remove('active'); }
+
+        // 🟢 FINAL CHECKOUT (ANTI-TAMPER & RAZORPAY CANCEL ALERT)
         function processFinalCheckout(method) {
             if(cart.length === 0) return showToast("Cart Empty", true);
             if(!userEmail) { showToast("Please login securely to place order.", true); openAuthModal(); return; }
             const addr = document.getElementById('checkout-addr').innerText;
             if(!addr || addr.includes("update profile address")) { showToast("Address missing. Update profile.", true); openEditProfile(); return; }
             
-            const sub = cart.reduce((a,b) => a + (Number(b.Price)*b.qty), 0); const fee = (sub > 0 && sub < 2000) ? 250 : 0;
-            const totalAmount = sub + fee;
-            const itemsList = cart.map(i => `${i.Name} ${i.size ? '('+i.size+')' : ''} x ${i.qty}`).join(", "); 
+            // 🔥 ANTI-TAMPER CHECK: Price and Stock verification from server data
+            let verifiedSubtotal = 0; let finalItemsList = [];
+            for(let item of cart) {
+                let liveP = products.find(p => p.ID === item.ID);
+                if(!liveP) return showToast("Invalid product in cart. Please clear and re-add.", true);
+                if(Number(liveP.Stock) < item.qty) { showToast(`⚠️ ${item.Name} आउट ऑफ स्टॉक है!`, true); updateUI(); return; }
+                verifiedSubtotal += Number(liveP.Price) * item.qty;
+                finalItemsList.push(`${liveP.Name} ${item.size ? '('+item.size+')' : ''} x ${item.qty}`);
+            }
+            
+            const fee = (verifiedSubtotal > 0 && verifiedSubtotal < 2000) ? 250 : 0;
+            window.verifiedTotalAmount = verifiedSubtotal + fee;
+            window.verifiedItemsList = finalItemsList.join(", ");
             
             if (method === 'ONLINE') {
                 showToast('Initiating Secure Payment gateway...');
                 var options = {
-                    "key": "rzp_live_SVstISgPrcivjP", // Aapki Live API Key
-                    "amount": totalAmount * 100, // Paise mein amount
+                    "key": "rzp_live_SVstISgPrcivjP",
+                    "amount": window.verifiedTotalAmount * 100, // Safe backend calculated amount
                     "currency": "INR",
                     "name": "Patel Traders",
                     "description": "Premium Furniture Order",
                     "image": "https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png",
                     "handler": function (response) {
-                        // Payment Success -> Order place karo backend mein
-                        submitOrderToBackend(itemsList, totalAmount, response.razorpay_payment_id);
+                        executeVerifiedOrder(response.razorpay_payment_id);
+                    },
+                    "modal": {
+                        "ondismiss": function(){ showToast("Payment cancelled by user.", true); }
                     },
                     "prefill": {
                         "email": userEmail,
@@ -626,24 +733,22 @@
                 };
                 var rzp1 = new Razorpay(options);
                 rzp1.on('payment.failed', function (response){
-                    // Payment Fail -> Sirf Error dikhao, order place mat karo
                     showToast(`Payment Failed: ${response.error.description}`, true);
                 });
                 rzp1.open();
             } else {
-                // COD Flow
-                submitOrderToBackend(itemsList, totalAmount, "COD");
+                openCodModal(); // Open Custom Swipe Modal
             }
         }
 
-        // Backend Order Submission Function
-        function submitOrderToBackend(itemsList, amount, payId) {
+        // Final Order Execute
+        function executeVerifiedOrder(payId) {
             showToast('Processing Secure Order...');
-            api({ action: 'placeOrder', email: userEmail, items: itemsList, amount: amount, razorpayId: payId }).then(res => {
+            api({ action: 'placeOrder', email: userEmail, items: window.verifiedItemsList, amount: window.verifiedTotalAmount, razorpayId: payId }).then(res => {
                 if(res.status === 'success') {
                     closeModals();
                     let txText = payId === "COD" ? "Cash on Delivery" : `Transaction ID: ${payId}`;
-                    document.getElementById('view-shop').innerHTML = `<div class="max-w-xl mx-auto py-20 text-center fade-in-up"><div class="w-28 h-28 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-green-100 shadow-xl"><i class="fas fa-check text-6xl text-green-500"></i></div><h2 class="text-5xl font-black mb-4 tracking-tight text-gray-900">Order Confirmed!</h2><p class="text-gray-500 mb-2 font-medium text-lg">Thank you. Your order has been securely placed.</p><p class="font-black text-2xl mb-2 tracking-wider bg-gray-50 py-4 rounded-2xl border border-gray-200 shadow-inner">${res.orderId}</p><p class="text-sm font-bold text-gray-500 mb-10 uppercase tracking-widest">${txText}</p><br><button onclick="location.reload()" class="bg-[#1d1d1f] text-white px-12 py-5 rounded-2xl font-bold shadow-2xl hover:bg-black hover:scale-105 transition-all text-lg">Continue Shopping</button></div>`;
+                    document.getElementById('view-shop').innerHTML = `<div class="max-w-xl mx-auto py-20 text-center fade-in-up"><div class="w-28 h-28 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-green-100 shadow-xl"><i class="fas fa-check text-6xl text-green-500"></i></div><h2 class="text-5xl font-black mb-4 tracking-tight text-gray-900">Order Confirmed!</h2><p class="text-gray-500 mb-2 font-medium text-lg">Thank you. Your order has been securely placed.</p><p class="font-black text-2xl mb-2 tracking-wider bg-gray-50 py-4 rounded-2xl border border-gray-200 shadow-inner">${res.orderId}</p><p class="text-sm font-bold text-gray-400 mb-10 uppercase tracking-widest">${txText}</p><br><button onclick="location.reload()" class="bg-[#1d1d1f] text-white px-12 py-5 rounded-2xl font-bold shadow-2xl hover:bg-black hover:scale-105 transition-all text-lg">Continue Shopping</button></div>`;
                     showView('view-shop'); cart = []; localStorage.removeItem('pt_cart'); updateUI();
                 } else { showToast("Order Failed. Try again.", true); }
             });
@@ -653,7 +758,7 @@
         function openAuthModal() { closeModals(); document.getElementById('profileMenu').classList.remove('active'); document.getElementById('authModal').classList.add('active'); }
         function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
         function closeEditModal() { document.getElementById('modal-edit-profile').classList.remove('active'); }
-        function closeModals() { ['authModal', 'modal-edit-profile'].forEach(id => document.getElementById(id).classList.remove('active')); }
+        function closeModals() { ['authModal', 'modal-edit-profile', 'codSwipeModal'].forEach(id => document.getElementById(id).classList.remove('active')); }
         function requireLogin(fn, forceLogin = false) { if (!userEmail) { if(forceLogin) openAuthModal(); else showToast("Login Required", true); } else fn(); }
         function logout() { localStorage.clear(); location.reload(); }
 
@@ -758,4 +863,4 @@
         }
     </script>
 </body>
-</html>.
+</html>
