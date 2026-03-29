@@ -27,6 +27,11 @@
         
         .hidden-view { display: none !important; }
 
+        /* 🔥 LOADER CSS */
+        .loader { border: 3px solid #f3f3f3; border-radius: 50%; border-top: 3px solid #0071e3; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        .border-t-white { border-top-color: white !important; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         /* 📦 Premium Card Design */
         .apple-card { border-radius: 24px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #f2f2f2; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); cursor: pointer; overflow: hidden; display: flex; flex-direction: column; }
         .apple-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 30px 60px -15px rgba(0,0,0,0.12); border-color: rgba(0,0,0,0.08); background: #fff; z-index: 10; }
@@ -56,7 +61,7 @@
         .premium-input:disabled { background: #f0f0f0; color: #9ca3af; cursor: not-allowed; }
 
         /* Custom Toast Notification */
-        #toast { position: fixed; top: 20px; right: -100%; transform: translateX(0); background: #1d1d1f; color: white; padding: 16px 24px; border-radius: 16px; font-weight: bold; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        #toast { position: fixed; top: 20px; right: -100%; transform: translateX(0); background: #1d1d1f; color: white; padding: 16px 24px; border-radius: 16px; font-weight: bold; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; }
         #toast.show { right: 20px; }
 
         /* Multiple Image Gallery Thumbs */
@@ -98,11 +103,15 @@
         .markdown-body code { background: #f0f8ff; color: #0071e3; padding: 2px 6px; border-radius: 6px; font-family: monospace; font-size: 11px; font-weight: 700; }
         
         /* 🔥 COD SWIPE BUTTON CSS */
-        .swipe-track { position: relative; width: 100%; height: 60px; background: #f5f5f7; border-radius: 30px; overflow: hidden; border: 1px solid #d2d2d7; display: flex; align-items: center; justify-content: center; }
+        .swipe-track { position: relative; width: 100%; height: 60px; background: #f5f5f7; border-radius: 30px; overflow: hidden; border: 1px solid #d2d2d7; display: flex; align-items: center; justify-content: center; margin-top: 10px; }
         .swipe-thumb { position: absolute; left: 4px; top: 4px; width: 52px; height: 52px; background: #1d1d1f; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: background 0.3s; }
         .swipe-thumb:hover { background: #0071e3; }
         .swipe-progress { position: absolute; left: 0; top: 0; height: 100%; background: #dcfce7; width: 0; z-index: 1; border-radius: 30px; }
         .swipe-text { position: relative; z-index: 5; color: #86868b; font-weight: 900; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; user-select: none; margin-left: 30px; }
+
+        /* 🔥 MULTIPLE ADDRESS CARD CSS */
+        .addr-card { border: 2px solid transparent; transition: all 0.3s ease; cursor: pointer; }
+        .addr-card.selected { border-color: #0071e3; background: #f0f8ff; box-shadow: 0 4px 12px rgba(0,113,227,0.1); }
     </style>
 </head>
 <body>
@@ -253,7 +262,6 @@
                 <div class="lg:col-span-5 flex flex-col justify-center">
                     <p id="pd-cat" class="text-xs font-black text-[#0071e3] uppercase tracking-widest mb-3 bg-blue-50 w-fit px-3 py-1 rounded-md"></p>
                     
-                    <!-- 🔥 Full Title Display (No Truncation) -->
                     <h1 id="pd-name" class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-4"></h1>
                     
                     <!-- 🔥 STOCK BADGE -->
@@ -283,7 +291,6 @@
 
                     <h3 class="text-xs uppercase tracking-widest font-bold text-gray-400 mb-3 flex items-center"><i class="fas fa-align-left mr-2"></i> About this item</h3>
                     
-                    <!-- 🔥 Full Long Description with line breaks -->
                     <p id="pd-desc" class="text-gray-600 leading-relaxed text-[15px] font-medium mb-10 bg-gray-50/50 p-5 rounded-2xl border border-gray-50 whitespace-pre-line"></p>
 
                     <div id="pd-actions-area"></div>
@@ -305,8 +312,12 @@
                     <div class="flex justify-between text-[16px] mb-5 text-gray-600 font-medium"><span>Subtotal</span><span id="subtotal" class="text-gray-900 font-bold">₹0</span></div>
                     <div class="flex justify-between text-[16px] mb-8 text-gray-600 font-medium"><span>Delivery Fee</span><span id="shipping" class="text-red-500 font-bold bg-red-50 px-3 py-1 rounded-lg">₹250</span></div>
                     
-                    <div id="cart-addr-box" class="bg-gray-50 p-5 rounded-2xl mb-8 border border-gray-100 hidden-view">
-                        <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mb-2"><i class="fas fa-map-marker-alt mr-1 text-[#0071e3]"></i> Delivering To</p>
+                    <!-- 🔥 MULTIPLE ADDRESS DISPLAY IN CART -->
+                    <div id="cart-addr-box" class="bg-gray-50 p-5 rounded-2xl mb-8 border border-gray-100 hidden-view hover:shadow-md transition">
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mb-2 flex justify-between items-center">
+                            <span><i class="fas fa-map-marker-alt mr-1 text-[#0071e3]"></i> Delivering To</span>
+                            <button type="button" onclick="openAddressModal()" class="text-[#0071e3] hover:underline text-[10px] font-black bg-blue-50 px-2 py-1 rounded">SELECT ADDRESS</button>
+                        </p>
                         <p id="checkout-addr" class="text-[15px] font-bold text-gray-900 line-clamp-3 leading-relaxed">Please update profile address.</p>
                     </div>
 
@@ -365,7 +376,19 @@
         </div>
     </div>
 
-    <!-- 📝 MODAL: EDIT PROFILE -->
+    <!-- 📍 MODAL: ADDRESS SELECTION -->
+    <div id="modal-address-list" class="modal z-[150]">
+        <div class="glass-card px-8 py-10 max-w-lg w-full mx-4 relative max-h-[90vh] overflow-y-auto modal-content bg-white/95 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.15)]">
+            <button onclick="closeAddressModal()" class="absolute top-6 right-6 text-gray-400 hover:text-red-500 text-xl bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"><i class="fas fa-times"></i></button>
+            <h2 class="text-3xl font-black mb-6 tracking-tight text-gray-900"><i class="fas fa-map-marked-alt text-[#0071e3] mr-2"></i> Select Address</h2>
+            <div id="address-list-container" class="space-y-4 mb-6">
+                <!-- Addresses populated dynamically -->
+            </div>
+            <button onclick="openEditProfile()" class="w-full border-2 border-dashed border-[#0071e3] text-[#0071e3] bg-blue-50 font-bold py-4 rounded-xl hover:bg-[#0071e3] hover:text-white transition-all text-lg"><i class="fas fa-plus mr-2"></i> Add New Address</button>
+        </div>
+    </div>
+
+    <!-- 📝 MODAL: EDIT PROFILE (100% UNTOUCHED BASE HTML) -->
     <div id="modal-edit-profile" class="modal">
         <div class="glass-card px-8 py-10 sm:px-10 max-w-lg w-full mx-4 relative max-h-[90vh] overflow-y-auto modal-content bg-white/95 rounded-[40px]">
             <button onclick="closeEditModal()" class="absolute top-6 left-6 text-gray-500 hover:text-black hover:bg-gray-200 bg-gray-100 px-4 py-2 rounded-full flex items-center justify-center transition font-bold text-sm shadow-sm"><i class="fas fa-arrow-left mr-2"></i> वापस</button>
@@ -390,17 +413,22 @@
                         <div class="sm:col-span-2"><select id="addr-state" class="premium-input bg-white appearance-none cursor-pointer"><option value="">Choose State...</option><option value="Delhi">Delhi</option><option value="Gujarat">Gujarat</option><option value="Maharashtra">Maharashtra</option><option value="Uttar Pradesh">Uttar Pradesh</option><option value="Other">Other State</option></select></div>
                     </div>
                 </div>
+                <!-- 🔥 FIX: BUG-FREE SAVE BUTTON -->
                 <button onclick="saveProfile()" id="btn-save-prof" class="w-full bg-[#1d1d1f] text-white font-bold py-4 rounded-xl hover:bg-black transition-all transform hover:-translate-y-1 shadow-xl mt-6 text-lg">Save Profile Settings</button>
             </div>
         </div>
     </div>
 
-    <!-- 🔥 MODAL: COD SWIPE TO CONFIRM -->
+    <!-- 🔥 MODAL: COD SWIPE SUMMARY -->
     <div id="codSwipeModal" class="modal">
         <div class="glass-card p-8 rounded-[40px] w-[380px] text-center shadow-2xl relative modal-content bg-white/95">
             <button onclick="closeCodModal()" class="absolute top-6 right-6 text-gray-400 hover:text-red-500 text-xl bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fas fa-times"></i></button>
             <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5 text-green-600 border-4 border-white shadow-sm"><i class="fas fa-truck text-4xl"></i></div>
             <h2 class="text-3xl font-black mb-2 text-gray-900 tracking-tight">Confirm Order</h2>
+            
+            <!-- 🔥 CHECKOUT SUMMARY INJECTED HERE -->
+            <div id="cod-summary" class="text-left bg-gray-50 border border-gray-200 p-4 rounded-2xl mb-6 max-h-[150px] overflow-y-auto text-[13px] text-gray-700 shadow-inner"></div>
+
             <p class="text-gray-500 text-sm mb-8 font-medium">Swipe right to place your Cash on Delivery order securely.</p>
             <div class="swipe-track" id="swipeTrackContainer">
                 <div id="swipeProgress" class="swipe-progress"></div>
@@ -432,12 +460,17 @@
 
     <!-- ⚙️ JAVASCRIPT CORE LOGIC -->
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyWjg7WjTbDW31B1FVVcl0Epif_gnzury3MJUd7wq6o0OKXmUmvHIV82o3JFhVni5CqEg/exec"; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQhIQVpu8d6vaEz38nxZRKg9oZTpwUCFIyzVdXZ-Arl36MtYo0WP8NvOKuArdk_AGeNw/exec"; 
         const TOKEN = "PT_SECURE_2026";
         const RZP_KEY = "rzp_live_SVstISgPrcivjP"; 
         
         let products = []; let filteredProducts = []; let cart = JSON.parse(localStorage.getItem('pt_cart')) || []; let wishlist = JSON.parse(localStorage.getItem('pt_wishlist')) || [];
         let userEmail = localStorage.getItem("pt_email"); let authMode = "login";
+        
+        // 🔥 MULTIPLE ADDRESS STATE
+        let savedAddresses = [];
+        let selectedAddressIndex = 0;
+        window.hasValidAddress = false;
 
         // 🔥 IMAGE EXTRACTOR
         function extractAllImages(urlStr) {
@@ -474,7 +507,7 @@
             } catch (err) { showToast("Connection Error.", true); return {status:"error"}; }
         }
 
-        // 🔥 INITIAL LOAD & GUEST FIX
+        // 🔥 INITIAL LOAD
         window.onload = async () => {
             if(userEmail) { api({action: 'logActivity', email: userEmail, activityType: 'LastSeen', details: 'Browsing Store'}); }
 
@@ -485,8 +518,8 @@
                 console.error("Backend fetching error."); products = []; 
             } finally {
                 filteredProducts = products;
-                document.getElementById('loadingProducts').classList.add('hidden-view'); 
-                document.getElementById('loadingCollections').classList.add('hidden-view');
+                const loadProd = document.getElementById('loadingProducts'); if(loadProd) loadProd.classList.add('hidden-view'); 
+                const loadCol = document.getElementById('loadingCollections'); if(loadCol) loadCol.classList.add('hidden-view');
                 generateCategories(); renderProducts(); updateUI();
             }
             
@@ -494,7 +527,7 @@
             initSwipe();
         };
 
-        function showView(id) { ['view-home', 'view-collections', 'view-shop', 'view-product', 'view-cart', 'view-orders', 'view-wishlist', 'view-about'].forEach(v => document.getElementById(v).classList.add('hidden-view')); document.getElementById(id).classList.remove('hidden-view'); window.scrollTo(0,0); if(id === 'view-orders') fetchOrders(); if(id === 'view-wishlist') renderWishlist(); }
+        function showView(id) { ['view-home', 'view-collections', 'view-shop', 'view-product', 'view-cart', 'view-orders', 'view-wishlist', 'view-about'].forEach(v => { let el=document.getElementById(v); if(el) el.classList.add('hidden-view');}); document.getElementById(id).classList.remove('hidden-view'); window.scrollTo(0,0); if(id === 'view-orders') fetchOrders(); if(id === 'view-wishlist') renderWishlist(); }
         function toggleProfileMenu() { document.getElementById('profileMenu').classList.toggle('active'); }
         
         function generateCategories() {
@@ -514,33 +547,18 @@
             }
         }
 
-        // 🔥 LIVE AI SEARCH LOGIC
         function searchProducts() {
             let q = document.getElementById('searchInput').value.toLowerCase();
             document.getElementById('shopTitle').innerText = q ? 'Search Results.' : 'All Items.';
-            
-            if (!q) {
-                filteredProducts = products;
-            } else {
-                filteredProducts = products.filter(p => 
-                    (p.Name && p.Name.toLowerCase().includes(q)) || 
-                    (p.Category && p.Category.toLowerCase().includes(q)) ||
-                    (p.Long_Description && p.Long_Description.toLowerCase().includes(q)) ||
-                    (p.Description && p.Description.toLowerCase().includes(q))
-                );
+            if (!q) { filteredProducts = products; } else {
+                filteredProducts = products.filter(p => (p.Name && p.Name.toLowerCase().includes(q)) || (p.Category && p.Category.toLowerCase().includes(q)) || (p.Long_Description && p.Long_Description.toLowerCase().includes(q)) || (p.Description && p.Description.toLowerCase().includes(q)));
             }
             renderProducts();
         }
 
-        function filterCategory(cat) { 
-            document.getElementById('searchInput').value = ''; 
-            document.getElementById('shopTitle').innerText = cat === 'All' ? 'All Items.' : cat; 
-            filteredProducts = cat === 'All' ? products : products.filter(p => p.Category === cat); 
-            renderProducts(); 
-        }
+        function filterCategory(cat) { document.getElementById('searchInput').value = ''; document.getElementById('shopTitle').innerText = cat === 'All' ? 'All Items.' : cat; filteredProducts = cat === 'All' ? products : products.filter(p => p.Category === cat); renderProducts(); }
         function openCategory(cat) { filterCategory(cat); showView('view-shop'); }
 
-        // 🔥 RENDER PRODUCTS
         function renderProducts() {
             const grid = document.getElementById('productGrid'); grid.innerHTML = '';
             if(filteredProducts.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20"><i class="fas fa-box-open text-6xl text-gray-200 mb-6"></i><h3 class="text-2xl font-bold text-gray-900 mb-2">Nothing here yet</h3></div>`; return; }
@@ -582,13 +600,11 @@
             });
         }
 
-        // --- 🌟 PRODUCT DETAIL (100% FIXED & RESTORED) ---
+        // --- 🌟 PRODUCT DETAIL ---
         function showProductDetail(id) {
             const p = products.find(x => x.ID === id); if(!p) return;
             
-            // 🔥 The Fix: We don't block opening the page anymore.
             let isOutOfStock = (p.Stock !== undefined && p.Stock !== "" && Number(p.Stock) <= 0);
-            
             let images = extractAllImages(p.Image_URL);
             document.getElementById('pd-main-img').src = extractDirectImageUrl(images[0]);
             
@@ -604,14 +620,12 @@
             document.getElementById('pd-dim').innerText = p.Dimensions || 'Standard'; 
             document.getElementById('pd-weight').innerText = p.Weight || 'Heavy Duty';
             
-            // 🔥 FIXED: Full Description with line breaks without truncating
             let descText = p.Long_Description || p.Description || 'A beautifully crafted piece from Patel Traders.';
             document.getElementById('pd-desc').innerHTML = descText.replace(/\n/g, '<br>');
 
             const sizeBox = document.getElementById('pd-size-box'); const sizeOpts = document.getElementById('pd-size-opts');
             if(p.Size_Options) { sizeOpts.innerHTML = p.Size_Options.split(',').map((s, i) => `<button onclick="selectSize(this)" class="size-btn ${i===0?'active':''}">${s.trim()}</button>`).join(''); sizeBox.classList.remove('hidden-view'); } else { sizeBox.classList.add('hidden-view'); }
 
-            // 🔥 FIXED: We conditionally render the pd-qty span so it doesn't crash
             if(isOutOfStock) {
                 document.getElementById('pd-stock-badge').innerHTML = `<span class="bg-red-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-sm">OUT OF STOCK</span>`;
                 document.getElementById('pd-actions-area').innerHTML = `<div class="bg-red-50 border border-red-100 text-red-500 text-sm font-black text-center py-4 rounded-xl uppercase tracking-widest mt-auto w-full">Currently Unavailable</div>`;
@@ -644,7 +658,6 @@
         function addToCart(id, fromPD = false) {
             const p = products.find(x => x.ID === id); 
             if(Number(p.Stock) <= 0) return showToast("Product is Out of Stock", true);
-            
             const qty = parseInt(document.getElementById(fromPD ? 'pd-qty' : `qty-${id}`)?.innerText || 1);
             let size = fromPD && !document.getElementById('pd-size-box').classList.contains('hidden-view') ? document.querySelector('.size-btn.active')?.innerText || "" : "";
             let ex = cart.find(x => x.ID === id && x.size === size);
@@ -662,7 +675,12 @@
             showToast(`${qty}x ${p.Name} added to cart.`); if(!fromPD && document.getElementById(`qty-${id}`)) document.getElementById(`qty-${id}`).innerText = "1";
         }
 
-        function buyNow(id, fromPD = false) { addToCart(id, fromPD); showView('view-cart'); }
+        function buyNow(id, fromPD = false) { 
+            if(!userEmail) { showToast("Please login securely first.", true); openAuthModal(); return; }
+            if(!window.hasValidAddress) { showToast("MANDATORY: Please update your delivery address before buying.", true); openAddressModal(); return; }
+            addToCart(id, fromPD); showView('view-cart'); 
+        }
+
         function joinWaitlist(id) { api({action: 'addWaitlist', email: userEmail || 'guest', productId: id}); showToast('Waitlist Joined. We will notify you.'); }
         function shareWhatsApp(name, price) { let num = prompt("Enter WhatsApp number (10 digits):"); if(num && num.length >= 10) window.open(`https://wa.me/91${num}?text=${encodeURIComponent(`Check out this premium item from Patel Traders:\n\n*${name}*\nPrice: ₹${price}\n\n*Pure. Unpolished. Premium.*`)}`, '_blank'); }
         
@@ -710,7 +728,7 @@
             const btnOnline = document.getElementById('btn-pay-online');
             const btnCod = document.getElementById('btn-pay-cod');
             if(btnOnline && btnCod) {
-                if (hasStockIssue || cart.length === 0) {
+                if (hasStockIssue || cart.length === 0 || !window.hasValidAddress) {
                     btnOnline.disabled = true; btnOnline.classList.add('opacity-50', 'cursor-not-allowed');
                     btnCod.disabled = true; btnCod.classList.add('opacity-50', 'cursor-not-allowed');
                 } else {
@@ -720,7 +738,62 @@
             }
         }
 
-        // 🔥 COD SWIPE TO CONFIRM LOGIC
+        // 🔥 MULTIPLE ADDRESS LOGIC
+        function renderSelectedAddress() {
+            if(savedAddresses.length > 0 && savedAddresses[selectedAddressIndex]) {
+                let a = savedAddresses[selectedAddressIndex];
+                if(a.l1 && a.city && a.state && a.pin && a.pin.length === 6) {
+                    window.hasValidAddress = true;
+                    let fullStr = `${a.l1}, ${a.l2 ? a.l2+', ' : ''}${a.city}, ${a.state} - ${a.pin}`;
+                    document.getElementById('checkout-addr').innerHTML = fullStr;
+                    document.getElementById('checkout-addr').className = "text-[15px] font-bold text-gray-900 line-clamp-3 leading-relaxed";
+                } else {
+                    window.hasValidAddress = false;
+                    document.getElementById('checkout-addr').innerHTML = "⚠️ Address Incomplete. Edit to checkout.";
+                    document.getElementById('checkout-addr').className = "text-[15px] font-bold text-red-500 line-clamp-3 leading-relaxed";
+                }
+            } else {
+                window.hasValidAddress = false;
+                document.getElementById('checkout-addr').innerText = "Please select or add an address.";
+                document.getElementById('checkout-addr').className = "text-[15px] font-bold text-gray-900 line-clamp-3 leading-relaxed";
+            }
+            updateUI();
+        }
+
+        function openAddressModal() {
+            closeModals(); document.getElementById('profileMenu').classList.remove('active');
+            let container = document.getElementById('address-list-container');
+            container.innerHTML = '';
+            
+            if(savedAddresses.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-500 text-center font-bold mb-4">No saved addresses found.</p>';
+            } else {
+                savedAddresses.forEach((a, i) => {
+                    let isSel = (i === selectedAddressIndex);
+                    let validIcon = (a.l1 && a.pin && a.pin.length===6) ? `<i class="fas fa-check-circle text-green-500 ml-2"></i>` : `<i class="fas fa-exclamation-triangle text-red-500 ml-2"></i>`;
+                    container.innerHTML += `
+                        <div onclick="selectAddress(${i})" class="addr-card p-4 rounded-2xl bg-gray-50 border border-gray-200 ${isSel ? 'border-[#0071e3] bg-blue-50' : ''} cursor-pointer transition hover:shadow-md">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-black uppercase text-gray-400 tracking-widest">Address ${i+1}</span>
+                                ${isSel ? '<span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded">SELECTED</span>' : ''}
+                            </div>
+                            <p class="text-sm font-bold text-gray-800">${a.l1}, ${a.l2 ? a.l2+', ' : ''}${a.city}, ${a.state} - ${a.pin} ${validIcon}</p>
+                        </div>`;
+                });
+            }
+            document.getElementById('modal-address-list').classList.add('active');
+        }
+
+        function closeAddressModal() { document.getElementById('modal-address-list').classList.remove('active'); }
+        
+        function selectAddress(index) {
+            selectedAddressIndex = index;
+            renderSelectedAddress();
+            closeAddressModal();
+            showToast("Delivery Address Selected");
+        }
+
+        // 🔥 COD SWIPE TO CONFIRM LOGIC & SUMMARY
         let isSwiping = false; let startX = 0;
         function initSwipe() {
             const thumb = document.getElementById('swipeThumb'); const track = document.getElementById('swipeProgress'); const container = document.getElementById('swipeTrackContainer');
@@ -739,17 +812,28 @@
             thumb.onmousedown = (e) => handleStart(e.clientX); document.onmousemove = (e) => handleMove(e.clientX); document.onmouseup = handleEnd;
             thumb.ontouchstart = (e) => handleStart(e.touches[0].clientX); document.ontouchmove = (e) => handleMove(e.touches[0].clientX); document.ontouchend = handleEnd;
         }
-        function openCodModal() { document.getElementById('codSwipeModal').classList.add('active'); initSwipe(); }
+
+        function openCodModal() { 
+            let sumHtml = cart.map(item => `<div class="flex justify-between mb-2 pb-2 border-b border-gray-200 border-dashed"><span>${item.qty}x ${item.Name}</span><span class="font-bold text-gray-900">₹${item.Price * item.qty}</span></div>`).join('');
+            let sub = cart.reduce((acc, i) => acc + (Number(i.Price)*i.qty), 0);
+            let fee = (sub > 0 && sub < 2000) ? 250 : 0;
+            sumHtml += `<div class="flex justify-between mb-1 mt-2 text-[11px] text-gray-500 font-bold uppercase tracking-widest"><span>Subtotal</span><span>₹${sub}</span></div>`;
+            sumHtml += `<div class="flex justify-between mb-3 text-[11px] text-gray-500 font-bold uppercase tracking-widest"><span>Delivery Fee</span><span>${fee > 0 ? '+₹'+fee : 'FREE'}</span></div>`;
+            sumHtml += `<div class="flex justify-between font-black text-lg text-[#0071e3] pt-2 border-t border-gray-200"><span>Final Bill</span><span>₹${sub + fee}</span></div>`;
+            document.getElementById('cod-summary').innerHTML = sumHtml;
+            
+            document.getElementById('codSwipeModal').classList.add('active'); 
+            initSwipe(); 
+        }
         function closeCodModal() { document.getElementById('codSwipeModal').classList.remove('active'); }
 
-        // 🟢 FINAL SECURE CHECKOUT (ANTI-TAMPER & RAZORPAY)
+        // 🟢 FINAL SECURE CHECKOUT
         function processFinalCheckout(method) {
             if(cart.length === 0) return showToast("Cart Empty", true);
             if(!userEmail) { showToast("Please login securely to place order.", true); openAuthModal(); return; }
             const addr = document.getElementById('checkout-addr').innerText;
-            if(!addr || addr.includes("update profile address")) { showToast("Address missing. Update profile.", true); openEditProfile(); return; }
+            if(!window.hasValidAddress || !addr || addr.includes("update profile address")) { showToast("Address missing. Update profile.", true); openAddressModal(); return; }
             
-            // 🔥 ANTI-TAMPER CHECK: Verify prices and stock from server-fetched data
             let verifiedSubtotal = 0; let finalItemsList = [];
             for(let item of cart) {
                 let liveP = products.find(p => p.ID === item.ID);
@@ -761,9 +845,11 @@
             
             const fee = (verifiedSubtotal > 0 && verifiedSubtotal < 2000) ? 250 : 0;
             window.verifiedTotalAmount = verifiedSubtotal + fee;
-            window.verifiedItemsList = finalItemsList.join(", ");
+            window.verifiedItemsList = finalItemsList.join(" | ");
+            window.finalAddressString = addr;
             
             if (method === 'ONLINE') {
+                if(!RZP_KEY) return showToast("Payment Gateway Error. Please refresh.", true);
                 showToast('Initiating Secure Payment gateway...');
                 var options = {
                     "key": RZP_KEY,
@@ -772,35 +858,101 @@
                     "name": "Patel Traders",
                     "description": "Premium Furniture Order",
                     "image": "https://i.ibb.co/G4xsrr6j/qafx-Ln-R-md.png",
-                    "handler": function (response) {
-                        executeVerifiedOrder(response.razorpay_payment_id);
-                    },
-                    "modal": {
-                        "ondismiss": function(){ showToast("Payment cancelled by user.", true); }
-                    },
-                    "prefill": {
-                        "email": userEmail,
-                        "contact": document.getElementById('prof-phone') ? document.getElementById('prof-phone').value : ""
-                    },
+                    "handler": function (response) { executeVerifiedOrder(response.razorpay_payment_id); },
+                    "modal": { "ondismiss": function(){ showToast("Payment cancelled by user.", true); } },
+                    "prefill": { "email": userEmail, "contact": savedAddresses[selectedAddressIndex]?.phone || "" },
                     "theme": { "color": "#0071e3" }
                 };
-                var rzp1 = new Razorpay(options);
-                rzp1.on('payment.failed', function (response){
-                    showToast(`Payment Failed: ${response.error.description}`, true);
-                });
-                rzp1.open();
-            } else {
-                openCodModal(); 
-            }
+                var rzp1 = new Razorpay(options); rzp1.on('payment.failed', function (res){ showToast(`Payment Failed: ${res.error.description}`, true); }); rzp1.open();
+            } else { openCodModal(); }
+        }
+
+        // 🧾 DOWNLOAD RECEIPT GENERATOR
+        function downloadReceipt(orderId, payId) {
+            let txText = payId === "COD" ? "Cash on Delivery" : `TXN ID: ${payId}`;
+            let htmlContent = `
+                <html>
+                <head>
+                    <title>Receipt - ${orderId}</title>
+                    <style>
+                        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f5f5f7; padding: 40px; color: #1d1d1f; }
+                        .receipt-box { background: white; max-width: 600px; margin: auto; padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+                        .header { text-align: center; border-bottom: 2px solid #f2f2f2; padding-bottom: 20px; margin-bottom: 20px; }
+                        h1 { color: #0071e3; margin: 0; font-weight: 900; letter-spacing: -1px; }
+                        p { margin: 5px 0; line-height: 1.6; }
+                        .details { background: #f9f9fb; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #eee; }
+                        .details strong { color: #555; }
+                        .items { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                        .items th { text-align: left; padding: 10px; border-bottom: 2px solid #000; }
+                        .items td { padding: 15px 10px; border-bottom: 1px solid #eee; }
+                        .total { text-align: right; font-size: 24px; font-weight: 900; color: #1d1d1f; }
+                        .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 20px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="receipt-box">
+                        <div class="header">
+                            <h1>PATEL TRADERS</h1>
+                            <p style="color:#888; font-weight:bold; letter-spacing:2px; font-size:12px;">PREMIUM FURNITURE VAULT</p>
+                        </div>
+                        <h2 style="text-align:center; margin-bottom:30px;">Order Receipt</h2>
+                        <div class="details">
+                            <p><strong>Order ID:</strong> ${orderId}</p>
+                            <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+                            <p><strong>Payment Method:</strong> ${txText}</p>
+                            <p><strong>Delivered To:</strong><br> ${window.finalAddressString}</p>
+                        </div>
+                        <table class="items">
+                            <tr><th>Items Purchased</th></tr>
+                            <tr><td>${window.verifiedItemsList.replace(/\|/g, '<br>')}</td></tr>
+                        </table>
+                        <p class="total">Total Bill: ₹${window.verifiedTotalAmount}</p>
+                        <div class="footer">Thank you for shopping with Patel Traders.<br>This is a computer generated secure receipt.</div>
+                    </div>
+                    <script>window.print();<\/script>
+                </body>
+                </html>`;
+            
+            let blob = new Blob([htmlContent], {type: 'text/html'});
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = `PatelTraders_Receipt_${orderId}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast("Receipt Downloaded Successfully!");
         }
 
         function executeVerifiedOrder(payId) {
             showToast('Processing Secure Order...');
-            api({ action: 'placeOrder', email: userEmail, items: window.verifiedItemsList, amount: window.verifiedTotalAmount, razorpayId: payId }).then(res => {
+            
+            let finalOrderData = {
+                action: 'placeOrder', 
+                email: userEmail, 
+                items: window.verifiedItemsList, 
+                amount: window.verifiedTotalAmount, 
+                razorpayId: payId,
+                Delivery_Address: window.finalAddressString 
+            };
+
+            api(finalOrderData).then(res => {
                 if(res.status === 'success') {
                     closeModals();
                     let txText = payId === "COD" ? "Cash on Delivery" : `Transaction ID: ${payId}`;
-                    document.getElementById('view-shop').innerHTML = `<div class="max-w-xl mx-auto py-20 text-center fade-in-up"><div class="w-28 h-28 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-green-100 shadow-xl"><i class="fas fa-check text-6xl text-green-500"></i></div><h2 class="text-5xl font-black mb-4 tracking-tight text-gray-900">Order Confirmed!</h2><p class="text-gray-500 mb-2 font-medium text-lg">Thank you. Your order has been securely placed.</p><p class="font-black text-2xl mb-2 tracking-wider bg-gray-50 py-4 rounded-2xl border border-gray-200 shadow-inner">${res.orderId}</p><p class="text-sm font-bold text-gray-400 mb-10 uppercase tracking-widest">${txText}</p><br><button onclick="location.reload()" class="bg-[#1d1d1f] text-white px-12 py-5 rounded-2xl font-bold shadow-2xl hover:bg-black hover:scale-105 transition-all text-lg">Continue Shopping</button></div>`;
+                    
+                    document.getElementById('view-shop').innerHTML = `
+                        <div class="max-w-xl mx-auto py-20 text-center fade-in-up">
+                            <div class="w-28 h-28 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-green-100 shadow-xl"><i class="fas fa-check text-6xl text-green-500"></i></div>
+                            <h2 class="text-5xl font-black mb-4 tracking-tight text-gray-900">Order Confirmed!</h2>
+                            <p class="text-gray-500 mb-2 font-medium text-lg">Thank you. Your order has been securely placed.</p>
+                            <p class="font-black text-2xl mb-2 tracking-wider bg-gray-50 py-4 rounded-2xl border border-gray-200 shadow-inner">${res.orderId}</p>
+                            <p class="text-sm font-bold text-gray-400 mb-10 uppercase tracking-widest">${txText}</p>
+                            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                <button onclick="downloadReceipt('${res.orderId}', '${payId}')" class="bg-white border-2 border-[#0071e3] text-[#0071e3] px-8 py-4 rounded-2xl font-bold shadow-lg hover:bg-blue-50 transition-all text-lg"><i class="fas fa-file-download mr-2"></i> Download Receipt</button>
+                                <button onclick="location.reload()" class="bg-[#1d1d1f] text-white px-8 py-4 rounded-2xl font-bold shadow-2xl hover:bg-black transition-all text-lg">Continue Shopping</button>
+                            </div>
+                        </div>`;
                     showView('view-shop'); cart = []; localStorage.removeItem('pt_cart'); updateUI();
                 } else { showToast("Order Failed. Try again.", true); }
             });
@@ -809,8 +961,18 @@
         // --- 🔑 AUTH & PROFILE ---
         function openAuthModal() { closeModals(); document.getElementById('profileMenu').classList.remove('active'); document.getElementById('authModal').classList.add('active'); }
         function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+        
+        // 🔥 FIXED: EDIT BUTTON LOGIC CRASH PREVENTED 
+        function openEditProfile() {
+            closeModals(); 
+            document.getElementById('profileMenu').classList.remove('active');
+            let badge = document.getElementById('badge-limit');
+            if(badge && badge.innerText.includes('5/5')) { return showToast('Maximum 5 updates per month allowed.', true); }
+            document.getElementById('modal-edit-profile').classList.add('active');
+        }
+        
         function closeEditModal() { document.getElementById('modal-edit-profile').classList.remove('active'); }
-        function closeModals() { ['authModal', 'modal-edit-profile', 'codSwipeModal'].forEach(id => document.getElementById(id).classList.remove('active')); }
+        function closeModals() { ['authModal', 'modal-edit-profile', 'codSwipeModal', 'modal-address-list'].forEach(id => { let el = document.getElementById(id); if(el) el.classList.remove('active'); }); }
         function requireLogin(fn, forceLogin = false) { if (!userEmail) { if(forceLogin) openAuthModal(); else showToast("Login Required", true); } else fn(); }
         function logout() { localStorage.clear(); location.reload(); }
 
@@ -828,9 +990,11 @@
             if(!email) return showToast("Enter Email Address", true);
             if(authMode === 'register' && (!name || !phone)) return showToast("Enter Full Name and Phone", true);
 
-            const btn = document.getElementById('otpBtn'); btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Processing...`; btn.disabled = true;
+            const btn = document.getElementById('otpBtn'); btn.innerHTML = `<div class="loader mx-auto border-t-white"></div>`; btn.disabled = true;
 
-            const res = await api({action: "sendOTP", email: email, phone: authMode === 'register' ? phone : ""});
+            const actionCall = authMode === 'register' ? 'requestRegisterOTP' : 'requestLoginOTP';
+            const res = await api({action: actionCall, name: name, email: email, phone: phone});
+            
             if(res && res.status === "success") {
                 document.getElementById('authStep1').classList.add('hidden-view');
                 document.getElementById('authStep2').classList.remove('hidden-view');
@@ -841,37 +1005,76 @@
         async function verifyOTP() {
             const email = document.getElementById('emailInput').value; const otp = document.getElementById('otpInput').value;
             if(!otp || otp.length < 6) return showToast("Enter 6-digit OTP", true);
-            const btn = document.getElementById('verifyBtn'); btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Verifying...`;
+            const btn = document.getElementById('verifyBtn'); btn.innerHTML = `<div class="loader mx-auto border-t-white"></div>`;
 
-            const res = await api({ action: "verifyOTP", email: email, otp: otp, deviceInfo: navigator.userAgent.substring(0, 50), isNewReg: authMode === 'register', regName: document.getElementById('nameInput').value, regPhone: document.getElementById('phoneInput').value });
+            const actionCall = authMode === 'register' ? 'verifyRegisterOTP' : 'verifyLoginOTP';
+            const res = await api({ action: actionCall, email: email, otp: otp, deviceInfo: navigator.userAgent.substring(0, 50) });
 
-            if(res && res.status === "success") { localStorage.setItem("pt_email", email); showToast("Access Granted!"); setTimeout(() => location.reload(), 1000); } 
-            else { btn.innerText = "Verify & Enter"; showToast("Invalid OTP. Try again.", true); }
+            if(res && res.status === "success") { 
+                localStorage.setItem("pt_email", email); 
+                
+                // 🔥 True Name passed from Backend upon Login
+                if(res.name) localStorage.setItem("pt_cached_name", res.name);
+                else if(authMode === 'register') localStorage.setItem("pt_cached_name", document.getElementById('nameInput').value); 
+                
+                showToast("Access Granted!"); 
+                setTimeout(() => location.reload(), 1000); 
+            } 
+            else { btn.innerText = "Verify & Enter"; }
         }
 
+        // 🔥 TRUE NAME DISPLAY FUNCTION
         function updateProfileUIDirectly(name, email) {
-            document.getElementById('dropName').innerText = name; document.getElementById('dropEmail').innerText = email; document.getElementById('prof-email').value = email; 
+            let validName = name || 'Patel Traders Customer'; 
+            document.getElementById('dropName').innerText = validName; 
+            document.getElementById('dropEmail').innerText = email; 
+            document.getElementById('prof-email').value = email; 
             ['btn-menu-login'].forEach(id => document.getElementById(id).classList.add('hidden-view'));
             ['btn-menu-orders', 'btn-menu-logout', 'btn-edit-prof'].forEach(id => document.getElementById(id).classList.remove('hidden-view'));
-            document.getElementById('prof-name').value = name;
-            const avatarUrl = `https://ui-avatars.com/api/?name=${name}&background=f4f4f7&color=000&bold=true`;
+            document.getElementById('prof-name').value = validName;
+            
+            // Photo upload removed, using pure name avatar
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(validName)}&background=f4f4f7&color=0071e3&bold=true`;
             document.getElementById('userAvatar').src = avatarUrl; document.getElementById('dropAvatar').src = avatarUrl;
         }
 
+        // 🔥 FETCH USER DATA
         async function fetchUserData() {
             try {
-                let res = await fetch(`${SCRIPT_URL}?action=readUniversal&sheetName=Users&token=${TOKEN}`); let users = await res.json(); let me = users.find(u => u.Email === userEmail);
+                let res = await fetch(`${SCRIPT_URL}?action=readUniversal&sheetName=Users&token=${TOKEN}`); 
+                let users = await res.json(); 
+                let me = users.find(u => String(u.Email).toLowerCase() === String(userEmail).toLowerCase()); 
+                
                 if(me) {
-                    updateProfileUIDirectly(me.Name || userEmail.split('@')[0], userEmail);
-                    const updatesUsed = me.UpdateCount || 0; document.getElementById('badge-limit').innerText = `Updates: ${updatesUsed}/5`; document.getElementById('badge-limit').classList.remove('hidden-view');
-                    if(updatesUsed >= 5) document.getElementById('badge-limit').classList.replace('text-blue-600', 'text-red-600');
-                    document.getElementById('prof-phone').value = me.Phone || ""; document.getElementById('checkout-addr').innerText = me.Address || "Please update profile address.";
+                    let displayName = me.Name || userEmail.split('@')[0];
+                    localStorage.setItem('pt_cached_name', displayName);
+                    updateProfileUIDirectly(displayName, userEmail);
+                    
+                    const updatesUsed = me.UpdateCount || 0; 
+                    let badge = document.getElementById('badge-limit');
+                    if(badge) {
+                        badge.innerText = `Updates: ${updatesUsed}/5`; 
+                        badge.classList.remove('hidden-view');
+                        if(updatesUsed >= 5) badge.classList.replace('text-blue-600', 'text-red-600');
+                    }
+                    
+                    document.getElementById('prof-phone').value = me.Phone || ""; 
+                    
+                    try {
+                        savedAddresses = JSON.parse(me.Addresses_JSON || me.Address || "[]");
+                        if(!Array.isArray(savedAddresses)) savedAddresses = [savedAddresses]; 
+                        renderSelectedAddress(); 
+                    } catch(e) { 
+                        window.hasValidAddress = false;
+                        document.getElementById('checkout-addr').innerText = "Please update profile address."; 
+                    }
+                    updateUI();
                 }
-            } catch(e) {}
+            } catch(e) { console.log("User data fetch error"); }
         }
 
         async function fetchOrders() {
-            const container = document.getElementById('orders-list'); container.innerHTML = '<div class="loader mx-auto"></div>';
+            const container = document.getElementById('orders-list'); container.innerHTML = '<div class="loader mx-auto border-t-[#0071e3]"></div>';
             try {
                 let res = await fetch(`${SCRIPT_URL}?action=getOrderHistory&email=${userEmail}&token=${TOKEN}`); let data = await res.json();
                 let hasActiveOrder = data.some(o => o.Status.toLowerCase().includes('pending') || o.Status.toLowerCase().includes('processing'));
@@ -881,22 +1084,72 @@
             } catch(e) { container.innerHTML = "Error loading orders."; }
         }
 
-        function openEditProfile() {
-            closeModals(); document.getElementById('profileMenu').classList.remove('active');
-            if(document.getElementById('badge-limit').innerText.includes('5/5')) return showToast('Maximum 5 updates per month allowed.', true);
-            document.getElementById('modal-edit-profile').classList.add('active');
-        }
-
+        // 🔥 SAVE PROFILE (FIXED EXACT PAYLOAD KEYS)
         async function saveProfile() {
-            const btn = document.getElementById('btn-save-prof'); btn.innerHTML = '<div class="loader mx-auto border-t-white"></div>'; const nameToSave = document.getElementById('prof-name').value;
-            const l1 = document.getElementById('addr-line1').value; const l2 = document.getElementById('addr-line2').value; const pin = document.getElementById('addr-pincode').value; const city = document.getElementById('addr-city').value; const state = document.getElementById('addr-state').value;
-            let fullAddress = [l1, l2, city, state].filter(Boolean).join(", "); if(pin) fullAddress += ` - ${pin}`;
-            let data = await api({ action: 'updateProfile', email: userEmail, name: nameToSave, phone: document.getElementById('prof-phone').value, address: fullAddress });
-            if(data.status === 'success') { localStorage.setItem('pt_cached_name', nameToSave); updateProfileUIDirectly(nameToSave, userEmail); showToast('Profile details saved successfully.'); fetchUserData(); setTimeout(() => { closeEditModal(); btn.innerHTML = 'Save Profile Settings'; }, 1000); } 
-            else { showToast(data.message, true); btn.innerHTML = 'Save Profile Settings'; }
+            const btn = document.getElementById('btn-save-prof'); 
+            const nameToSave = document.getElementById('prof-name').value;
+            const phoneToSave = document.getElementById('prof-phone').value;
+            
+            const l1 = document.getElementById('addr-line1').value.trim(); 
+            const l2 = document.getElementById('addr-line2').value.trim(); 
+            const pin = document.getElementById('addr-pincode').value.trim(); 
+            const city = document.getElementById('addr-city').value.trim(); 
+            const state = document.getElementById('addr-state').value;
+            
+            let hasNewAddress = (l1 || pin || city || state);
+
+            if(hasNewAddress && (!l1 || !pin || !city || !state || pin.length !== 6)) {
+                showToast("Please fill all Mandatory (*) address fields correctly.", true); return;
+            }
+
+            btn.innerHTML = '<div class="loader mx-auto border-t-white"></div>'; 
+            
+            let addrString = "";
+            if (hasNewAddress) {
+                let newAddr = { l1, l2, city, state, pin };
+                savedAddresses.push(newAddr);
+                selectedAddressIndex = savedAddresses.length - 1; 
+                addrString = JSON.stringify(savedAddresses);
+            } else {
+                addrString = JSON.stringify(savedAddresses);
+            }
+
+            // 🔥 Exact Payload mapped to Backend expectations
+            let payload = { 
+                action: 'updateProfile', 
+                email: userEmail, 
+                name: nameToSave, 
+                phone: phoneToSave,
+                addressesJSON: addrString,
+                address: addrString
+            };
+
+            let data = await api(payload);
+            
+            if(data.status === 'success') { 
+                localStorage.setItem('pt_cached_name', nameToSave); 
+                updateProfileUIDirectly(nameToSave, userEmail); 
+                showToast('Profile Updated Successfully!'); 
+                
+                document.getElementById('addr-line1').value = "";
+                document.getElementById('addr-line2').value = "";
+                document.getElementById('addr-pincode').value = "";
+                document.getElementById('addr-city').value = "";
+                document.getElementById('addr-state').value = "";
+                
+                fetchUserData(); 
+                setTimeout(() => { 
+                    closeEditModal(); 
+                    btn.innerHTML = 'Save Profile Settings'; 
+                }, 1000); 
+            } 
+            else { 
+                showToast(data.message, true); 
+                btn.innerHTML = 'Save Profile Settings'; 
+            }
         }
 
-        // 🤖 VEDIKA AI WIDGET
+        // 🤖 VEDIKA AI WIDGET (LIVE CLOUDFLARE TYPING)
         function toggleVedika() {
             const ui = document.getElementById('vedikaBox');
             if(!ui.classList.contains('hidden-view')) { ui.classList.remove('fade-in-up'); ui.classList.add('hidden-view'); } 
@@ -906,21 +1159,79 @@
         async function askAI() {
             const input = document.getElementById('chatInput'); const chat = document.getElementById('chatBody');
             const q = input.value.trim(); if(!q) return;
+            
             chat.innerHTML += `<div class="bg-gradient-to-r from-[#0071e3] to-[#42a1ff] text-white p-3.5 rounded-2xl rounded-tr-sm w-fit max-w-[85%] text-[13.5px] ml-auto shadow-md fade-in-up font-medium">${q}</div>`;
             input.value = ''; chat.scrollTop = chat.scrollHeight;
-            const id = 'l-'+Date.now(); chat.innerHTML += `<div id="${id}" class="bg-white p-3.5 rounded-2xl rounded-tl-sm w-[85%] text-xs flex items-center gap-2 font-bold text-gray-500 shadow-sm fade-in-up"><div class="loader w-3.5 h-3.5 border-t-[#0071e3]"></div> Processing Request...</div>`;
+            
+            if(userEmail) { api({action: 'saveChatHistory', email: userEmail, role: 'user', messageText: q}); }
+            
+            const aiMessageId = 'ai-' + Date.now();
+            chat.innerHTML += `<div id="${aiMessageId}" class="bg-white border border-gray-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] p-4 rounded-2xl rounded-tl-sm w-[90%] text-[13.5px] text-gray-900 font-medium leading-relaxed fade-in-up markdown-body"><div class="loader w-3.5 h-3.5 border-t-[#0071e3] inline-block mb-1"></div></div>`;
             chat.scrollTop = chat.scrollHeight;
-            
-            let data = await api({action: 'askVedika', query: q, email: userEmail}); 
-            document.getElementById(id).remove();
-            
-            if(data && data.status === 'success') { 
-                let formattedAnswer = typeof marked !== 'undefined' ? marked.parse(data.answer) : data.answer;
-                chat.innerHTML += `<div class="bg-white border border-gray-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] p-4 rounded-2xl rounded-tl-sm w-[90%] text-[13.5px] text-gray-900 font-medium leading-relaxed fade-in-up markdown-body">${formattedAnswer}</div>`; 
-            } else { 
-                chat.innerHTML += `<div class="bg-red-50 text-red-500 p-3 rounded-2xl rounded-tl-none shadow-sm fade-in-up">Network error.</div>`; 
+
+            let pContext = "";
+            if(!document.getElementById('view-product').classList.contains('hidden-view')) {
+                pContext = document.getElementById('pd-name').innerText;
             }
-            chat.scrollTop = chat.scrollHeight;
+
+            let messagesPayload = [...vedikaHistory, {role: "user", content: q}];
+
+            try {
+                const response = await fetch(CLOUDFLARE_URL, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ messages: messagesPayload, productContext: pContext })
+                });
+
+                if(!response.ok) throw new Error("Network error");
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder("utf-8");
+                let fullResponse = ""; let displayResponse = "";
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split("\n");
+                    
+                    for (let line of lines) {
+                        if (line.startsWith("data: ") && line !== "data: [DONE]") {
+                            try {
+                                const data = JSON.parse(line.substring(6));
+                                if (data.choices && data.choices[0].delta.content) {
+                                    fullResponse += data.choices[0].delta.content;
+                                    displayResponse = fullResponse;
+                                    document.getElementById(aiMessageId).innerHTML = marked.parse(displayResponse);
+                                    chat.scrollTop = chat.scrollHeight;
+                                }
+                            } catch(e) {}
+                        }
+                    }
+                }
+
+                const navMatch = fullResponse.match(/\[NAV:\s*(.*?)\]/);
+                if(navMatch) {
+                    let target = navMatch[1].toUpperCase();
+                    displayResponse = fullResponse.replace(navMatch[0], '').trim(); 
+                    document.getElementById(aiMessageId).innerHTML = marked.parse(displayResponse);
+                    
+                    setTimeout(() => {
+                        if(target === 'ALL') { filterCategory('All'); showView('view-shop'); }
+                        else if(target === 'TAKHAT') { filterCategory('Takhat'); showView('view-shop'); }
+                        else if(target === 'ALMIRAH') { filterCategory('Almirah'); showView('view-shop'); }
+                        else if(target === 'CHAIRS') { filterCategory('Chairs'); showView('view-shop'); }
+                        else { document.getElementById('searchInput').value = target; searchProducts(); showView('view-shop'); }
+                    }, 1000); 
+                }
+
+                vedikaHistory.push({role: "user", content: q});
+                vedikaHistory.push({role: "assistant", content: fullResponse});
+                if(userEmail) { api({action: 'saveChatHistory', email: userEmail, role: 'assistant', messageText: fullResponse}); }
+
+            } catch(err) {
+                document.getElementById(aiMessageId).innerHTML = `<span class="text-red-500">माफ़ करें भैया जी, कनेक्शन टूट गया। कृपया दोबारा पूछें।</span>`;
+            }
         }
     </script>
 </body>
