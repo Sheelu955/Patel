@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Patel Traders | India's Premium AI Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -84,23 +84,36 @@
         ::-webkit-scrollbar-thumb { background: #d2d2d7; border-radius: 10px; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-        /* 🤖 Vedika AI Floating */
-        .vedika-float { animation: vedikaBreathe 3s infinite alternate ease-in-out; box-shadow: 0 15px 35px rgba(0,113,227,0.4); }
-        @keyframes vedikaBreathe { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.05); box-shadow: 0 25px 45px rgba(0,113,227,0.5); } }
+        /* 🤖 VEDIKA AI WIDGET STYLES (Google Gemini Premium Copy) */
+        .vedika-float { transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .vedika-float:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+        
+        #vedikaBox { border-radius: 28px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); transition: opacity 0.3s, transform 0.3s; }
+        #chatBody { scroll-behavior: smooth; }
 
-        /* 🔥 VEDIKA AI MARKDOWN */
-        .markdown-body p { margin-bottom: 8px; }
+        /* 🔥 जादुई कलरफुल पल्स (Gemini Aura Style) - 'Thinking...' के लिए */
+        .gemini-aura { position: relative; z-index: 1; border-radius: 50%; }
+        .gemini-aura::before {
+            content: ''; position: absolute; inset: -3px; border-radius: 50%;
+            background: conic-gradient(from 0deg, #4285f4, #9b72cb, #d96570, #4285f4);
+            animation: spinAura 2s linear infinite; z-index: -1; filter: blur(3px); opacity: 0.9;
+        }
+        @keyframes spinAura { 100% { transform: rotate(360deg); } }
+
+        /* 🔥 VEDIKA AI MARKDOWN (Gemini Typography) */
+        .markdown-body { font-family: 'Inter', sans-serif; font-size: 14.5px; color: #1f2937; line-height: 1.6; }
+        .markdown-body p { margin-bottom: 12px; }
         .markdown-body p:last-child { margin-bottom: 0; }
-        .markdown-body strong { font-weight: 900; color: #000; }
+        .markdown-body strong { font-weight: 700; color: #111827; }
         .markdown-body em { font-style: italic; }
-        .markdown-body ul { list-style-type: disc; margin-left: 20px; margin-bottom: 8px; }
-        .markdown-body ol { list-style-type: decimal; margin-left: 20px; margin-bottom: 8px; }
-        .markdown-body li { margin-bottom: 4px; }
-        .markdown-body table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #eee; }
-        .markdown-body th, .markdown-body td { border: 1px solid #e5e7eb; padding: 6px 10px; text-align: left; }
-        .markdown-body th { background: #f5f5f7; font-weight: 800; color: #1d1d1f; }
-        .markdown-body td { color: #555; font-weight: 500; }
-        .markdown-body code { background: #f0f8ff; color: #0071e3; padding: 2px 6px; border-radius: 6px; font-family: monospace; font-size: 11px; font-weight: 700; }
+        .markdown-body ul { list-style-type: disc; margin-left: 24px; margin-bottom: 12px; }
+        .markdown-body ol { list-style-type: decimal; margin-left: 24px; margin-bottom: 12px; }
+        .markdown-body li { margin-bottom: 6px; }
+        .markdown-body table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb; }
+        .markdown-body th, .markdown-body td { border: 1px solid #e5e7eb; padding: 8px 12px; text-align: left; }
+        .markdown-body th { background: #f9fafb; font-weight: 600; color: #374151; }
+        .markdown-body td { color: #4b5563; }
+        .markdown-body code { background: #f3f4f6; color: #000; padding: 2px 6px; border-radius: 6px; font-family: monospace; font-size: 12px; }
         
         /* 🔥 COD SWIPE BUTTON CSS */
         .swipe-track { position: relative; width: 100%; height: 60px; background: #f5f5f7; border-radius: 30px; overflow: hidden; border: 1px solid #d2d2d7; display: flex; align-items: center; justify-content: center; margin-top: 10px; }
@@ -316,7 +329,7 @@
                             <span><i class="fas fa-map-marker-alt mr-1 text-[#0071e3]"></i> Delivering To</span>
                             <button type="button" onclick="openAddressModal()" class="text-[#0071e3] hover:underline text-[10px] font-black bg-blue-50 px-2 py-1 rounded">SELECT ADDRESS</button>
                         </p>
-                        <p id="checkout-addr" class="text-[15px] font-bold text-gray-900 line-clamp-3 leading-relaxed">Please select or add address.</p>
+                        <p id="checkout-addr" class="text-[15px] font-bold text-gray-900 line-clamp-3 leading-relaxed">Please update profile address.</p>
                     </div>
 
                     <div class="flex justify-between font-black text-4xl mb-10 pt-8 border-t border-gray-200/80 text-black"><span>Total</span><span id="total" class="text-[#0071e3]">₹0</span></div>
@@ -435,23 +448,61 @@
         </div>
     </div>
 
-    <!-- 🤖 VEDIKA AI WIDGET -->
+    <!-- 🤖 VEDIKA AI WIDGET (Google Gemini Style) -->
     <div class="fixed bottom-24 md:bottom-8 right-6 z-50 flex flex-col items-end">
-        <div id="vedikaBox" class="hidden-view mb-6 w-[350px] sm:w-[380px] bg-white/95 backdrop-blur-xl rounded-[32px] shadow-[0_30px_60px_rgba(0,113,227,0.2)] border border-white/50 flex-col h-[500px] overflow-hidden fade-in-up">
-            <div class="p-5 bg-gradient-to-r from-[#0071e3] to-[#42a1ff] flex justify-between items-center text-white shadow-md">
-                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center border border-white/30"><i class="fas fa-robot text-lg"></i></div><div><span class="font-black text-lg block leading-tight">Vedika AI</span><span class="text-[9px] font-bold uppercase tracking-widest text-blue-100">Store Manager</span></div></div>
-                <button onclick="toggleVedika()" class="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
+        
+        <!-- Chat Box -->
+        <div id="vedikaBox" class="hidden-view mb-4 w-[360px] sm:w-[400px] bg-white rounded-[28px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-gray-200 flex-col h-[550px] overflow-hidden fade-in-up font-sans">
+            
+            <!-- Header -->
+            <div class="px-5 py-4 flex justify-between items-center border-b border-gray-100 bg-white">
+                <div class="flex items-center gap-3">
+                    <img src="https://i.ibb.co/Jw7Xz7V2/Google-Gemini-icon-2025-svg.webp" class="w-7 h-7 object-contain">
+                    <div>
+                        <span class="font-bold text-lg text-gray-800 tracking-tight leading-none block">Vedika AI</span>
+                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Store Manager</span>
+                    </div>
+                </div>
+                <button onclick="toggleVedika()" class="text-gray-400 hover:text-gray-700 transition-colors w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div id="chatBody" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50/50">
-                <div class="bg-white border border-gray-100 p-4 rounded-2xl rounded-tl-none w-[85%] text-[13.5px] text-gray-800 shadow-sm font-medium leading-relaxed markdown-body">नमस्ते! मैं वेदिका हूँ। पटेल ट्रेडर्स में आपका स्वागत है।</div>
+            
+            <!-- Chat Messages Area -->
+            <div id="chatBody" class="flex-1 overflow-y-auto p-5 space-y-6 bg-white">
+                <!-- Welcome Message -->
+                <div class="flex gap-3 items-start">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-100 p-1.5 shadow-sm">
+                        <img src="https://i.ibb.co/Jw7Xz7V2/Google-Gemini-icon-2025-svg.webp" class="w-full h-full object-contain">
+                    </div>
+                    <div class="text-[14.5px] text-gray-800 leading-relaxed pt-1 markdown-body">
+                        नमस्ते! मैं वेदिका हूँ। पटेल ट्रेडर्स में आपका स्वागत है। मैं आपकी कैसे मदद कर सकती हूँ? ✨
+                    </div>
+                </div>
             </div>
-            <div class="p-4 bg-white border-t border-gray-100 flex gap-2">
-                <input type="text" id="chatInput" placeholder="Ask anything..." class="flex-1 bg-gray-100/80 border border-gray-200 rounded-full px-5 py-3 text-[14px] outline-none focus:border-[#0071e3] focus:bg-white transition-all font-medium" onkeypress="if(event.key === 'Enter') askAI()">
-                <button onclick="askAI()" class="w-12 h-12 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center hover:bg-[#0071e3] transition-colors shadow-md hover:scale-105"><i class="fas fa-paper-plane"></i></button>
+            
+            <!-- Input Area -->
+            <div class="p-4 bg-white border-t border-gray-50">
+                <div class="bg-[#f0f4f9] rounded-[24px] flex items-center p-1.5 relative border border-transparent focus-within:border-gray-200 focus-within:bg-white transition-colors shadow-inner">
+                    <!-- 🔥 Scroll Fix Applied Here (onblur) -->
+                    <input type="text" id="chatInput" placeholder="Ask Vedika..." 
+                           class="w-full bg-transparent border-none outline-none px-4 py-2.5 text-[15px] text-gray-800 placeholder-gray-500" 
+                           onblur="setTimeout(() => window.scrollTo(0,0), 100);" 
+                           onkeypress="if(event.key === 'Enter') askAI()">
+                    <button onclick="askAI()" class="w-10 h-10 rounded-full text-gray-600 hover:bg-gray-200 flex items-center justify-center shrink-0 transition-colors mr-1">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <!-- Powered By Footer -->
+                <div class="text-center text-[10px] text-gray-400 mt-3 font-bold tracking-[0.1em] uppercase">
+                    ⚡ Powered By Patel Traders
+                </div>
             </div>
         </div>
-        <button onclick="toggleVedika()" class="w-16 h-16 bg-gradient-to-tr from-[#0071e3] to-[#42a1ff] rounded-full text-white flex items-center justify-center border-[3px] border-white vedika-float hover:scale-110 transition-transform">
-            <i class="fas fa-robot text-2xl"></i>
+        
+        <!-- Floating Logo Button -->
+        <button onclick="toggleVedika()" class="w-16 h-16 bg-white rounded-full flex items-center justify-center vedika-float relative border border-gray-100 shadow-2xl focus:outline-none p-3 z-50">
+            <img src="https://i.ibb.co/Jw7Xz7V2/Google-Gemini-icon-2025-svg.webp" class="w-full h-full object-contain">
         </button>
     </div>
 
@@ -1170,7 +1221,7 @@
             }
         }
 
-        // 🤖 VEDIKA AI WIDGET
+        // 🤖 VEDIKA AI WIDGET (Google Gemini Style)
         function toggleVedika() {
             const ui = document.getElementById('vedikaBox');
             if(!ui.classList.contains('hidden-view')) { ui.classList.remove('fade-in-up'); ui.classList.add('hidden-view'); } 
@@ -1178,16 +1229,30 @@
         }
         
         async function askAI() {
-            const input = document.getElementById('chatInput'); const chat = document.getElementById('chatBody');
-            const q = input.value.trim(); if(!q) return;
+            const input = document.getElementById('chatInput'); 
+            const chat = document.getElementById('chatBody');
+            const q = input.value.trim(); 
+            if(!q) return;
             
-            chat.innerHTML += `<div class="bg-gradient-to-r from-[#0071e3] to-[#42a1ff] text-white p-3.5 rounded-2xl rounded-tr-sm w-fit max-w-[85%] text-[13.5px] ml-auto shadow-md fade-in-up font-medium">${q}</div>`;
-            input.value = ''; chat.scrollTop = chat.scrollHeight;
+            // User Message (Premium Dark Color instead of blue)
+            chat.innerHTML += `<div class="bg-[#1d1d1f] text-white px-4 py-3 rounded-2xl rounded-tr-sm w-fit max-w-[85%] text-[14.5px] ml-auto font-medium shadow-md">${q}</div>`;
+            input.value = ''; 
+            chat.scrollTop = chat.scrollHeight;
             
             if(userEmail) { api({action: 'saveChatHistory', email: userEmail, role: 'user', messageText: q}); }
             
             const aiMessageId = 'ai-' + Date.now();
-            chat.innerHTML += `<div id="${aiMessageId}" class="bg-white border border-gray-100 shadow-[0_5px_15px_rgba(0,0,0,0.05)] p-4 rounded-2xl rounded-tl-sm w-[90%] text-[13.5px] text-gray-900 font-medium leading-relaxed fade-in-up markdown-body"><div class="loader w-3.5 h-3.5 border-t-[#0071e3] inline-block mb-1"></div></div>`;
+            
+            // Gemini Aura Style Loading & 'Thinking...' Text
+            chat.innerHTML += `
+            <div id="${aiMessageId}" class="flex gap-3 items-start fade-in-up">
+                <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 p-1.5 gemini-aura">
+                    <img src="https://i.ibb.co/Jw7Xz7V2/Google-Gemini-icon-2025-svg.webp" class="w-full h-full object-contain relative z-10 bg-white rounded-full">
+                </div>
+                <div class="text-[14.5px] text-gray-500 leading-relaxed pt-1 markdown-body w-full italic font-medium tracking-wide">
+                    Thinking...
+                </div>
+            </div>`;
             chat.scrollTop = chat.scrollHeight;
 
             let pContext = "";
@@ -1223,7 +1288,16 @@
                                 if (data.choices && data.choices[0].delta.content) {
                                     fullResponse += data.choices[0].delta.content;
                                     displayResponse = fullResponse;
-                                    document.getElementById(aiMessageId).innerHTML = marked.parse(displayResponse);
+                                    
+                                    // Remove Aura once responding
+                                    document.getElementById(aiMessageId).innerHTML = `
+                                        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-100 p-1.5 shadow-sm">
+                                            <img src="https://i.ibb.co/Jw7Xz7V2/Google-Gemini-icon-2025-svg.webp" class="w-full h-full object-contain">
+                                        </div>
+                                        <div class="text-[14.5px] text-gray-800 leading-relaxed pt-1 markdown-body w-full">
+                                            ${marked.parse(displayResponse)}
+                                        </div>
+                                    `;
                                     chat.scrollTop = chat.scrollHeight;
                                 }
                             } catch(e) {}
@@ -1235,7 +1309,15 @@
                 if(navMatch) {
                     let target = navMatch[1].toUpperCase();
                     displayResponse = fullResponse.replace(navMatch[0], '').trim(); 
-                    document.getElementById(aiMessageId).innerHTML = marked.parse(displayResponse);
+                    
+                    document.getElementById(aiMessageId).innerHTML = `
+                        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 border border-gray-100 p-1.5 shadow-sm">
+                            <img src="https://i.ibb.co/Jw7Xz7V2/Google-Gemini-icon-2025-svg.webp" class="w-full h-full object-contain">
+                        </div>
+                        <div class="text-[14.5px] text-gray-800 leading-relaxed pt-1 markdown-body w-full">
+                            ${marked.parse(displayResponse)}
+                        </div>
+                    `;
                     
                     setTimeout(() => {
                         if(target === 'ALL') { filterCategory('All'); showView('view-shop'); }
@@ -1251,7 +1333,10 @@
                 if(userEmail) { api({action: 'saveChatHistory', email: userEmail, role: 'assistant', messageText: fullResponse}); }
 
             } catch(err) {
-                document.getElementById(aiMessageId).innerHTML = `<span class="text-red-500">माफ़ करें भैया जी, कनेक्शन टूट गया। कृपया दोबारा पूछें।</span>`;
+                document.getElementById(aiMessageId).innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0"><i class="fas fa-exclamation-triangle text-sm"></i></div>
+                    <div class="text-[14.5px] text-red-600 leading-relaxed pt-1 w-full font-medium">माफ़ करें भैया जी, नेटवर्क समस्या। कृपया पुनः प्रयास करें।</div>
+                `;
             }
         }
 
